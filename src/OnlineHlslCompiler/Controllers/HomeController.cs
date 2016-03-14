@@ -30,10 +30,10 @@ namespace OnlineHlslCompiler.Controllers
                 model.TargetProfile.ToString());
 
                 var result = new CompilationResultViewModel();
-                result.HasErrors = compilationResult.HasErrors;
+                result.HasErrors = compilationResult.HasErrors || compilationResult.Bytecode == null;
                 result.Message = compilationResult.Message;
 
-                if (!compilationResult.HasErrors)
+                if (!compilationResult.HasErrors && compilationResult.Bytecode != null)
                     result.Disassembly = compilationResult.Bytecode.Disassemble(DisassemblyFlags.None);
 
                 return Json(result);
