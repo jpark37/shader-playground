@@ -1,5 +1,38 @@
-﻿body {
-    padding-top: 50px;
+﻿html, body, .container {
+    height: 100%;
+}
+
+.container {
+    display: table;
+    width: 100%;
+    max-width: 100%;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.row {
+    height: 100%;
+    display: table-row;
+}
+
+.col-sm-5.no-float, .col-sm-2.no-float {
+    float: none;
+}
+
+.col-sm-5, .col-sm-2 {
+    display: table-cell;
+}
+
+.col-sm-5 {
+    width: 40%;
+}
+
+.col-sm-2 {
+    width: 20%;
+}
+
+body {
+    padding-top: 80px;
     padding-bottom: 20px;
 }
 
@@ -9,16 +42,44 @@
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+/* Set width on the form input elements since they're 100% wide by default */
+textarea.form-control {
+    height: calc(100% - 44px);
+    margin-bottom: 10px;
+    font-family: monospace;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+#compileBtn {
+    width: 100%;
+}
+
+#disassemblyContainer {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+#disassemblyDiv {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow-x: scroll;
+    white-space: pre;
+    padding: 10px;
+    font-family: monospace;
+}
+
+#disassemblyDiv.error {
+    color: red;
+}
+
+.panel.panel-default {
+    height: 100%;
+}
+
+.panel .panel-body {
+    height: calc(100% - 37px);
+    position: relative;
 }
