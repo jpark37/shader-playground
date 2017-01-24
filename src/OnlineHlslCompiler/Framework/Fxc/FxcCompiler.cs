@@ -13,8 +13,8 @@ namespace OnlineHlslCompiler.Framework.Fxc
             // load either 32-bit or 64-bit DLL.
             var directory = HttpRuntime.BinDirectory;
             NativeMethods.LoadLibrary(Environment.Is64BitProcess
-                ? Path.Combine(directory, "x64/D3DCompiler_47.dll")
-                : Path.Combine(directory, "x86/D3DCompiler_47.dll"));
+                ? Path.Combine(directory, "x64/d3dcompiler_47.dll")
+                : Path.Combine(directory, "x86/d3dcompiler_47.dll"));
         }
 
         public ShaderCompilationResult Compile(string code, string entryPoint, string targetProfile)

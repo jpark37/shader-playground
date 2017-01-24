@@ -196,16 +196,16 @@
     <Compile Include="ViewModels\TargetProfile.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\lib\x64\D3DCompiler_47.dll">
-      <Link>x64\D3DCompiler_47.dll</Link>
+    <Content Include="..\..\lib\x64\d3dcompiler_47.dll">
+      <Link>x64\d3dcompiler_47.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\lib\x64\dxcompiler.dll">
       <Link>x64\dxcompiler.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\..\lib\x86\D3DCompiler_47.dll">
-      <Link>x86\D3DCompiler_47.dll</Link>
+    <Content Include="..\..\lib\x86\d3dcompiler_47.dll">
+      <Link>x86\d3dcompiler_47.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\lib\x86\dxcompiler.dll">
