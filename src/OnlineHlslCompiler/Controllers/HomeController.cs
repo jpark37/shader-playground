@@ -1,12 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
+using OnlineHlslCompiler.Framework;
+using OnlineHlslCompiler.Framework.Dxc;
+using OnlineHlslCompiler.Framework.Fxc;
 using OnlineHlslCompiler.ViewModels;
-using SharpDX.D3DCompiler;
 
 namespace OnlineHlslCompiler.Controllers
 {
     public class HomeController : Controller
     {
+        private static readonly Dictionary<Compiler, IShaderCompiler> Compilers = new Dictionary<Compiler, IShaderCompiler>
+        {
+            { Compiler.NewCompiler, new DxcCompiler() },
+            { Compiler.OldCompiler, new FxcCompiler() }
+        };
+
         public ActionResult Index()
         {
             return View(new HomeViewModel
@@ -15,7 +24,8 @@ namespace OnlineHlslCompiler.Controllers
 {
     return float4(1, 0, 0, 1);
 }",
-                TargetProfile = TargetProfile.ps_4_0,
+                Compiler = Compiler.NewCompiler,
+                TargetProfile = TargetProfile.ps_6_0,
                 EntryPointName = "PS"
             });
         }
@@ -25,16 +35,18 @@ namespace OnlineHlslCompiler.Controllers
         {
             try
             {
-                var compilationResult = ShaderBytecode.Compile(
-                model.Code, model.EntryPointName,
-                model.TargetProfile.ToString());
+                var compiler = Compilers[model.Compiler];
 
-                var result = new CompilationResultViewModel();
-                result.HasErrors = compilationResult.HasErrors || compilationResult.Bytecode == null;
-                result.Message = compilationResult.Message;
+                var compilationResult = compiler.Compile(
+                    model.Code, model.EntryPointName,
+                    model.TargetProfile.ToString());
 
-                if (!compilationResult.HasErrors && compilationResult.Bytecode != null)
-                    result.Disassembly = compilationResult.Bytecode.Disassemble(DisassemblyFlags.None);
+                var result = new CompilationResultViewModel
+                {
+                    HasErrors = compilationResult.HasErrors,
+                    Message = compilationResult.Message,
+                    Disassembly = compilationResult.Disassembly
+                };
 
                 return Json(result);
             }
