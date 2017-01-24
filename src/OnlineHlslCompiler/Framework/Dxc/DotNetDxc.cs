@@ -331,10 +331,7 @@ namespace OnlineHlslCompiler.Framework.Dxc
         {
             // Preload native DLL, so that we can explicitly
             // load either 32-bit or 64-bit DLL.
-            var directory = HttpRuntime.BinDirectory;
-            NativeMethods.LoadLibrary(Environment.Is64BitProcess
-                ? Path.Combine(directory, "x64/dxcompiler.dll")
-                : Path.Combine(directory, "x86/dxcompiler.dll"));
+            NativeMethods.LoadDll("dxcompiler.dll");
         }
 
         private static Guid CLSID_DxcAssembler = new Guid("D728DB68-F903-4F80-94CD-DCCF76EC7151");

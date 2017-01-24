@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Web;
-using SharpDX.D3DCompiler;
+﻿using SharpDX.D3DCompiler;
 
 namespace OnlineHlslCompiler.Framework.Fxc
 {
@@ -11,10 +8,7 @@ namespace OnlineHlslCompiler.Framework.Fxc
         {
             // Preload native DLL, so that we can explicitly
             // load either 32-bit or 64-bit DLL.
-            var directory = HttpRuntime.BinDirectory;
-            NativeMethods.LoadLibrary(Environment.Is64BitProcess
-                ? Path.Combine(directory, "x64/d3dcompiler_47.dll")
-                : Path.Combine(directory, "x86/d3dcompiler_47.dll"));
+            NativeMethods.LoadDll("d3dcompiler_47.dll");
         }
 
         public ShaderCompilationResult Compile(string code, string entryPoint, string targetProfile)
