@@ -79,7 +79,7 @@ textarea.form-control {
     height: 100%;
 }
 
-.panel .panel-body {
-    height: calc(100% - 37px);
+.card {
+    height: 100%;
     position: relative;
 }

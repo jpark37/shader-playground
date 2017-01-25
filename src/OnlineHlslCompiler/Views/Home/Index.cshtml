@@ -8,11 +8,10 @@
         <a id="compileBtn" class="btn btn-primary" href="#" data-compile-url="@Url.Action("Compile")">Compile</a>
     </div>
     <div class="col-sm-2 no-float">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Settings</h3>
-            </div>
-            <div class="panel-body">
+        <div class="card">
+            <div class="card-block">
+                <h3 class="card-title">Settings</h3>
+
                 <div class="form-group">
                     <label>Compiler</label>
                     @Html.EnumDropDownListFor(x => x.Compiler, new { @class = "form-control" })
@@ -29,11 +28,10 @@
         </div>
     </div>
     <div class="col-sm-5 no-float">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Output</h3>
-            </div>
-            <div class="panel-body">
+        <div class="card">
+            <div class="card-block">
+                <h3 class="card-title">Output</h3>
+                
                 <div id="disassemblyDiv"></div>
             </div>
         </div>
