@@ -14,9 +14,17 @@ namespace OnlineHlslCompiler
                 "~/Scripts/tether/tether.js",
                 "~/Scripts/bootstrap.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/codemirror").Include(
+                "~/Scripts/CodeMirror/lib/codemirror.js",
+                "~/Scripts/CodeMirror/addon/edit/matchbrackets.js",
+                "~/Scripts/CodeMirror/addon/selection/active-line.js",
+                "~/Scripts/CodeMirror/mode/clike/clike.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/tether.css",
                 "~/Content/bootstrap.css",
+                "~/Scripts/CodeMirror/lib/codemirror.css",
+                "~/Scripts/CodeMirror/theme/neat.css",
                 "~/Content/site.css"));
         }
     }

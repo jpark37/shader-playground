@@ -21,16 +21,26 @@
 
     $("#Compiler").change(refreshTargetProfileOptions);
 
-    $('#compileBtn').click(function (e) {
+    var myCodeMirror = CodeMirror(document.getElementById('code-editor-container'), {
+        value: $("#Code").val(),
+        mode: "text/x-c++src",
+        theme: "neat",
+        lineNumbers: true,
+        matchBrackets: true,
+        styleActiveLine: true,
+        indentUnit: 4
+    });
+
+    function compileCode() {
         var jsonObject = {
-            "Code": $("#Code").val(),
+            "Code": myCodeMirror.getValue(),
             "Compiler": $("#Compiler").val(),
             "TargetProfile": $("#TargetProfile").val(),
             "EntryPointName": $("#EntryPointName").val()
         };
 
         $.ajax({
-            url: $("#compileBtn").data("compile-url"),
+            url: $(document.body).data("compile-url"),
             type: "POST",
             data: JSON.stringify(jsonObject),
             contentType: "application/json; charset=utf-8",
@@ -48,7 +58,19 @@
                 }
             }
         });
+    }
 
-        return false;
-    });
+    compileCode();
+
+    var compileCodeTimeout;
+
+    function somethingChanged() {
+        clearTimeout(compileCodeTimeout);
+        compileCodeTimeout = setTimeout(compileCode, 500);
+    }
+
+    myCodeMirror.on('change', somethingChanged);
+    $("#Compiler").change(somethingChanged);
+    $("#TargetProfile").change(somethingChanged);
+    $("#EntryPointName").on('input propertychange paste', somethingChanged);
 });

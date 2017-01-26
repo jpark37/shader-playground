@@ -2,49 +2,78 @@
 @using OnlineHlslCompiler.Framework;
 @using OnlineHlslCompiler.ViewModels;
 
-<div class="row">
-    <div class="col-sm-5 no-float">
-        @Html.TextAreaFor(x => x.Code, new { @class = "form-control" })
-        <a id="compileBtn" class="btn btn-primary" href="#" data-compile-url="@Url.Action("Compile")">Compile</a>
-    </div>
-    <div class="col-sm-2 no-float">
-        <div class="card">
-            <div class="card-block">
-                <h3 class="card-title">Settings</h3>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online HLSL Compiler</title>
+    @Styles.Render("~/Content/css")
 
-                <div class="form-group">
-                    <label>Compiler</label>
-                    @Html.EnumDropDownListFor(x => x.Compiler, new { @class = "form-control" })
-                </div>
-                <div class="form-group">
-                    <label>Target profile</label>
-                    @Html.DropDownListFor(x => x.TargetProfile, Enumerable.Empty<SelectListItem>(), new { @class = "form-control" })
-                </div>
-                <div class="form-group">
-                    <label>Entry point</label>
-                    @Html.TextBoxFor(x => x.EntryPointName, new { @class = "form-control" })
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-5 no-float">
-        <div class="card">
-            <div class="card-block">
-                <h3 class="card-title">Output</h3>
-                
-                <div id="disassemblyDiv"></div>
-            </div>
-        </div>
-    </div>
-</div>
+</head>
+<body data-compile-url="@Url.Action("Compile")">
+    <main>
+        <div class="section-group">
+            <section class="code">
+                <header>
+                    <h1>Code</h1>
 
-@section Scripts {
+                    <form class="form-inline">
+                        <div class="input-group">
+                            @Html.EnumDropDownListFor(x => x.Compiler, new { @class = "form-control form-control-sm mr-sm-2" })
+                        </div>
+                        <div class="input-group">
+                            @Html.DropDownListFor(x => x.TargetProfile, Enumerable.Empty<SelectListItem>(), new { @class = "form-control form-control-sm mr-sm-2" })
+                        </div>
+                        <div class="input-group">
+                            @Html.TextBoxFor(x => x.EntryPointName, new { @class = "form-control form-control-sm", placeholder = "Entry point" })
+                        </div>
+                    </form>
+                </header>
+                <div class="content" id="code-editor-container">
+                    @Html.TextAreaFor(x => x.Code, new { style = "display:none" })
+                </div>
+            </section>
+        </div>
+
+        <div class="section-group results">
+            <section class="decompiled">
+                <header>
+                    <h1>Output</h1>
+
+                    <form class="form-inline">
+                        <div class="input-group">
+                            <select class="form-control form-control-sm" id="Output" name="Output">
+                                <option selected="selected" value="0">Disassembly</option>
+                                @*<option value="1">Abstract Syntax Tree (AST)</option>*@
+                            </select>
+                        </div>
+                    </form>
+                </header>
+                <div class="content">
+                    <div id="disassemblyDiv"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        Built by <a href="http://timjones.io">Tim Jones</a>.
+        See <a href="https://github.com/tgjones/TryHLSL">TryHLSL</a> on GitHub.
+        <em>Inspired by <a href="http://tryroslyn.azurewebsites.net">TryRoslyn</a>.</em>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/codemirror")
+    
     <script type="text/javascript">
         var allTargetProfiles = {
             0: @Html.TargetProfilesAsJsonArray(Compiler.NewCompiler),
             1: @Html.TargetProfilesAsJsonArray(Compiler.OldCompiler)
         };
     </script>
-    
+
     <script type="text/javascript" src="/Scripts/site.js"></script>
-}
+</body>
+</html>
