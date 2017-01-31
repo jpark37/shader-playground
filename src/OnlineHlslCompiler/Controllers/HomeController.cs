@@ -20,13 +20,30 @@ namespace OnlineHlslCompiler.Controllers
         {
             return View(new HomeViewModel
             {
-                Code = @"float4 PS() : SV_Target
+                Code = @"struct PSInput
 {
-    return float4(1, 0, 0, 1);
-}",
+	float4 position : SV_POSITION;
+	float4 color : COLOR;
+};
+
+PSInput VSMain(float4 position : POSITION, float4 color : COLOR)
+{
+	PSInput result;
+
+	result.position = position;
+	result.color = color;
+
+	return result;
+}
+
+float4 PSMain(PSInput input) : SV_TARGET
+{
+	return input.color;
+}
+",
                 Compiler = Compiler.NewCompiler,
                 TargetProfile = TargetProfile.ps_6_0,
-                EntryPointName = "PS"
+                EntryPointName = "PSMain"
             });
         }
 
