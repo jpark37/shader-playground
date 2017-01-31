@@ -76,7 +76,21 @@
                     $(".decompiled").hide();
                     $(".errors").show();
                 } else {
+                    function getDisassemblyMode() {
+                        switch (response.DisassemblyFormat) {
+                            case "NewCompiler":
+                                return "text/x-llvm-ir";
+                            case "OldCompiler":
+                                return "text/x-dxbc";
+                            default:
+                                return "text/x-llvm-ir";
+                        }
+                    }
+
+                    disassemblyEditor.setValue('');
+                    disassemblyEditor.setOption('mode', getDisassemblyMode());
                     disassemblyEditor.setValue(response.Disassembly);
+
                     $(".errors").hide();
                     $(".decompiled").show();
                 }

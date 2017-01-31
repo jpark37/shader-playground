@@ -5,5 +5,6 @@
         public bool HasErrors { get; set; }
         public string Message { get; set; }
         public string Disassembly { get; set; }
+        public string DisassemblyFormat { get; set; }
     }
 }

@@ -119,4 +119,8 @@
     modeProps: {fold: ["brace", "include"]}
   });
 
+  def(["text/x-dxbc"], {
+      name: "clike"
+  });
+
 });

@@ -33,8 +33,6 @@ namespace OnlineHlslCompiler.Controllers
         [HttpPost]
         public ActionResult Compile(HomeViewModel model)
         {
-            System.Threading.Thread.Sleep(3000);
-
             try
             {
                 var compiler = Compilers[model.Compiler];
@@ -43,14 +41,13 @@ namespace OnlineHlslCompiler.Controllers
                     model.Code, model.EntryPointName,
                     model.TargetProfile.ToString());
 
-                var result = new CompilationResultViewModel
+                return Json(new CompilationResultViewModel
                 {
                     HasErrors = compilationResult.HasErrors,
                     Message = compilationResult.Message,
-                    Disassembly = compilationResult.Disassembly
-                };
-
-                return Json(result);
+                    Disassembly = compilationResult.Disassembly,
+                    DisassemblyFormat = model.Compiler.ToString()
+                });
             }
             catch (Exception ex)
             {
