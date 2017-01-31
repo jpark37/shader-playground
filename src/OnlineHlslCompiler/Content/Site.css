@@ -97,7 +97,7 @@ textarea, .CodeMirror, #compiler-errors {
 }
 
 #EntryPointName {
-    width: 150px;
+    width: 90px;
 }
 
 .compiler-options {
@@ -210,6 +210,10 @@ option {
 
     main + footer {
         font-size: 70%;
+    }
+
+    input, select {
+        font-size: 90%;
     }
 }
 
