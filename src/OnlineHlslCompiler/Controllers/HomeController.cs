@@ -33,6 +33,8 @@ namespace OnlineHlslCompiler.Controllers
         [HttpPost]
         public ActionResult Compile(HomeViewModel model)
         {
+            System.Threading.Thread.Sleep(3000);
+
             try
             {
                 var compiler = Compilers[model.Compiler];

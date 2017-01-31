@@ -73,12 +73,16 @@ section .content {
     flex: 1 0 auto;
 }
 
-.code, .decompiled {
+.code, .decompiled, .errors {
     flex-shrink: 0;
     flex-grow: 1;
 }
 
-textarea, .CodeMirror {
+.errors {
+    display: none;
+}
+
+textarea, .CodeMirror, #compiler-errors {
     position: absolute;
     height: auto;
     width: 100%;
@@ -88,12 +92,26 @@ textarea, .CodeMirror {
     bottom: 0;
 }
 
+.errors header {
+    background-color: red;
+}
+
 #EntryPointName {
     width: 150px;
 }
 
-.form-inline {
+.compiler-options {
     margin-left: auto;
+    font-size: 80%;
+}
+
+.compiler-options > * {
+    display: inline-block;
+}
+
+input[type=text] {
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 .results section header {
@@ -106,7 +124,7 @@ textarea, .CodeMirror {
 
 .form-control, .form-control:focus {
     background-color: transparent;
-    border-color: white;
+    border: 1px solid white;
     color: white;
 }
 
@@ -131,25 +149,25 @@ option {
     background-color: white;
 }
 
-#disassemblyContainer {
-    position: relative;
-    height: 100%;
-    width: 100%;
+.loading .content > :not(.loader) {
+    opacity: 0.5;
 }
 
-#disassemblyDiv {
+.loader {
+    display: none;
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+    z-index: 1000;
+    top: 30px;
+    right: 30px;
+    width: 20px;
+    height: 20px;
+}
+
+#compiler-errors {
     overflow-x: scroll;
     white-space: pre;
     padding: 10px;
     font-family: monospace;
-}
-
-#disassemblyDiv.error {
     color: red;
 }
 
@@ -162,7 +180,7 @@ option {
 
     main > * {
         width: auto;
-            height: 0;
+        height: 0;
     }
 
     .results section header {
@@ -194,3 +212,5 @@ option {
         font-size: 70%;
     }
 }
+
+.cm-s-neat span.cm-variable-3 { color: darkcyan; }

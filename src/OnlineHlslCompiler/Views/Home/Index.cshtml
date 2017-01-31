@@ -18,17 +18,17 @@
                 <header>
                     <h1>Code</h1>
 
-                    <form class="form-inline">
-                        <div class="input-group">
+                    <div class="compiler-options">
+                        <div class="option">
                             @Html.EnumDropDownListFor(x => x.Compiler, new { @class = "form-control form-control-sm mr-sm-2" })
                         </div>
-                        <div class="input-group">
+                        <div class="option">
                             @Html.DropDownListFor(x => x.TargetProfile, Enumerable.Empty<SelectListItem>(), new { @class = "form-control form-control-sm mr-sm-2" })
                         </div>
-                        <div class="input-group">
+                        <div class="option">
                             @Html.TextBoxFor(x => x.EntryPointName, new { @class = "form-control form-control-sm", placeholder = "Entry point" })
                         </div>
-                    </form>
+                    </div>
                 </header>
                 <div class="content" id="code-editor-container">
                     @Html.TextAreaFor(x => x.Code, new { style = "display:none" })
@@ -41,17 +41,27 @@
                 <header>
                     <h1>Output</h1>
 
-                    <form class="form-inline">
+                    <div class="compiler-options">
                         <div class="input-group">
                             <select class="form-control form-control-sm" id="Output" name="Output">
                                 <option selected="selected" value="0">Disassembly</option>
                                 @*<option value="1">Abstract Syntax Tree (AST)</option>*@
                             </select>
                         </div>
-                    </form>
+                    </div>
                 </header>
                 <div class="content">
-                    <div id="disassemblyDiv"></div>
+                    <div class="loader"></div>
+                    <div id="disassembly-container"></div>
+                </div>
+            </section>
+            <section class="errors">
+                <header>
+                    <h1>Errors</h1>
+                </header>
+                <div class="content">
+                    <div class="loader"></div>
+                    <div id="compiler-errors"></div>
                 </div>
             </section>
         </div>
@@ -64,8 +74,8 @@
     </footer>
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/codemirror")
+    @Scripts.Render("~/bundles/spin")
     
     <script type="text/javascript">
         var allTargetProfiles = {
