@@ -1,0 +1,62 @@
+﻿<div class="row no-gutters d-flex flex-fill">
+    <div class="col-sm d-flex flex-column">
+        <nav class="navbar navbar-expand navbar-light bg-light justify-content-between">
+            <span class="navbar-text">Input</span>
+            <form class="form-inline">
+                <select class="form-control form-control-sm mr-sm-2">
+                    <option>HLSL</option>
+                    <option>GLSL</option>
+                </select>
+                <input type="text" class="form-control form-control-sm" placeholder="Entry point" />
+            </form>
+        </nav>
+
+        <div id="code-editor-container" class="d-flex flex-fill">
+            <textarea id="code-input" style="display:none"></textarea>
+        </div>
+    </div>
+
+    <div class="col-sm-auto options-panel">
+        <nav class="navbar navbar-expand navbar-light bg-light">
+            <span class="navbar-text">Options</span>
+        </nav>
+
+        <div class="container mt-2">
+            <form>
+                <div class="form-group">
+                    <label class="text-secondary">Compiler</label>
+                    <select class="form-control form-control-sm">
+                        <option>dxcompiler.dll</option>
+                        <option>d3dcompiler_47.dll</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="text-secondary">Profile</label>
+                    <select class="form-control form-control-sm w-auto">
+                        <option>vs_5_0</option>
+                        <option>ps_5_0</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-sm d-flex flex-column">
+        <nav class="navbar navbar-expand navbar-light bg-light justify-content-between">
+            <span class="navbar-text">Output</span>
+
+            <div class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons">
+                <label class="btn btn-outline-secondary active">
+                    <input type="radio" name="options" id="option1" autocomplete="off" checked> Build output
+                </label>
+                <label class="btn btn-outline-secondary">
+                    <input type="radio" name="options" id="option2" autocomplete="off"> Disassembly
+                </label>
+            </div>
+        </nav>
+
+        <div id="compiler-output-container" class="d-flex flex-fill">
+        </div>
+    </div>
+</div>

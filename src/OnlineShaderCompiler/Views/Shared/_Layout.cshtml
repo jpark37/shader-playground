@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shader Playground</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/codemirror/codemirror.css" />
+        <link rel="stylesheet" href="~/lib/codemirror/theme/neat.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.1.1/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <div class="d-flex flex-column h-100">
+        <nav class="navbar navbar-dark bg-primary justify-content-between">
+            <span class="navbar-brand">Shader Playground</span>
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="http://timjones.io">Created by Tim Jones</a>
+            </div>
+        </nav>
+
+        @RenderBody()
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery.min.js"></script>
+        <script src="~/lib/js/bootstrap.js"></script>
+        <script src="~/lib/codemirror/codemirror.js"></script>
+        <script src="~/lib/codemirror/addon/edit/matchbrackets.js"></script>
+        <script src="~/lib/codemirror/addon/selection/active-line.js"></script>
+        <script src="~/lib/codemirror/mode/clike/clike.js"></script>
+        <script src="~/js/codemirror-mode-hlsl.js" asp-append-version="true"></script>
+        <script src="~/js/codemirror-mode-llvm-ir.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.2.1.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.1.1/bootstrap.min.js"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
