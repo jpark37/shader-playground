@@ -1,6 +1,6 @@
 ﻿$(function () {
     var codeEditor = CodeMirror(document.getElementById('code-editor-container'), {
-        value: $("#code-input").val(),
+        value: $("#Code").val(),
         mode: "x-shader/hlsl",
         theme: "neat",
         lineNumbers: true,
