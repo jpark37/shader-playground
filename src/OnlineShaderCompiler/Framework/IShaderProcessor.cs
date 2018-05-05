@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using OnlineShaderCompiler.Framework.Languages;
 
 namespace OnlineShaderCompiler.Framework
@@ -16,13 +18,15 @@ namespace OnlineShaderCompiler.Framework
     {
         public static readonly IShaderLanguage[] All =
         {
-            new HlslLanguage()
+            new HlslLanguage(),
+            new GlslLanguage()
         };
     }
 
     public interface IShaderProcessor
     {
         string Name { get; }
+        string DisplayName { get; }
 
         ShaderProcessorParameter[] Parameters { get; }
 
@@ -33,7 +37,10 @@ namespace OnlineShaderCompiler.Framework
     {
         public string Name { get; }
         public string DisplayName { get; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
         public ShaderProcessorParameterType ParameterType { get; }
+
         public string[] Options { get; }
         public string DefaultValue { get; }
 

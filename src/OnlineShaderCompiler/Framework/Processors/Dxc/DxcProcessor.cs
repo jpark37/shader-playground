@@ -7,7 +7,8 @@ namespace OnlineShaderCompiler.Framework.Processors.Dxc
     {
         private static readonly IDxcLibrary Library = HlslDxcLib.CreateDxcLibrary();
 
-        public string Name { get; } = "dxc.exe (new DXIL compiler)";
+        public string Name { get; } = "DXC";
+        public string DisplayName { get; } = "dxc.exe (new DXIL compiler)";
 
         public ShaderProcessorParameter[] Parameters { get; } = new[]
         {

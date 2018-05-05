@@ -6,10 +6,6 @@ namespace OnlineShaderCompiler.Models
     public class HomeViewModel
     {
         public IShaderLanguage[] Languages { get; set; }
-
-        //public Compiler Compiler { get; set; }
-        //public TargetProfile TargetProfile { get; set; }
-        //public string EntryPointName { get; set; }
     }
 
     public class ShaderProcessorRequestViewModel

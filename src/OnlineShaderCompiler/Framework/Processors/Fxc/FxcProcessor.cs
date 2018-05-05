@@ -13,7 +13,8 @@ namespace OnlineShaderCompiler.Framework.Processors.Fxc
             NativeMethods.LoadDll("d3dcompiler_47.dll");
         }
 
-        public string Name { get; } = "fxc.exe (old DXBC compiler)";
+        public string Name { get; } = "FXC";
+        public string DisplayName { get; } = "fxc.exe (old DXBC compiler)";
 
         public ShaderProcessorParameter[] Parameters { get; } = new[]
         {
@@ -111,7 +112,7 @@ namespace OnlineShaderCompiler.Framework.Processors.Fxc
                 : "Compilation error occurred; no disassembly available.";
 
             return new ShaderProcessorResult(
-                new ShaderProcessorOutput("Build output", null, compilationResult.Message),
+                new ShaderProcessorOutput("Build output", null, compilationResult.Message ?? "<No build output>"),
                 new ShaderProcessorOutput("Disassembly", "DXBC", disassembly));
         }
     }

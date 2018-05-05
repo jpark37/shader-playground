@@ -16,8 +16,8 @@ namespace OnlineShaderCompiler.Controllers
             });
         }
 
-        //[HttpPost]
-        public ActionResult Compile(ShaderProcessorRequestViewModel model)
+        [HttpPost]
+        public ActionResult Compile([FromBody] ShaderProcessorRequestViewModel model)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace OnlineShaderCompiler.Controllers
             {
                 return Json(new ShaderProcessorResult(
                     new ShaderProcessorOutput(
-                        "Build output", 
+                        "Site error",
                         null, 
                         ex.ToString())));
             }
