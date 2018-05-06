@@ -39,14 +39,22 @@
         </div>
     </div>
 
-    <div class="col-sm d-flex flex-column"  style="overflow:hidden">
+    <div class="col-sm d-flex flex-column" style="overflow:hidden">
         <nav class="navbar navbar-expand navbar-light bg-light justify-content-between flex-shrink-0">
             <span class="navbar-text">Output</span>
 
             <div id="output-tabs" class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons"></div>
         </nav>
 
-        <div id="output-container" class="d-flex flex-fill"></div>
+        <div class="d-flex flex-fill position-relative">
+            <div id="output-container" class="d-flex flex-fill"></div>
+
+            <div id="output-loading" class="position-absolute w-25" style="right:1rem;top:1rem;">
+                <div class="progress align-middle">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary w-100" role="progressbar"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
