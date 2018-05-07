@@ -1,0 +1,61 @@
+﻿<div class="row no-gutters d-flex flex-fill">
+    <div class="col-sm d-flex flex-column" style="overflow:hidden">
+        <nav class="navbar navbar-expand navbar-light bg-light justify-content-between flex-shrink-0">
+            <span class="navbar-text">Input</span>
+            <form class="form-inline">
+                <div class="form-group">
+                    <select id="language" data-submit="language" class="form-control form-control-sm mr-sm-2"></select>
+                </div>
+
+                <div id="language-arguments" class="form-group"></div>
+            </form>
+        </nav>
+
+        <div id="code-editor-container" class="d-flex flex-fill">
+            <textarea id="Code" data-submit="code"></textarea>
+        </div>
+    </div>
+
+    <div id="options-panel" class="col-sm-auto">
+        <nav class="navbar navbar-expand navbar-light bg-light">
+            <span class="navbar-text">Options</span>
+        </nav>
+
+        <div class="container mt-3">
+            <form>
+                <div class="form-group" style="width:200px">
+                    <label class="text-secondary" for="compiler">Compiler</label>
+                    <select id="compiler" data-submit="compiler" class="form-control form-control-sm"></select>
+                    <small id="compiler-description" class="form-text text-muted"></small>
+                </div>
+
+                <hr />
+
+                <div id="compiler-arguments"></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-sm d-flex flex-column" style="overflow:hidden">
+        <nav class="navbar navbar-expand navbar-light bg-light justify-content-between flex-shrink-0">
+            <span class="navbar-text">Output</span>
+
+            <div id="output-tabs" class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons"></div>
+        </nav>
+
+        <div class="d-flex flex-fill flex-column position-relative" style="overflow:hidden">
+            <div id="output-container" class="d-flex flex-fill"></div>
+
+            <div id="output-loading" class="position-absolute w-25">
+                <div class="progress align-middle">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary w-100" role="progressbar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    window.CompileUrl = "@Url.Action("Compile", "Api")";
+    window.ShaderLanguages = @Json.Serialize(ShaderPlayground.Core.ShaderLanguages.All);
+</script>
