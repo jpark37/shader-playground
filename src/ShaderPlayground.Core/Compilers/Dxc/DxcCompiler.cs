@@ -13,7 +13,8 @@ namespace ShaderPlayground.Core.Compilers.Dxc
 
         public ShaderCompilerParameter[] Parameters { get; } = new[]
         {
-            new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "vs_6_0")
+            new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "vs_6_0"),
+            new ShaderCompilerParameter("OutputFormat", "Output format", ShaderCompilerParameterType.ComboBox, OutputFormatOptions, "DXIL")
         };
 
         private static readonly string[] TargetProfileOptions =
@@ -26,16 +27,25 @@ namespace ShaderPlayground.Core.Compilers.Dxc
             "vs_6_0"
         };
 
+        private static readonly string[] OutputFormatOptions =
+        {
+            "DXIL",
+            "SPIR-V"
+        };
+
         public ShaderCompilerResult Compile(string code, Dictionary<string, string> arguments)
         {
             var entryPoint = arguments["EntryPoint"];
             var targetProfile = arguments["TargetProfile"];
+            var outputFormat = arguments["OutputFormat"];
 
             using (var tempFile = TempFile.FromText(code))
             {
+                var spirv = (outputFormat == "SPIR-V") ? "-spirv" : string.Empty;
+
                 ProcessHelper.Run(
                     Path.Combine(AppContext.BaseDirectory, "Binaries", "Dxc", "dxc.exe"), 
-                    $"-T {targetProfile} -E {entryPoint} \"{tempFile.FilePath}\"",
+                    $"{spirv} -T {targetProfile} -E {entryPoint} \"{tempFile.FilePath}\"",
                     out var stdOutput,
                     out var stdError);
 
