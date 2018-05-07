@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using ShaderPlayground.Core.Util;
 
@@ -50,10 +49,8 @@ namespace ShaderPlayground.Core.Compilers.Glslang
                     break;
             }
 
-            using (var tempFile = new TempFile())
+            using (var tempFile = TempFile.FromText(code))
             {
-                File.WriteAllText(tempFile, code);
-
                 var validationErrors = RunGlslValidator(stage, tempFile, targetOption);
                 var spirv = RunGlslValidator(stage, tempFile, targetOption + " -H");
                 var ast = RunGlslValidator(stage, tempFile, "-i");
@@ -74,32 +71,23 @@ namespace ShaderPlayground.Core.Compilers.Glslang
 
         private static string RunGlslValidator(string stage, string codeFilePath, string arguments)
         {
-            var processStartInfo = new ProcessStartInfo
+            ProcessHelper.Run(
+                "glslangvalidator.exe",
+                $"-S {stage} -d {arguments} {codeFilePath}",
+                out var stdOutput,
+                out var stdError);
+
+            if (!string.IsNullOrEmpty(stdError))
             {
-                FileName = "glslangvalidator.exe",
-                Arguments = $"-S {stage} -d {arguments} {codeFilePath}",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            };
-            using (var process = System.Diagnostics.Process.Start(processStartInfo))
-            {
-                process.WaitForExit(4000);
-
-                var stdOut = process.StandardOutput.ReadToEnd();
-                var stdError = process.StandardError.ReadToEnd();
-
-                if (!string.IsNullOrEmpty(stdError))
-                {
-                    return stdError;
-                }
-
-                if (!string.IsNullOrEmpty(stdOut))
-                {
-                    return stdOut;
-                }
-
-                return null;
+                return stdError;
             }
+
+            if (!string.IsNullOrEmpty(stdOutput))
+            {
+                return stdOutput;
+            }
+
+            return null;
         }
     }
 }

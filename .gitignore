@@ -294,4 +294,6 @@ tools/**
 *.odx.cs
 *.xsd.cs
 
+src/ShaderPlayground.Core/Binaries/**
 src/ShaderPlayground.Web/wwwroot/lib
+build/**
