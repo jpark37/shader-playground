@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using SharpDX.D3DCompiler;
+using System.IO;
+using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Fxc
 {
     public sealed class FxcCompiler : IShaderCompiler
     {
-        static FxcCompiler()
-        {
-            // Preload native DLL, so that we can explicitly
-            // load either 32-bit or 64-bit DLL.
-            NativeMethods.LoadDll("d3dcompiler_47.dll");
-        }
-
         public string Name { get; } = "FXC";
         public string DisplayName { get; } = "Microsoft FXC";
         public string Description { get; } = "Legacy HLSL-to-DXBC compiler (fxc.exe)";
@@ -76,48 +70,35 @@ namespace ShaderPlayground.Core.Compilers.Fxc
             var disableOptimizations = Convert.ToBoolean(arguments["DisableOptimizations"]);
             var optimizationLevel = Convert.ToInt32(arguments["OptimizationLevel"]);
 
-            var shaderFlags = ShaderFlags.None;
-
-            if (disableOptimizations)
+            using (var tempFile = TempFile.FromText(code))
             {
-                shaderFlags |= ShaderFlags.SkipOptimization;
+                var args = $"--target {targetProfile} --entrypoint {entryPoint} --optimizationlevel {optimizationLevel}";
+
+                if (disableOptimizations)
+                {
+                    args += " --disableoptimizations";
+                }
+
+                ProcessHelper.Run(
+                    Path.Combine(AppContext.BaseDirectory, "Binaries", "Fxc", "ShaderPlayground.Shims.Fxc.exe"),
+                    $"{args} \"{tempFile.FilePath}\"",
+                    out var stdOutput,
+                    out var stdError);
+
+                int? selectedOutputIndex = null;
+
+                var disassembly = stdOutput;
+                if (string.IsNullOrWhiteSpace(stdOutput))
+                {
+                    disassembly = "Compilation error occurred; no disassembly available.";
+                    selectedOutputIndex = 1;
+                }
+
+                return new ShaderCompilerResult(
+                    selectedOutputIndex,
+                    new ShaderCompilerOutput("Disassembly", "DXBC", disassembly),
+                    new ShaderCompilerOutput("Build output", null, stdError));
             }
-
-            switch (optimizationLevel)
-            {
-                case 0:
-                    shaderFlags |= ShaderFlags.OptimizationLevel0;
-                    break;
-
-                case 1:
-                    shaderFlags |= ShaderFlags.OptimizationLevel1;
-                    break;
-
-                case 2:
-                    shaderFlags |= ShaderFlags.OptimizationLevel2;
-                    break;
-
-                case 3:
-                    shaderFlags |= ShaderFlags.OptimizationLevel3;
-                    break;
-            }
-
-            var compilationResult = ShaderBytecode.Compile(
-                code, 
-                entryPoint, 
-                targetProfile,
-                shaderFlags);
-
-            var hasCompilationErrors = compilationResult.HasErrors || compilationResult.Bytecode == null;
-
-            var disassembly = !hasCompilationErrors
-                ? compilationResult.Bytecode.Disassemble(DisassemblyFlags.None)
-                : "Compilation error occurred; no disassembly available.";
-
-            return new ShaderCompilerResult(
-                hasCompilationErrors ? 1 : (int?) null,
-                new ShaderCompilerOutput("Disassembly", "DXBC", disassembly),
-                new ShaderCompilerOutput("Build output", null, compilationResult.Message ?? "<No build output>"));
         }
     }
 }

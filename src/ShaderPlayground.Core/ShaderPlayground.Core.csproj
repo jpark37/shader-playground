@@ -6,13 +6,20 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
-    <PackageReference Include="SharpDX.D3DCompiler" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)..\ShaderPlayground.Shims.Fxc\bin\$(Configuration)\net461\**\*.*">
+      <Link>Binaries\Fxc\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Binaries\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Binaries\Fxc\" />
   </ItemGroup>
 
 </Project>
