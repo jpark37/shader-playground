@@ -7,7 +7,7 @@ namespace ShaderPlayground.Core.Compilers.Fxc
 {
     public sealed class FxcCompiler : IShaderCompiler
     {
-        public string Name { get; } = "FXC";
+        public string Name { get; } = "fxc";
         public string DisplayName { get; } = "Microsoft FXC";
         public string Description { get; } = "Legacy HLSL-to-DXBC compiler (fxc.exe)";
 

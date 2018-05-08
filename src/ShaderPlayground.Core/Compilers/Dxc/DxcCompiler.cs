@@ -7,7 +7,7 @@ namespace ShaderPlayground.Core.Compilers.Dxc
 {
     public sealed class DxcCompiler : IShaderCompiler
     {
-        public string Name { get; } = "DXC";
+        public string Name { get; } = "dxc";
         public string DisplayName { get; } = "Microsoft DXC";
         public string Description { get; } = "New open-source HLSL-to-DXIL compiler (dxc.exe)";
 

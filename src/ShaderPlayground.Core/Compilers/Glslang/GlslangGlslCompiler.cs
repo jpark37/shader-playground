@@ -7,8 +7,8 @@ namespace ShaderPlayground.Core.Compilers.Glslang
 {
     public sealed class GlslangGlslCompiler : IShaderCompiler
     {
-        public string Name { get; } = "GLSLANG";
-        public string DisplayName { get; } = "glslangvalidator";
+        public string Name { get; } = "glslang";
+        public string DisplayName { get; } = "glslang";
         public string Description { get; } = "Khronos glslangvalidator.exe";
 
         public ShaderCompilerParameter[] Parameters { get; } =

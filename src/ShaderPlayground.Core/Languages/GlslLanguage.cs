@@ -1,4 +1,5 @@
 ﻿using ShaderPlayground.Core.Compilers.Glslang;
+using ShaderPlayground.Core.Compilers.Mali;
 
 namespace ShaderPlayground.Core.Languages
 {
@@ -25,7 +26,8 @@ namespace ShaderPlayground.Core.Languages
 
         public IShaderCompiler[] Compilers { get; } = new IShaderCompiler[]
         {
-            new GlslangGlslCompiler()
+            new GlslangGlslCompiler(),
+            new MaliCompiler()
         };
 
         private static readonly string DefaultGlslCode = @"void main()
