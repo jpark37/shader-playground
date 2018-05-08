@@ -20,9 +20,28 @@ Task("Download-Dxc")
       "./src/ShaderPlayground.Core/Binaries/Dxc");
   });
 
+Task("Download-Glslang")
+  .Does(() => {
+    DownloadFile(
+      "https://github.com/KhronosGroup/glslang/releases/download/master-tot/glslang-master-windows-x64-Release.zip",
+      "./build/glslang.zip");
+
+    ZipUncompress(
+      "./build/glslang.zip", 
+      "./build/glslang");
+
+    EnsureDirectoryExists("./src/ShaderPlayground.Core/Binaries/Glslang");
+    CleanDirectory("./src/ShaderPlayground.Core/Binaries/Glslang");
+
+    CopyFiles(
+      "./build/glslang/bin/*.*",
+      "./src/ShaderPlayground.Core/Binaries/Glslang");
+  });
+
 Task("Default")
   .IsDependentOn("Prepare-Build-Directory")
   .IsDependentOn("Download-Dxc")
+  .IsDependentOn("Download-Glslang")
   .Does(() => {
     Information("Hello World!");
   });

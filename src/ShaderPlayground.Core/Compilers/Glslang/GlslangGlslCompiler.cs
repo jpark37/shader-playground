@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using ShaderPlayground.Core.Util;
 
@@ -72,7 +73,7 @@ namespace ShaderPlayground.Core.Compilers.Glslang
         private static string RunGlslValidator(string stage, string codeFilePath, string arguments)
         {
             ProcessHelper.Run(
-                "glslangvalidator.exe",
+                Path.Combine(AppContext.BaseDirectory, "Binaries", "Glslang", "glslangValidator.exe"),
                 $"-S {stage} -d {arguments} {codeFilePath}",
                 out var stdOutput,
                 out var stdError);
