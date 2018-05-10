@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using ShaderPlayground.Core.Languages;
 using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Mali
@@ -17,7 +18,7 @@ namespace ShaderPlayground.Core.Compilers.Mali
 
         public ShaderCompilerResult Compile(string code, Dictionary<string, string> arguments)
         {
-            var stage = GetStageFlag(arguments["ShaderStage"]);
+            var stage = GetStageFlag(Validate.Option(arguments, "ShaderStage", GlslLanguage.ShaderStageOptions));
 
             using (var tempFile = TempFile.FromText(code))
             {

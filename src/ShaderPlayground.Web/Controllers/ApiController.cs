@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using ShaderPlayground.Core;
 using ShaderPlayground.Web.Models;
@@ -13,11 +12,10 @@ namespace ShaderPlayground.Web.Controllers
         {
             try
             {
-                var language = ShaderLanguages.All.First(x => x.Name == model.Language);
-                var processor = language.Compilers.First(x => x.Name == model.Compiler);
-
-                var compilationResult = processor.Compile(
+                var compilationResult = Compiler.Compile(
                     model.Code, 
+                    model.Language, 
+                    model.Compiler, 
                     model.Arguments);
 
                 return Json(compilationResult);

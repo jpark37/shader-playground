@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using ShaderPlayground.Core.Languages;
 using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Glslang
 {
-    public sealed class GlslangGlslCompiler : IShaderCompiler
+    internal sealed class GlslangGlslCompiler : IShaderCompiler
     {
         public string Name { get; } = "glslang";
         public string DisplayName { get; } = "glslang";
@@ -31,9 +32,9 @@ namespace ShaderPlayground.Core.Compilers.Glslang
 
         public ShaderCompilerResult Compile(string code, Dictionary<string, string> arguments)
         {
-            var stage = arguments["ShaderStage"];
+            var stage = Validate.Option(arguments, "ShaderStage", GlslLanguage.ShaderStageOptions);
 
-            var target = arguments["Target"];
+            var target = Validate.Option(arguments, "Target", TargetOptions);
             var targetOption = string.Empty;
             switch (target)
             {

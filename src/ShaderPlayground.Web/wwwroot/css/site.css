@@ -12,9 +12,14 @@
 }
 
 #options-panel {
-    border-left: 1px solid #dee2e6;
-    border-right: 1px solid #dee2e6;
     background-color: #FCFCFC;
+}
+
+@media (min-width: 992px) {
+    #options-panel {
+        border-left: 1px solid #dee2e6;
+        border-right: 1px solid #dee2e6;
+    }
 }
 
 .row > div > .navbar {
@@ -33,4 +38,8 @@
 
 #output-container.loading {
     opacity: 0.5;
+}
+
+.form-inline .form-group {
+    margin-bottom: 0 !important;
 }

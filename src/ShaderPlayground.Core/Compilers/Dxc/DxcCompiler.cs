@@ -5,7 +5,7 @@ using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Dxc
 {
-    public sealed class DxcCompiler : IShaderCompiler
+    internal sealed class DxcCompiler : IShaderCompiler
     {
         public string Name { get; } = "dxc";
         public string DisplayName { get; } = "Microsoft DXC";
@@ -35,9 +35,9 @@ namespace ShaderPlayground.Core.Compilers.Dxc
 
         public ShaderCompilerResult Compile(string code, Dictionary<string, string> arguments)
         {
-            var entryPoint = arguments["EntryPoint"];
-            var targetProfile = arguments["TargetProfile"];
-            var outputFormat = arguments["OutputFormat"];
+            var entryPoint = Validate.Identifier(arguments, "EntryPoint");
+            var targetProfile = Validate.Option(arguments, "TargetProfile", TargetProfileOptions);
+            var outputFormat = Validate.Option(arguments, "OutputFormat", OutputFormatOptions);
 
             using (var tempFile = TempFile.FromText(code))
             {

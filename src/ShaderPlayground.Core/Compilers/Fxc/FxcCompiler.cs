@@ -65,10 +65,10 @@ namespace ShaderPlayground.Core.Compilers.Fxc
 
         public ShaderCompilerResult Compile(string code, Dictionary<string, string> arguments)
         {
-            var entryPoint = arguments["EntryPoint"];
-            var targetProfile = arguments["TargetProfile"];
-            var disableOptimizations = Convert.ToBoolean(arguments["DisableOptimizations"]);
-            var optimizationLevel = Convert.ToInt32(arguments["OptimizationLevel"]);
+            var entryPoint = Validate.Identifier(arguments, "EntryPoint");
+            var targetProfile = Validate.Option(arguments, "TargetProfile", TargetProfileOptions);
+            var disableOptimizations = Validate.Boolean(arguments, "DisableOptimizations");
+            var optimizationLevel = Convert.ToInt32(Validate.Option(arguments, "OptimizationLevel", OptimizationLevelOptions));
 
             using (var tempFile = TempFile.FromText(code))
             {
@@ -79,9 +79,11 @@ namespace ShaderPlayground.Core.Compilers.Fxc
                     args += " --disableoptimizations";
                 }
 
+                var fxcShimPath = Path.Combine(AppContext.BaseDirectory, "Binaries", "Fxc", "ShaderPlayground.Shims.Fxc.dll");
+
                 ProcessHelper.Run(
-                    Path.Combine(AppContext.BaseDirectory, "Binaries", "Fxc", "ShaderPlayground.Shims.Fxc.exe"),
-                    $"{args} \"{tempFile.FilePath}\"",
+                    "dotnet.exe",
+                    $"\"{fxcShimPath}\" {args} \"{tempFile.FilePath}\"",
                     out var stdOutput,
                     out var stdError);
 

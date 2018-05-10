@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27705.2000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShaderPlayground.Shims.Fxc", "ShaderPlayground.Shims.Fxc\ShaderPlayground.Shims.Fxc.csproj", "{8DDDC992-08A6-4923-89A7-D59DB5841189}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8DDDC992-08A6-4923-89A7-D59DB5841189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DDDC992-08A6-4923-89A7-D59DB5841189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DDDC992-08A6-4923-89A7-D59DB5841189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DDDC992-08A6-4923-89A7-D59DB5841189}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B4DA03B-B6F3-411D-A16A-AF0CD89E5ADE}
+	EndGlobalSection
+EndGlobal

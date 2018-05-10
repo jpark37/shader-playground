@@ -3,7 +3,7 @@ using ShaderPlayground.Core.Compilers.Mali;
 
 namespace ShaderPlayground.Core.Languages
 {
-    public sealed class GlslLanguage : IShaderLanguage
+    internal sealed class GlslLanguage : IShaderLanguage
     {
         public string Name { get; } = "GLSL";
 
@@ -14,7 +14,7 @@ namespace ShaderPlayground.Core.Languages
             new ShaderCompilerParameter("ShaderStage", "Shader stage", ShaderCompilerParameterType.ComboBox, ShaderStageOptions, defaultValue: "frag")
         };
 
-        private static readonly string[] ShaderStageOptions =
+        public static readonly string[] ShaderStageOptions =
         {
             "vert",
             "tesc",
