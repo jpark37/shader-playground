@@ -16,113 +16,149 @@
      * @typedef ShaderCompiler
      * @property {string} name
      * @property {string} displayName
+     * @property {string} description
+     * @property {string[]} inputLanguages
      * @property {ShaderCompilerParameter[]} parameters
+     * @property {string[]} outputLanguages
      */
 
     /**
      * @typedef ShaderLanguage
-     * @property {string} name
-     * @property {string} defaultCode
-     * @property {ShaderCompilerParameter[]} languageParameters
-     * @property {ShaderCompiler[]} compilers
+     * @property {string} name -
+     * @property {string} defaultCode -
      */
 
-    /**
-     * @param {ShaderCompilerParameter} parameter
-     */
-    function createParameterEditor(parameter) {
-        switch (parameter.parameterType) {
-            case "TextBox":
-                var textBox = document.createElement("input");
-                textBox.type = "text";
-                textBox.setAttribute("class", "form-control form-control-sm");
-                textBox.defaultValue = parameter.defaultValue;
-                return textBox;
-
-            case "ComboBox":
-                var comboBox = document.createElement("select");
-                comboBox.setAttribute("class", "form-control form-control-sm");
-                for (var option of parameter.options) {
-                    var isSelected = (option === parameter.defaultValue);
-                    comboBox.options.add(new Option(option, option, isSelected, isSelected));
-                }
-                return comboBox;
-
-            case "CheckBox":
-                var checkBox = document.createElement("input");
-                checkBox.setAttribute("class", "form-check-input");
-                checkBox.type = "checkbox";
-                checkBox.checked = (parameter.defaultValue === "true");
-                return checkBox;
-
-            default:
-                throw `Unexpected parameter type: ${parameter.parameterType}`;
-        }
+    var counter = 0;
+    function uniqueId() {
+        return 'myid-' + counter++;
     }
 
-    /**
-     * @param {ShaderCompilerParameter} parameter
-     * @param {boolean} addLabel
-     */
-    function createParameterGroup(parameter, addLabel, onChanged) {
-        var parameterGroup = document.createElement("div");
-        var formGroupClass = "form-group";
-        if (parameter.parameterType === "CheckBox") {
-            formGroupClass += " form-check";
-        }
-        parameterGroup.setAttribute("class", formGroupClass);
+    class ParameterEditor {
+        /**
+         * @param {ShaderCompilerParameter} parameter -
+         * @returns {ParameterEditor} -
+         */
+        static create(parameter) {
+            switch (parameter.parameterType) {
+                case "TextBox":
+                    return new TextBoxParameterEditor(parameter);
 
-        var parameterID = `Parameter${parameter.name}`;
+                case "ComboBox":
+                    return new ComboBoxParameterEditor(parameter);
 
-        if (addLabel) {
-            var parameterLabel = document.createElement("label");
-            parameterLabel.setAttribute("class", "text-secondary");
-            parameterLabel.setAttribute("for", parameterID);
-            parameterLabel.textContent = parameter.displayName;
-            if (parameter.ParameterType !== "CheckBox") {
-                parameterGroup.appendChild(parameterLabel);
+                case "CheckBox":
+                    return new CheckBoxParameterEditor(parameter);
+
+                default:
+                    throw `Unexpected parameter type: ${parameter.parameterType}`;
             }
         }
 
-        var parameterEditor = createParameterEditor(parameter);
-        parameterEditor.id = parameterID;
-        parameterEditor.addEventListener('change', onChanged);
-        parameterEditor.dataset['submitargument'] = parameter.name;
-        parameterEditor.title = parameter.displayName;
-        if (!addLabel && parameter.parameterType !== "CheckBox") {
-            parameterEditor.setAttribute('style', 'width:100px');
-        }
-        parameterGroup.appendChild(parameterEditor);
+        /**
+         * @param {ShaderCompilerParameter} parameter
+         */
+        constructor(parameter, templateId, initializeElementCallback) {
+            this.parameter = parameter;
 
-        if (addLabel && parameter.parameterType === "CheckBox") {
-            parameterLabel.setAttribute("class", "text-secondary form-check-label");
-            parameterGroup.appendChild(parameterLabel);
+            /** @type {HTMLTemplateElement} */
+            var template = document.getElementById(templateId);
+
+            var inputElementId = `parameter-editor-${uniqueId()}`;
+
+            this.element = document.importNode(template.content, true);
+
+            let labelElement = this.element.querySelector("label");
+            labelElement.htmlFor = inputElementId;
+            labelElement.textContent = parameter.displayName;
+
+            this.inputElement = this.element.querySelector("[data-isinputelement]");
+            this.inputElement.id = inputElementId;
+            this.inputElement.title = parameter.displayName;
+
+            initializeElementCallback(this.inputElement);
         }
 
-        return parameterGroup;
+        get value() { return ""; /* Should be overridden */ }
+        set value(x) { /* Should be overridden */ }
+
+        get isLanguageOutput() {
+            return this.parameter.name === "OutputLanguage";
+        }
     }
 
-    /**
-     * @param {HTMLDivElement} argumentsDiv
-     * @param {ShaderCompilerParameter[]} parameters
-     */
-    function updateArguments(argumentsDiv, parameters, addLabel, onChanged) {
-        argumentsDiv.innerHTML = '';
+    class TextBoxParameterEditor extends ParameterEditor {
+        /** @param {ShaderCompilerParameter} parameter */
+        constructor(parameter) {
+            super(
+                parameter,
+                "textbox-parameter-template",
+                x => x.defaultValue = parameter.defaultValue);
+        }
 
-        for (var parameter of parameters) {
-            argumentsDiv.appendChild(createParameterGroup(parameter, addLabel, onChanged));
+        get value() {
+            return this.inputElement.value;
+        }
+
+        set value(x) {
+            this.inputElement.value = x;
+        }
+    }
+
+    class ComboBoxParameterEditor extends ParameterEditor {
+        /** @param {ShaderCompilerParameter} parameter */
+        constructor(parameter) {
+            super(
+                parameter,
+                "combobox-parameter-template",
+                x => {
+                    for (let option of parameter.options) {
+                        let isSelected = (option === parameter.defaultValue);
+                        x.options.add(new Option(option, option, isSelected, isSelected));
+                    }
+                });
+        }
+        
+        get value() {
+            return this.inputElement.value;
+        }
+
+        set value(x) {
+            this.inputElement.value = x;
+        }
+    }
+
+    class CheckBoxParameterEditor extends ParameterEditor {
+        /** @param {ShaderCompilerParameter} parameter */
+        constructor(parameter) {
+            super(
+                parameter,
+                "checkbox-parameter-template",
+                x => x.checked = (parameter.defaultValue === "true"));
+        }
+
+        get value() {
+            return this.inputElement.checked ? "true" : "false";
+        }
+
+        set value(x) {
+            this.inputElement.checked = (x === "true");
         }
     }
 
     /** @type {ShaderLanguage[]} */
     var shaderLanguages = window.ShaderLanguages;
 
-    /** @type {HTMLTextAreaElement} */
-    var codeTextArea = document.getElementById('Code');
+    /** @type {ShaderCompiler[]} */
+    var shaderCompilers = window.ShaderCompilers;
 
-    var codeEditor = CodeMirror.fromTextArea(codeTextArea, {
+    /** @type {CodeMirror.Editor} */
+    var outputEditor = null;
+
+    const codeMirrorTheme = "duotone-light";
+
+    var codeEditor = CodeMirror.fromTextArea(document.getElementById('code'), {
         mode: "x-shader/hlsl",
-        theme: "neat",
+        theme: codeMirrorTheme,
         lineNumbers: true,
         matchBrackets: true,
         styleActiveLine: true,
@@ -131,54 +167,16 @@
 
     /** @type {HTMLSelectElement} */
     var languageSelect = document.getElementById('language');
-    for (var language of window.ShaderLanguages) {
+
+    for (var language of shaderLanguages) {
         languageSelect.options.add(new Option(language.name, language.name));
     }
 
-    /** @type {HTMLSelectElement} */
-    var compilerSelect = document.getElementById("compiler");
-
-    var languageArgumentsDiv = document.getElementById('language-arguments');
-    var compilerArgumentsDiv = document.getElementById('compiler-arguments');
-
-    var outputTabsDiv = document.getElementById('output-tabs');
+    var outputTabsSelect = document.getElementById('output-tabs');
     var outputContainerDiv = document.getElementById('output-container');
 
     function getSelectedLanguage() {
         return shaderLanguages.find(x => x.name === languageSelect.selectedOptions[0].value);
-    }
-
-    function getSelectedCompiler() {
-        var language = getSelectedLanguage();
-        return language.compilers.find(x => x.name === compilerSelect.selectedOptions[0].value);
-    }
-
-    /**
-     * @param {HTMLElement} element
-     */
-    function getValue(element) {
-        switch (element.tagName) {
-            case "SELECT":
-                return element.selectedOptions[0].value;
-
-            case "TEXTAREA":
-                return element.value;
-
-            case "INPUT":
-                switch (element.type) {
-                    case "text":
-                        return element.value;
-
-                    case "checkbox":
-                        return element.checked ? "true" : "false";
-
-                    default:
-                        throw `Unexpected input element type: ${element.type}`;
-                }
-
-            default:
-                throw `Unexpected element type: ${element.tagName}`;
-        }
     }
 
     function getCodeMirrorMode(language) {
@@ -194,24 +192,33 @@
         }
     }
 
+    function createJsonRequestObject() {
+        var jsonObject = {
+            language: getSelectedLanguage().name,
+            code: codeEditor.getValue()
+        };
+
+        var compilationSteps = [];
+
+        for (let compilerEditor of compilerEditors) {
+            var jsonArguments = {};
+            for (var parameterEditor of compilerEditor.parameterEditors) {
+                jsonArguments[parameterEditor.parameter.name] = parameterEditor.value;
+            }
+
+            compilationSteps.push({
+                compiler: compilerEditor.selectedCompiler.name,
+                arguments: jsonArguments
+            });
+        }
+
+        jsonObject.compilationSteps = compilationSteps;
+
+        return jsonObject;
+    }
+
     function compileCode() {
-        /** @type {HTMLElement[]} */
-        var submitElements = document.querySelectorAll("[data-submit]");
-
-        codeTextArea.value = codeEditor.getValue();
-
-        var jsonObject = {};
-        for (var element of submitElements) {
-            jsonObject[element.dataset.submit] = getValue(element);
-        }
-
-        /** @type {HTMLElement[]} */
-        var submitArgumentElements = document.querySelectorAll("[data-submitargument]");
-        var jsonArguments = {};
-        for (var element of submitArgumentElements) {
-            jsonArguments[element.dataset.submitargument] = getValue(element);
-        }
-        jsonObject.arguments = jsonArguments;
+        var jsonObject = createJsonRequestObject();
 
         $("#output-container").addClass("loading");
         $("#output-loading").show();
@@ -247,102 +254,362 @@
                     selectedOutputTabIndex = 0;
                 }
 
-                outputTabsDiv.innerHTML = '';
+                while (outputTabsSelect.options.length > 0) {
+                    outputTabsSelect.options.remove(0);
+                }
+
+                var currentScrollY = (outputEditor !== null)
+                    ? outputEditor.getScrollInfo().top
+                    : null;
+
+                outputTabsSelect.onchange = () => {
+                    var output = response.outputs.find(x => x.displayName === outputTabsSelect.selectedOptions[0].value);
+
+                    outputContainerDiv.innerHTML = '';
+
+                    outputEditor = CodeMirror(outputContainerDiv, {
+                        value: output.value,
+                        mode: getCodeMirrorMode(output.language),
+                        theme: codeMirrorTheme,
+                        matchBrackets: true,
+                        readOnly: true
+                    });
+
+                    if (currentScrollY !== null) {
+                        outputEditor.scrollTo(null, currentScrollY);
+                        currentScrollY = null;
+                    }
+                };
                 
                 for (var i = 0; i < response.outputs.length; i++) {
                     var output = response.outputs[i];
-
-                    var outputTabButton = document.createElement('label');
-                    outputTabButton.setAttribute('class', 'btn btn-outline-secondary');
-
-                    var radioButton = document.createElement('input');
-                    radioButton.type = 'radio';
-                    radioButton.name = 'output-tab-selector';
-                    radioButton.value = output.displayName;
-                    outputTabButton.appendChild(radioButton);
-
-                    var radioButtonText = document.createTextNode(output.displayName);
-                    outputTabButton.appendChild(radioButtonText);
-
-                    (function () {
-                        var localOutput = output;
-
-                        function selectTab() {
-                            outputContainerDiv.innerHTML = '';
-
-                            CodeMirror(outputContainerDiv, {
-                                value: localOutput.value,
-                                mode: getCodeMirrorMode(localOutput.language),
-                                theme: "neat",
-                                lineNumbers: true,
-                                matchBrackets: true,
-                                readOnly: true
-                            });
-                        }
-
-                        outputTabButton.onclick = selectTab;
-
-                        if (i === selectedOutputTabIndex) {
-                            selectTab();
-                            $(outputTabButton).addClass('active');
-                            radioButton.checked = true;
-                        }
-                    })();
-
-                    outputTabsDiv.appendChild(outputTabButton);
+                    var isSelected = i === selectedOutputTabIndex;
+                    outputTabsSelect.options.add(new Option(output.displayName, output.displayName, isSelected, isSelected));
                 }
+
+                outputTabsSelect.onchange();
             }
         });
     }
 
     var compileCodeTimeout;
+    var initialized = false;
 
-    function somethingChanged() {
+    function somethingChanged(trigger) {
+        if (!initialized) {
+            return;
+        }
+
+        if (window.location.search !== "") {
+            window.history.pushState(null, null, window.location.origin + window.location.pathname);
+        }
+
         clearTimeout(compileCodeTimeout);
         compileCodeTimeout = setTimeout(compileCode, 500);
     }
 
-    codeEditor.on('change', somethingChanged);
+    codeEditor.on('change', () => somethingChanged());
 
-    /**
-     * @param {HTMLSelectElement} element
-     */
+    /** @param {HTMLSelectElement} element - */
     function raiseSelectElementChange(element) {
         var event = document.createEvent('Event');
         event.initEvent('change');
         element.dispatchEvent(event);
     }
 
+    class CompilerEditorCollection {
+        constructor() {
+            this.element = document.getElementById("compiler-editors");
+
+            /** @type {CompilerEditor[]} */
+            this.compilerEditors = [];
+        }
+
+        getPrevious(compilerEditor) {
+            var index = this.compilerEditors.indexOf(compilerEditor);
+            return (index !== 0)
+                ? this.compilerEditors[index - 1]
+                : null;
+        }
+
+        removeAfter(compilerEditor) {
+            this._removeFrom(this.compilerEditors.indexOf(compilerEditor) + 1);
+        }
+
+        removeFrom(compilerEditor) {
+            this._removeFrom(this.compilerEditors.indexOf(compilerEditor));
+        }
+
+        _removeFrom(index) {
+            for (let i = index; i < this.compilerEditors.length; i++) {
+                this.element.removeChild(this.compilerEditors[i].element);
+            }
+            this.compilerEditors.splice(index);
+            this.updateAddButton();
+        }
+
+        reset() {
+            this._removeFrom(0);
+            this.add(getSelectedLanguage());
+        }
+
+        applyState(compilationSteps) {
+            this._removeFrom(0);
+
+            let inputLanguage = getSelectedLanguage();
+            for (const compilationStep of compilationSteps) {
+                const compilerEditor = this.add(inputLanguage);
+
+                compilerEditor.compilerSelect.value = compilationStep.compiler;
+                compilerEditor.onCompilerChanged();
+
+                for (const argumentName in compilationStep.arguments) {
+                    const parameterEditor = compilerEditor.parameterEditors.find(x => x.parameter.name === argumentName);
+                    parameterEditor.value = compilationStep.arguments[argumentName];
+                }
+
+                const inputLanguageName = compilerEditor.outputLanguage;
+                if (inputLanguageName !== null) {
+                    inputLanguage = { name: inputLanguageName };
+                }
+            }
+        }
+
+        add(language) {
+            const compilerEditor = new CompilerEditor(language);
+            this.element.appendChild(compilerEditor.element);
+            this.compilerEditors.push(compilerEditor);
+
+            compilerEditor.onCompilerChanged();
+
+            this.updateAddButton();
+
+            return compilerEditor;
+        }
+
+        updateAddButton() {
+            var addCompilerButtonContainer = document.getElementById('add-compiler-button-container');
+            var addCompilerButton = document.getElementById('add-compiler-button');
+
+            addCompilerButtonContainer.classList.add('d-none');
+
+            if (this.compilerEditors.length === 0) {
+                return;
+            }
+
+            // If last compiler has an output that can be accepted as an input by a compiler,
+            // show the Add Compiler button.
+            let lastCompiler = this.compilerEditors[this.compilerEditors.length - 1];
+            let outputLanguage = lastCompiler.outputLanguage;
+            if (outputLanguage !== null) {
+                let compiler = shaderCompilers.find(x => x.inputLanguages.includes(outputLanguage));
+                if (compiler !== undefined) {
+                    addCompilerButtonContainer.classList.remove('d-none');
+                    addCompilerButton.onclick = () => {
+                        compilerEditors.add({ name: outputLanguage });
+                        return false;
+                    };
+                }
+            }
+        }
+
+        [Symbol.iterator]() {
+            return this.compilerEditors.values();
+        }
+    }
+
+    let compilerEditors = new CompilerEditorCollection();
+
+    class CompilerEditor {
+        /**
+         * @param {ShaderLanguage} inputLanguage
+         */
+        constructor(inputLanguage) {
+            /** @type {HTMLTemplateElement} */
+            let template = document.getElementById("compiler-editor-template");
+
+            let element = document.importNode(template.content, true).querySelector(".compiler-container");
+
+            let compilerSelectId = `compiler-select-${uniqueId()}`;
+            element.querySelector("label").htmlFor = compilerSelectId;
+
+            element.querySelector("[data-remove-link]").onclick = () => {
+                compilerEditors.removeFrom(this);
+                somethingChanged();
+                return false;
+            };
+
+            let compilerSelect = element.querySelector("select");
+            compilerSelect.id = compilerSelectId;
+            for (let compiler of shaderCompilers) {
+                if (compiler.inputLanguages.includes(inputLanguage.name)) {
+                    compilerSelect.options.add(new Option(compiler.displayName, compiler.name));
+                }
+            }
+            this.compilerSelect = compilerSelect;
+
+            this.descriptionSpan = element.querySelector("span");
+            this.argumentsDiv = element.querySelector("[data-arguments]");
+
+            /** @type {ParameterEditor[]} */
+            this.parameterEditors = [];
+
+            compilerSelect.addEventListener("change", () => this.onCompilerChanged());
+
+            this.element = element;
+        }
+
+        get selectedCompiler() {
+            return shaderCompilers.find(x => x.name === this.compilerSelect.selectedOptions[0].value);
+        }
+
+        onCompilerChanged() {
+            let compiler = this.selectedCompiler;
+
+            this.argumentsDiv.innerHTML = '';
+            this.parameterEditors.length = 0;
+
+            for (let parameter of compiler.parameters) {
+                let parameterEditor = ParameterEditor.create(parameter);
+
+                parameterEditor.inputElement.addEventListener(
+                    'input',
+                    () => {
+                        if (parameterEditor.isLanguageOutput) {
+                            compilerEditors.removeAfter(this);
+                        }
+                        somethingChanged();
+                    });
+
+                this.parameterEditors.push(parameterEditor);
+                this.argumentsDiv.appendChild(parameterEditor.element);
+            }
+
+            this.descriptionSpan.textContent = compiler.description;
+
+            // If this is not the first compiler, set its parameter values to match those of the previous compiler.
+            let previousCompiler = compilerEditors.getPrevious(this);
+            if (previousCompiler !== null) {
+                for (let parameterEditor of this.parameterEditors) {
+                    let previousParameterEditor = previousCompiler.parameterEditors.find(x => x.parameter.name === parameterEditor.parameter.name);
+                    if (previousParameterEditor !== undefined) {
+                        parameterEditor.value = previousParameterEditor.value;
+                    }
+                }
+            }
+
+            compilerEditors.removeAfter(this);
+            somethingChanged();
+        }
+
+        get outputLanguage() {
+            let languageOutputParameter = this.parameterEditors.find(x => x.isLanguageOutput);
+            return (languageOutputParameter !== undefined)
+                ? languageOutputParameter.value
+                : null;
+        }
+    }
+
+    function loadFromUrl() {
+        if (window.location.pathname.length < 2) {
+            return false;
+        }
+
+        var gistId = window.location.pathname.substring(1);
+
+        $.ajax({
+            url: `https://api.github.com/gists/${gistId}`,
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: function (response) {
+                alert("Unexpected error loading gist");
+            },
+            success: function (response) {
+                const configJson = JSON.parse(response.files["config.json"].content);
+
+                const shaderLanguage = shaderLanguages.find(x => x.name === configJson.language);
+                const fileExtension = shaderLanguage.fileExtension;
+
+                const code = response.files[`shader.${fileExtension}`].content;
+                codeEditor.setValue(code);
+
+                languageSelect.value = configJson.language;
+                compilerEditors.applyState(configJson.compilationSteps);
+
+                compileCode();
+
+                initialized = true;
+            }
+        });
+
+        return true;
+    }
+
     languageSelect.addEventListener(
         "change",
         () => {
-            var language = getSelectedLanguage();
-
-            codeEditor.setValue(language.defaultCode);
-
-            updateArguments(languageArgumentsDiv, language.languageParameters, false, somethingChanged);
-
-            while (compilerSelect.options.length > 0) {
-                compilerSelect.options.remove(0);
-            }
-            for (var compiler of language.compilers) {
-                compilerSelect.options.add(new Option(compiler.displayName, compiler.name));
-            }
-
-            raiseSelectElementChange(compilerSelect);
-
+            codeEditor.setValue(getSelectedLanguage().defaultCode);
+            compilerEditors.reset();
             somethingChanged();
         });
 
-    compilerSelect.addEventListener(
-        "change",
-        () => {
-            var compiler = getSelectedCompiler();
-            updateArguments(compilerArgumentsDiv, compiler.parameters, true, somethingChanged);
-            document.getElementById('compiler-description').textContent = compiler.description;
+    if (!loadFromUrl()) {
+        initialized = true;
+        raiseSelectElementChange(languageSelect);
+    }
 
-            somethingChanged();
+    /** @type {HTMLInputElement} */
+    let permalinkTextbox = document.getElementById("permalink-textbox");
+
+    /** @type {HTMLButtonElement} */
+    let copyPermalinkButton = document.getElementById('copy-permalink-button');
+
+    document.getElementById("share-button").onclick = () => {
+        var jsonObject = createJsonRequestObject();
+
+        permalinkTextbox.value = '';
+        permalinkTextbox.placeholder = 'Loading...';
+        copyPermalinkButton.textContent = 'Copy';
+
+        function finishLoading() {
+            permalinkTextbox.placeholder = '';
+        }
+
+        $.ajax({
+            url: window.CreateGistUrl,
+            type: "POST",
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: function (response) {
+                finishLoading();
+                alert("Unexpected error");
+            },
+            success: function (response) {
+                finishLoading();
+                permalinkTextbox.value = `${window.location.origin}/${response}`;
+                permalinkTextbox.select();
+                window.history.pushState(null, null, permalinkTextbox.value);
+            }
         });
 
-    raiseSelectElementChange(languageSelect);
+        $('#share-dialog').modal({});
+
+        return false;
+    };
+
+    document.getElementById('copy-permalink-button').onclick = () => {
+        permalinkTextbox.select();
+        var copied = false;
+        try {
+            copied = document.execCommand('copy');
+        } catch (err) {
+
+        }
+
+        copyPermalinkButton.textContent = copied ? "Copied" : "Couldn't copy";
+        
+        return false;
+    };
 });

@@ -34,6 +34,12 @@ namespace OnlineShaderCompiler
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "permalink",
+                    template: "{id}",
+                    defaults: new { controller = "Home", action = "Index" },
+                    constraints: new { id = "[a-zA-Z0-9]{32}" });
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });

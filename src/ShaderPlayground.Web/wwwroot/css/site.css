@@ -2,24 +2,63 @@
     height: 100%;
 }
 
+body {
+    font-family: "Lato", sans-serif;
+}
+
 .CodeMirror {
     width: 100%;
     height: auto;
 }
 
 .bg-primary {
-    background-color: #57278E !important;
+    background-color: #005b96 !important;
 }
 
 #options-panel {
-    background-color: #FCFCFC;
+    
 }
 
 @media (min-width: 992px) {
-    #options-panel {
-        border-left: 1px solid #dee2e6;
-        border-right: 1px solid #dee2e6;
+    #options-panel .form-control {
+        background-color: transparent;
+        background-color: rgba(255, 255, 255, 0.8);
     }
+
+    .compiler-container {
+        width: 250px;
+    }
+}
+
+.options-body {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.compiler-container .card {
+    
+}
+
+.compiler-container:first-child div[data-down-arrow] {
+    display: none;
+}
+
+.compiler-container:first-child a[data-remove-link] {
+    display: none;
+}
+
+.compiler-header {
+
+}
+
+.compiler-name-group {
+    background-color: #EDEDED;
+    padding: 15px;
+    margin-bottom: 0;
+}
+
+#compiler-arguments {
+    
 }
 
 .row > div > .navbar {
@@ -42,4 +81,8 @@
 
 .form-inline .form-group {
     margin-bottom: 0 !important;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
 }

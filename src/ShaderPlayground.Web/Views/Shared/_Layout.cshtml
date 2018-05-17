@@ -5,38 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shader Playground</title>
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/lib/codemirror/codemirror.css" />
+    <link rel="stylesheet" href="~/lib/codemirror/theme/duotone-light.css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" />
+
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/css/bootstrap.css" />
-        <link rel="stylesheet" href="~/lib/codemirror/codemirror.css" />
-        <link rel="stylesheet" href="~/lib/codemirror/theme/neat.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.1.1/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/lib/css/bootstrap.min.css" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
 <body>
     <div class="d-flex flex-column h-100">
         <nav class="navbar navbar-dark bg-primary justify-content-between flex-shrink-0">
-            <span class="navbar-brand">Shader Playground</span>
-            <div class="navbar-nav">
+            <a href="/" class="navbar-brand">Shader Playground</a>
+            <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link" href="http://timjones.io">Created by Tim Jones</a>
             </div>
+            <div class="navbar-nav">
+                <div class="btn-group-sm">
+                    <button id="share-button" class="btn btn-light btn-sm mr-2"><i class="fas fa-share"></i> Share Permalink</button>
+                    <a class="btn btn-light btn-sm" href="https://github.com/tgjones/shader-playground"><i class="fab fa-github"></i> GitHub</a>
+                </div>
+            </div>
         </nav>
+
+        <div class="modal fade" id="share-dialog" tabindex="-1">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Copy and paste this link</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <input type="text" id="permalink-textbox" class="form-control" readonly />
+                            <div class="input-group-append">
+                                <button id="copy-permalink-button" class="btn btn-primary" type="button">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         @RenderBody()
     </div>
 
+    <script src="~/lib/codemirror/codemirror.js"></script>
+    <script src="~/lib/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="~/lib/codemirror/addon/selection/active-line.js"></script>
+    <script src="~/lib/codemirror/mode/clike/clike.js"></script>
+    <script src="~/js/codemirror-mode-hlsl.js" asp-append-version="true"></script>
+    <script src="~/js/codemirror-mode-llvm-ir.js" asp-append-version="true"></script>
+
     <environment include="Development">
         <script src="~/lib/jquery.min.js"></script>
         <script src="~/lib/js/bootstrap.js"></script>
-        <script src="~/lib/codemirror/codemirror.js"></script>
-        <script src="~/lib/codemirror/addon/edit/matchbrackets.js"></script>
-        <script src="~/lib/codemirror/addon/selection/active-line.js"></script>
-        <script src="~/lib/codemirror/mode/clike/clike.js"></script>
-        <script src="~/js/codemirror-mode-hlsl.js" asp-append-version="true"></script>
-        <script src="~/js/codemirror-mode-llvm-ir.js" asp-append-version="true"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">

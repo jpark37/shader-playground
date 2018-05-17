@@ -1,65 +1,108 @@
 ﻿<div class="row no-gutters d-flex flex-fill">
     <div class="col-lg d-flex flex-column" style="overflow:hidden">
-        <nav class="navbar navbar-expand navbar-light bg-light justify-content-between flex-shrink-0">
-            <span class="navbar-text">Input</span>
+        <nav class="navbar navbar-expand navbar-light bg-light flex-shrink-0">
             <form class="form-inline">
-                <div class="form-group mr-2">
+                <div class="form-group">
                     <select id="language" data-submit="language" class="form-control form-control-sm"></select>
                 </div>
-
-                <div id="language-arguments"></div>
             </form>
+            <button type="button" class="btn btn-sm btn-primary invisible">[Sizer]</button>
         </nav>
 
         <div id="code-editor-container" class="d-flex flex-fill">
-            <textarea id="Code" data-submit="code"></textarea>
+            <textarea id="code"></textarea>
         </div>
     </div>
 
-    <div id="options-panel" class="col-lg-auto">
-        <hr class="hidden-lg-up" style="margin:0" />
-
-        <nav class="navbar navbar-expand navbar-light bg-light">
-            <span class="navbar-text">Options</span>
-        </nav>
-
-        <div class="container mt-3">
-            <form>
-                <div class="form-group" style="width:200px">
-                    <label class="text-secondary" for="compiler">Compiler</label>
-                    <select id="compiler" data-submit="compiler" class="form-control form-control-sm"></select>
-                    <small id="compiler-description" class="form-text text-muted"></small>
-                </div>
-
-                <hr />
-
-                <div id="compiler-arguments"></div>
-            </form>
-        </div>
-    </div>
-
-    <div class="col-lg d-flex flex-column" style="overflow:hidden">
-        <hr class="hidden-lg-up" style="margin:0" />
-
+    <div class="col-lg order-last d-flex flex-column" style="overflow:hidden">
         <nav class="navbar navbar-expand navbar-light bg-light justify-content-between flex-shrink-0">
-            <span class="navbar-text">Output</span>
-
-            <div id="output-tabs" class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons"></div>
+            <form class="form-inline">
+                <div class="form-group">
+                    <select id="output-tabs" class="form-control form-control-sm"></select>
+                </div>
+            </form>
+            <button type="button" class="btn btn-sm btn-primary invisible">[Sizer]</button>
         </nav>
 
         <div class="d-flex flex-fill flex-column position-relative" style="overflow:hidden">
             <div id="output-container" class="d-flex flex-fill"></div>
 
-            <div id="output-loading" class="position-absolute w-25">
+            <div id="output-loading" class="position-absolute w-25 d-none">
                 <div class="progress align-middle">
                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary w-100" role="progressbar"></div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div id="options-panel" class="col-lg-auto d-flex flex-column shadow-sm" style="overflow:hidden">
+        <nav class="navbar navbar-expand navbar-light flex-shrink-0">
+            <span class="nav-text">Compiler options</span>
+            <button type="button" class="btn btn-sm btn-primary invisible">[Sizer]</button>
+        </nav>
+
+        <div class="h-100" style="overflow-y:auto">
+            <div class="options-body">
+                <form>
+                    <div id="compiler-editors"></div>
+
+                    <div id="add-compiler-button-container" class="mt-2 mb-2 text-center text-secondary d-none">
+                        <h4>&darr;</h4>
+                        <div class="text-center"><button id="add-compiler-button" class="btn btn-sm">Add compiler</button></div>
+                    </div>
+
+                    <div class="mb-3"></div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+<template id="textbox-parameter-template">
+    <div class="form-group">
+        <label></label>
+        <input type="text" class="form-control form-control-sm" data-isinputelement />
+    </div>
+</template>
+
+<template id="combobox-parameter-template">
+    <div class="form-group">
+        <label></label>
+        <select class="form-control form-control-sm" data-isinputelement></select>
+    </div>
+</template>
+
+<template id="checkbox-parameter-template">
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" data-isinputelement />
+        <label class="form-check-label"></label>
+    </div>
+</template>
+
+<template id="compiler-editor-template">
+    <div class="compiler-container mt-3 mb-3">
+        <div data-down-arrow class="mt-2 mb-2 text-center text-secondary">
+            <h4>&darr;</h4>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <label class="lead">Compiler</label>
+                    <a data-remove-link class="float-right small" href="#">Remove</a>
+                    <select class="form-control form-control-sm"></select>
+                    <span class="form-text text-muted small"></span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div data-arguments></div>
+            </div>
+        </div>
+    </div>
+</template>
 
 <script type="text/javascript">
     window.CompileUrl = "@Url.Action("Compile", "Api")";
-    window.ShaderLanguages = @Json.Serialize(ShaderPlayground.Core.ShaderLanguages.All);
+    window.CreateGistUrl = "@Url.Action("CreateGist", "Api")";
+    window.ShaderLanguages = @Json.Serialize(ShaderPlayground.Core.Compiler.AllLanguages);
+    window.ShaderCompilers = @Json.Serialize(ShaderPlayground.Core.Compiler.AllCompilers);
 </script>

@@ -4,7 +4,6 @@
     {
         string Name { get; }
         string DefaultCode { get; }
-        ShaderCompilerParameter[] LanguageParameters { get; }
-        IShaderCompiler[] Compilers { get; }
+        string FileExtension { get; }
     }
 }

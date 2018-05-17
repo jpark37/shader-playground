@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-
-namespace ShaderPlayground.Core
+﻿namespace ShaderPlayground.Core
 {
     public interface IShaderCompiler
     {
         string Name { get; }
         string DisplayName { get; }
         string Description { get; }
+
+        string[] InputLanguages { get; }
         
         ShaderCompilerParameter[] Parameters { get; }
 
-        ShaderCompilerResult Compile(string code, Dictionary<string, string> arguments);
+        ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments);
     }
 }

@@ -15,13 +15,16 @@ namespace ShaderPlayground.Core
         public string[] Options { get; }
         public string DefaultValue { get; }
 
-        internal ShaderCompilerParameter(string name, string displayName, ShaderCompilerParameterType parameterType, string[] options = null, string defaultValue = null)
+        public string Description { get; }
+
+        internal ShaderCompilerParameter(string name, string displayName, ShaderCompilerParameterType parameterType, string[] options = null, string defaultValue = null, string description = null)
         {
             Name = name;
             DisplayName = displayName;
             ParameterType = parameterType;
             Options = options ?? Array.Empty<string>();
             DefaultValue = defaultValue;
+            Description = description;
         }
     }
 }

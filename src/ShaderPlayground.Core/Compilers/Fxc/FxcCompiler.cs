@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using ShaderPlayground.Core.Util;
 
@@ -7,15 +6,19 @@ namespace ShaderPlayground.Core.Compilers.Fxc
 {
     public sealed class FxcCompiler : IShaderCompiler
     {
-        public string Name { get; } = "fxc";
+        public string Name { get; } = CompilerNames.Fxc;
         public string DisplayName { get; } = "Microsoft FXC";
         public string Description { get; } = "Legacy HLSL-to-DXBC compiler (fxc.exe)";
 
+        public string[] InputLanguages { get; } = { LanguageNames.Hlsl };
+
         public ShaderCompilerParameter[] Parameters { get; } = new[]
         {
-            new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "vs_5_0"),
+            CommonParameters.HlslEntryPoint,
+            new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "ps_5_0"),
             new ShaderCompilerParameter("DisableOptimizations", "Disable optimizations", ShaderCompilerParameterType.CheckBox),
-            new ShaderCompilerParameter("OptimizationLevel", "Optimization level", ShaderCompilerParameterType.ComboBox, OptimizationLevelOptions, "1")
+            new ShaderCompilerParameter("OptimizationLevel", "Optimization level", ShaderCompilerParameterType.ComboBox, OptimizationLevelOptions, "1"),
+            CommonParameters.CreateOutputParameter(new[] { LanguageNames.Dxbc })
         };
 
         private static readonly string[] TargetProfileOptions =
@@ -63,16 +66,21 @@ namespace ShaderPlayground.Core.Compilers.Fxc
             "3"
         };
 
-        public ShaderCompilerResult Compile(string code, Dictionary<string, string> arguments)
+        public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
         {
-            var entryPoint = Validate.Identifier(arguments, "EntryPoint");
-            var targetProfile = Validate.Option(arguments, "TargetProfile", TargetProfileOptions);
-            var disableOptimizations = Validate.Boolean(arguments, "DisableOptimizations");
-            var optimizationLevel = Convert.ToInt32(Validate.Option(arguments, "OptimizationLevel", OptimizationLevelOptions));
+            var entryPoint = arguments.GetString("EntryPoint");
+            var targetProfile = arguments.GetString("TargetProfile");
+            var disableOptimizations = arguments.GetBoolean("DisableOptimizations");
+            var optimizationLevel = Convert.ToInt32(arguments.GetString("OptimizationLevel"));
 
-            using (var tempFile = TempFile.FromText(code))
+            using (var tempFile = TempFile.FromShaderCode(shaderCode))
             {
+                var fcPath = $"{tempFile.FilePath}.fc";
+                var fePath = $"{tempFile.FilePath}.fe";
+                var foPath = $"{tempFile.FilePath}.fo";
+
                 var args = $"--target {targetProfile} --entrypoint {entryPoint} --optimizationlevel {optimizationLevel}";
+                args += $" --assemblyfile \"{fcPath}\" --errorsfile \"{fePath}\" --objectfile \"{foPath}\"";
 
                 if (disableOptimizations)
                 {
@@ -84,22 +92,30 @@ namespace ShaderPlayground.Core.Compilers.Fxc
                 ProcessHelper.Run(
                     "dotnet.exe",
                     $"\"{fxcShimPath}\" {args} \"{tempFile.FilePath}\"",
-                    out var stdOutput,
-                    out var stdError);
+                    out var _,
+                    out var _);
 
                 int? selectedOutputIndex = null;
 
-                var disassembly = stdOutput;
-                if (string.IsNullOrWhiteSpace(stdOutput))
+                var disassembly = FileHelper.ReadAllTextIfExists(fcPath);
+                if (string.IsNullOrWhiteSpace(disassembly))
                 {
-                    disassembly = "Compilation error occurred; no disassembly available.";
+                    disassembly = "<Compilation error occurred>";
                     selectedOutputIndex = 1;
                 }
 
+                var binaryOutput = FileHelper.ReadAllBytesIfExists(foPath);
+                var buildOutput = FileHelper.ReadAllTextIfExists(fePath);
+
+                FileHelper.DeleteIfExists(fcPath);
+                FileHelper.DeleteIfExists(fePath);
+                FileHelper.DeleteIfExists(foPath);
+
                 return new ShaderCompilerResult(
+                    new ShaderCode(LanguageNames.Dxbc, binaryOutput),
                     selectedOutputIndex,
-                    new ShaderCompilerOutput("Disassembly", "DXBC", disassembly),
-                    new ShaderCompilerOutput("Build output", null, stdError));
+                    new ShaderCompilerOutput("Disassembly", LanguageNames.Dxbc, disassembly),
+                    new ShaderCompilerOutput("Build output", null, buildOutput));
             }
         }
     }

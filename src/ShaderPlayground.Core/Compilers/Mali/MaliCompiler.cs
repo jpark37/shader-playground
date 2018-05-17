@@ -1,34 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using ShaderPlayground.Core.Languages;
 using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Mali
 {
     internal sealed class MaliCompiler : IShaderCompiler
     {
-        public string Name { get; } = "mali";
-
+        public string Name { get; } = CompilerNames.Mali;
         public string DisplayName { get; } = "Mali offline compiler";
-
         public string Description { get; } = "ARM Mali offline compiler";
 
-        public ShaderCompilerParameter[] Parameters { get; } = new ShaderCompilerParameter[0];
+        public string[] InputLanguages { get; } = { LanguageNames.Glsl, LanguageNames.SpirV };
 
-        public ShaderCompilerResult Compile(string code, Dictionary<string, string> arguments)
+        public ShaderCompilerParameter[] Parameters { get; } = new[]
         {
-            var stage = GetStageFlag(Validate.Option(arguments, "ShaderStage", GlslLanguage.ShaderStageOptions));
+            CommonParameters.GlslShaderStage,
+            CommonParameters.SpirVEntryPoint
+        };
 
-            using (var tempFile = TempFile.FromText(code))
+        // TODO: Driver, core, revision parameters
+
+        public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
+        {
+            var stage = GetStageFlag(arguments.GetString("ShaderStage"));
+
+            var args = string.Empty;
+            if (shaderCode.Language == LanguageNames.SpirV)
+            {
+                var spirVEntryPoint = arguments.GetString("EntryPoint");
+
+                args += "--spirv ";
+                args += $"--spirv_entrypoint_name {spirVEntryPoint}";
+            }
+
+            using (var tempFile = TempFile.FromShaderCode(shaderCode))
             {
                 ProcessHelper.Run(
                     Path.Combine(AppContext.BaseDirectory, "Binaries", "Mali", "malisc.exe"),
-                    $"{stage} {tempFile.FilePath}",
+                    $"{stage} {args} {tempFile.FilePath}",
                     out var stdOutput,
                     out var stdError);
 
                 return new ShaderCompilerResult(
+                    null,
                     null, 
                     new ShaderCompilerOutput("Output", null, stdOutput));
             }

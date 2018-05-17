@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CommandLine;
+using System.IO;
 using SharpDX.D3DCompiler;
 
 namespace ShaderPlayground.Shims.Fxc
@@ -19,6 +20,9 @@ namespace ShaderPlayground.Shims.Fxc
             string entryPoint = null;
             bool disableOptimizations = false;
             int optimizationLevel = 1;
+            string objectFile = null;
+            string assemblyFile = null;
+            string errorsFile = null;
             string file = null;
 
             ArgumentSyntax.Parse(args, syntax =>
@@ -27,6 +31,9 @@ namespace ShaderPlayground.Shims.Fxc
                 syntax.DefineOption("entrypoint", ref entryPoint, true, "Entry point");
                 syntax.DefineOption("disableoptimizations", ref disableOptimizations, "Disable optimizations");
                 syntax.DefineOption("optimizationlevel", ref optimizationLevel, "Optimization level");
+                syntax.DefineOption("objectfile", ref objectFile, true, "Output object file");
+                syntax.DefineOption("assemblyfile", ref assemblyFile, true, "Output assembly file");
+                syntax.DefineOption("errorsfile", ref errorsFile, true, "Output errors and warnings file");
                 syntax.DefineParameter("file", ref file, "File to compile");
             });
 
@@ -64,12 +71,14 @@ namespace ShaderPlayground.Shims.Fxc
 
             var hasCompilationErrors = compilationResult.HasErrors || compilationResult.Bytecode == null;
 
-            Console.Error.Write(compilationResult.Message);
+            File.WriteAllText(errorsFile, compilationResult.Message);
 
             if (!hasCompilationErrors)
             {
+                File.WriteAllBytes(objectFile, compilationResult.Bytecode.Data);
+
                 var disassembly = compilationResult.Bytecode.Disassemble(DisassemblyFlags.None);
-                Console.Out.Write(disassembly);
+                File.WriteAllText(assemblyFile, disassembly);
             }
         }
     }

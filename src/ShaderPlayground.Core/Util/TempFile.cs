@@ -5,10 +5,24 @@ namespace ShaderPlayground.Core.Util
 {
     internal sealed class TempFile : IDisposable
     {
-        public static TempFile FromText(string text)
+        public static TempFile FromShaderCode(ShaderCode shaderCode)
         {
             var result = new TempFile();
-            File.WriteAllText(result.FilePath, text);
+
+            switch (shaderCode.CodeType)
+            {
+                case ShaderCodeType.Text:
+                    File.WriteAllText(result.FilePath, shaderCode.Text);
+                    break;
+
+                case ShaderCodeType.Binary:
+                    File.WriteAllBytes(result.FilePath, shaderCode.Binary);
+                    break;
+
+                default:
+                    throw new InvalidOperationException();
+            }
+            
             return result;
         }
 
