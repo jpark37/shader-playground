@@ -66,9 +66,11 @@ namespace ShaderPlayground.Core.Compilers.Glslang
             {
                 var binaryPath = $"{tempFile.FilePath}.o";
 
-                var validationErrors = RunGlslValidator(stage, tempFile, targetOption);
-                var spirv = RunGlslValidator(stage, tempFile, targetOption + $" -H -o \"{binaryPath}\"");
-                var ast = RunGlslValidator(stage, tempFile, targetOption + " -i");
+                var args = targetOption + $" -o \"{binaryPath}\"";
+
+                var validationErrors = RunGlslValidator(stage, tempFile, args);
+                var spirv = RunGlslValidator(stage, tempFile, args + " -H");
+                var ast = RunGlslValidator(stage, tempFile, args + " -i");
 
                 var binaryOutput = FileHelper.ReadAllBytesIfExists(binaryPath);
 
