@@ -200,7 +200,7 @@
 
         var compilationSteps = [];
 
-        for (let compilerEditor of compilerEditors) {
+        for (let compilerEditor of compilerEditors.compilerEditors) {
             var jsonArguments = {};
             for (var parameterEditor of compilerEditor.parameterEditors) {
                 jsonArguments[parameterEditor.parameter.name] = parameterEditor.value;
@@ -412,10 +412,6 @@
                 }
             }
         }
-
-        [Symbol.iterator]() {
-            return this.compilerEditors.values();
-        }
     }
 
     let compilerEditors = new CompilerEditorCollection();
@@ -491,6 +487,9 @@
             let previousCompiler = compilerEditors.getPrevious(this);
             if (previousCompiler !== null) {
                 for (let parameterEditor of this.parameterEditors) {
+                    if (parameterEditor.isLanguageOutput) {
+                        continue;
+                    }
                     let previousParameterEditor = previousCompiler.parameterEditors.find(x => x.parameter.name === parameterEditor.parameter.name);
                     if (previousParameterEditor !== undefined) {
                         parameterEditor.value = previousParameterEditor.value;
