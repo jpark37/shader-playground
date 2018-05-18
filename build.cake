@@ -9,14 +9,21 @@ Task("Prepare-Build-Directory")
     EnsureDirectoryExists("./build");
   });
 
-void DownloadCompiler(string url, string binariesFolderName, string filesToCopy)
+string DownloadCompiler(string url, string binariesFolderName)
 {
   var tempFileName = $"./build/{binariesFolderName}.zip";
-  var unzippedFolder = $"./build/{binariesFolderName}";
 
   if (!FileExists(tempFileName)) {
     DownloadFile(url, tempFileName);
   }
+
+  return tempFileName;
+}
+
+void DownloadAndUnzipCompiler(string url, string binariesFolderName, string filesToCopy)
+{
+  var tempFileName = DownloadCompiler(url, binariesFolderName);
+  var unzippedFolder = $"./build/{binariesFolderName}";
 
   CleanDirectory(unzippedFolder);
 
@@ -34,7 +41,7 @@ void DownloadCompiler(string url, string binariesFolderName, string filesToCopy)
 
 Task("Download-Dxc")
   .Does(() => {
-    DownloadCompiler(
+    DownloadAndUnzipCompiler(
       "https://ci.appveyor.com/api/projects/antiagainst/directxshadercompiler/artifacts/build%2FRelease%2Fbin%2Fdxc-artifacts.zip?branch=master&pr=false",
       "Dxc",
       "**/*.*");
@@ -42,7 +49,7 @@ Task("Download-Dxc")
 
 Task("Download-Glslang")
   .Does(() => {
-    DownloadCompiler(
+    DownloadAndUnzipCompiler(
       "https://github.com/KhronosGroup/glslang/releases/download/master-tot/glslang-master-windows-x64-Release.zip",
       "Glslang",
       "bin/*.*");
@@ -50,15 +57,30 @@ Task("Download-Glslang")
 
 Task("Download-Mali-Offline-Compiler")
   .Does(() => {
-    DownloadCompiler(
+    DownloadAndUnzipCompiler(
       "https://armkeil.blob.core.windows.net/developer/Files/downloads/opengl-es-open-cl-offline-compiler/6.2/Mali_Offline_Compiler_v6.2.0.7d271f_Windows_x64.zip",
       "Mali",
       "Mali_Offline_Compiler_v6.2.0/**/*.*");
   });
 
+Task("Download-SpirV-Cross")
+  .Does(() => {
+    var tempFileName = DownloadCompiler(
+      "https://sdk.lunarg.com/sdk/download/1.1.73.0/windows/VulkanSDK-1.1.73.0-Installer.exe?u=",
+      "SpirVCross");
+
+    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/SpirVCross";
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    StartProcess(
+      @"C:\Program Files\7-Zip\7z.exe",
+      $@"e -o""{binariesFolder}"" ""{tempFileName}"" Bin\spirv-cross.exe");
+  });
+
 Task("Build-Shims")
   .Does(() => {
-    DotNetCoreBuild("./shims/ShaderPlayground.Shims.sln", new DotNetCoreBuildSettings
+    DotNetCorePublish("./shims/ShaderPlayground.Shims.sln", new DotNetCorePublishSettings
     {
       Configuration = configuration
     });
@@ -67,7 +89,7 @@ Task("Build-Shims")
     CleanDirectory("./src/ShaderPlayground.Core/Binaries/Fxc");
 
     CopyFiles(
-      $"./shims/ShaderPlayground.Shims.Fxc/bin/{configuration}/netcoreapp2.0/**/*.*",
+      $"./shims/ShaderPlayground.Shims.Fxc/bin/{configuration}/netcoreapp2.0/publish/**/*.*",
       "./src/ShaderPlayground.Core/Binaries/Fxc",
       true);
   });
@@ -102,6 +124,7 @@ Task("Default")
   .IsDependentOn("Download-Dxc")
   .IsDependentOn("Download-Glslang")
   .IsDependentOn("Download-Mali-Offline-Compiler")
+  .IsDependentOn("Download-SpirV-Cross")
   .IsDependentOn("Build")
   .IsDependentOn("Test");
 

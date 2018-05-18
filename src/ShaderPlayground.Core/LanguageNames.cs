@@ -7,5 +7,7 @@
         public const string SpirV = "SPIR-V";
         public const string Dxbc = "DXBC";
         public const string Dxil = "DXIL";
+        public const string Metal = "Metal";
+        public const string Cpp = "C++";
     }
 }

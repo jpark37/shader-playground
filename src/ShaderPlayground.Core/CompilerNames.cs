@@ -6,5 +6,6 @@
         public const string Fxc = "fxc";
         public const string Mali = "mali";
         public const string Glslang = "glslang";
+        public const string SpirVCross = "spirv-cross";
     }
 }
