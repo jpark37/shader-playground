@@ -98,7 +98,7 @@ float4 PSMain(PSInput input) : SV_TARGET
                     }));
 
             Assert.Equal("SPIR-V", result.Outputs[0].Language);
-            Assert.Equal(824, result.Outputs[0].Value.Length);
+            Assert.Equal(1416, result.Outputs[0].Value.Length);
         }
 
         [Fact]
@@ -114,18 +114,19 @@ float4 PSMain(PSInput input) : SV_TARGET
                         { "TargetProfile", "ps_6_0" },
                         { "OutputLanguage", LanguageNames.SpirV },
                         { "DisableOptimizations", "false" },
-                        { "OptimizationLevel", "2" },
+                        { "OptimizationLevel", "2" }
                     }),
                 new CompilationStep(
                     CompilerNames.Mali,
                     new Dictionary<string, string>
                     {
                         { "ShaderStage", "frag" },
-                        { "EntryPoint", "PSMain" }
+                        { "EntryPoint", "PSMain" },
+                        { "Core", "Mali-G72" }
                     }));
 
             Assert.Null(result.Outputs[0].Language);
-            Assert.Equal(714, result.Outputs[0].Value.Length);
+            Assert.Equal(663, result.Outputs[0].Value.Length);
         }
     }
 }

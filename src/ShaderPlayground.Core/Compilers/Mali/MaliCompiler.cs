@@ -1,11 +1,33 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Mali
 {
     internal sealed class MaliCompiler : IShaderCompiler
     {
+        static MaliCompiler()
+        {
+            ProcessHelper.Run(
+                Path.Combine(AppContext.BaseDirectory, "Binaries", "Mali", "malisc.exe"),
+                "--list",
+                out var stdOutput,
+                out var _);
+
+            // Extract cores from output.
+            var coreRegex = new Regex(@"\s+(Mali-[a-zA-Z0-9]+) <");
+            var matches = coreRegex.Matches(stdOutput);
+
+            CoreOptions = matches
+                .Cast<Match>()
+                .Select(x => x.Groups[1].Value)
+                .Distinct()
+                .OrderBy(x => x)
+                .ToArray();
+        }
+
         public string Name { get; } = CompilerNames.Mali;
         public string DisplayName { get; } = "Mali offline compiler";
         public string Description { get; } = "ARM Mali offline compiler";
@@ -15,14 +37,16 @@ namespace ShaderPlayground.Core.Compilers.Mali
         public ShaderCompilerParameter[] Parameters { get; } = new[]
         {
             CommonParameters.GlslShaderStage,
-            CommonParameters.SpirVEntryPoint
+            CommonParameters.SpirVEntryPoint,
+            new ShaderCompilerParameter("Core", "Core", ShaderCompilerParameterType.ComboBox, CoreOptions, "Mali-G72")
         };
 
-        // TODO: Driver, core, revision parameters
+        private static readonly string[] CoreOptions;
 
         public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
         {
             var stage = GetStageFlag(arguments.GetString("ShaderStage"));
+            var core = arguments.GetString("Core");
 
             var args = string.Empty;
             if (shaderCode.Language == LanguageNames.SpirV)
@@ -37,7 +61,7 @@ namespace ShaderPlayground.Core.Compilers.Mali
             {
                 ProcessHelper.Run(
                     Path.Combine(AppContext.BaseDirectory, "Binaries", "Mali", "malisc.exe"),
-                    $"{stage} {args} {tempFile.FilePath}",
+                    $"{stage} -c {core} {args} {tempFile.FilePath}",
                     out var stdOutput,
                     out var stdError);
 
