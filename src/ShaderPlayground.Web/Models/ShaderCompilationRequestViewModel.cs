@@ -20,11 +20,13 @@ namespace ShaderPlayground.Web.Models
 
     public class ShaderCompilerResultViewModel
     {
+        public string BinaryOutput { get; }
         public int? SelectedOutputIndex { get; }
         public ShaderCompilerOutput[] Outputs { get; }
 
-        public ShaderCompilerResultViewModel(int? selectedOutputIndex, params ShaderCompilerOutput[] outputs)
+        public ShaderCompilerResultViewModel(string binaryOutput, int? selectedOutputIndex, params ShaderCompilerOutput[] outputs)
         {
+            BinaryOutput = binaryOutput;
             SelectedOutputIndex = selectedOutputIndex;
             Outputs = outputs;
         }

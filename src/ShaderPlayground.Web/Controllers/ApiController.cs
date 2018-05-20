@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShaderPlayground.Core;
@@ -20,7 +21,12 @@ namespace ShaderPlayground.Web.Controllers
                         .Select(x => new CompilationStep(x.Compiler, x.Arguments))
                         .ToArray());
 
+                var binaryOutput = compilationResult.PipeableOutput?.Binary != null
+                    ? Convert.ToBase64String(compilationResult.PipeableOutput.Binary)
+                    : null;
+
                 var viewModel = new ShaderCompilerResultViewModel(
+                    binaryOutput,
                     compilationResult.SelectedOutputIndex, 
                     compilationResult.Outputs);
 
@@ -29,6 +35,7 @@ namespace ShaderPlayground.Web.Controllers
             catch (Exception ex)
             {
                 return Json(new ShaderCompilerResultViewModel(
+                    null,
                     0,
                     new ShaderCompilerOutput(
                         "Site error",

@@ -241,6 +241,15 @@
             success: function (response) {
                 finishLoading();
 
+                var downloadBinaryButton = document.getElementById('download-binary-button');
+                if (response.binaryOutput !== null) {
+                    downloadBinaryButton.classList.remove('invisible');
+                    downloadBinaryButton.href = `data:text/plain;base64,${response.binaryOutput}`;
+                    downloadBinaryButton.download = 'shader-binary.o';
+                } else {
+                    downloadBinaryButton.classList.add('invisible');
+                }
+
                 var selectedOutputTab = document.querySelector('input[name="output-tab-selector"]:checked');
                 var selectedOutputTabIndex;
                 if (response.selectedOutputIndex !== null) {
