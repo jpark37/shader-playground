@@ -611,4 +611,34 @@
         
         return false;
     };
+
+    document.getElementById("changelog-button").onclick = () => {
+        document.getElementById('changelog-content').innerText = 'Loading changelog...';
+
+        $.get('https://raw.githubusercontent.com/tgjones/shader-playground/master/CHANGELOG.md', data => {
+            var requestObject = {
+                text: data,
+                mode: 'gfm',
+                context: 'tgjones/shader-playground'
+            };
+
+            $.ajax({
+                url: `https://api.github.com/markdown`,
+                type: "POST",
+                data: JSON.stringify(requestObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function (response) {
+                    document.getElementById('changelog-content').innerHTML = response.responseText;
+                },
+                success: function (response) {
+                    document.getElementById('changelog-content').innerHTML = response.responseText;
+                }
+            });
+        });
+
+        $('#changelog-dialog').modal({});
+
+        return false;
+    };
 });
