@@ -8,7 +8,9 @@
 
         public string FileExtension { get; } = "glsl";
 
-        private static readonly string DefaultGlslCode = @"void main()
+        private static readonly string DefaultGlslCode = @"#version 330
+
+void main()
 {
 	gl_FragColor = vec4(0.4, 0.4, 0.8, 1.0);
 }";
