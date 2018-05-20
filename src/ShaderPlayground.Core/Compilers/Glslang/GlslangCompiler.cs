@@ -66,7 +66,7 @@ namespace ShaderPlayground.Core.Compilers.Glslang
             {
                 var binaryPath = $"{tempFile.FilePath}.o";
 
-                var args = targetOption + $" -o \"{binaryPath}\"";
+                var args = targetOption + $" -o \"{binaryPath}\" --auto-map-locations";
 
                 var validationErrors = RunGlslValidator(stage, tempFile, args);
                 var spirv = RunGlslValidator(stage, tempFile, args + " -H");
