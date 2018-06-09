@@ -78,6 +78,14 @@ Task("Download-SpirV-Cross")
       $@"e -o""{binariesFolder}"" ""{tempFileName}"" Bin\spirv-cross.exe");
   });
 
+Task("Download-XShaderCompiler")
+  .Does(() => {
+    DownloadAndUnzipCompiler(
+      "https://github.com/LukasBanana/XShaderCompiler/releases/download/v0.10-alpha/Xsc-v0.10-alpha.zip",
+      "XShaderCompiler",
+      "Xsc-v0.10-alpha/bin/Win32/xsc.exe");
+  });
+
 Task("Build-Shims")
   .Does(() => {
     DotNetCorePublish("./shims/ShaderPlayground.Shims.sln", new DotNetCorePublishSettings
@@ -125,6 +133,7 @@ Task("Default")
   .IsDependentOn("Download-Glslang")
   .IsDependentOn("Download-Mali-Offline-Compiler")
   .IsDependentOn("Download-SpirV-Cross")
+  .IsDependentOn("Download-XShaderCompiler")
   .IsDependentOn("Build")
   .IsDependentOn("Test");
 

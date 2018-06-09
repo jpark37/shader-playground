@@ -5,6 +5,7 @@ using ShaderPlayground.Core.Compilers.Fxc;
 using ShaderPlayground.Core.Compilers.Glslang;
 using ShaderPlayground.Core.Compilers.Mali;
 using ShaderPlayground.Core.Compilers.SpirVCross;
+using ShaderPlayground.Core.Compilers.XShaderCompiler;
 using ShaderPlayground.Core.Languages;
 
 namespace ShaderPlayground.Core
@@ -23,7 +24,8 @@ namespace ShaderPlayground.Core
             new FxcCompiler(),
             new GlslangCompiler(),
             new SpirVCrossCompiler(),
-            new MaliCompiler()
+            new MaliCompiler(),
+            new XscCompiler()
         };
 
         public static ShaderCompilerResult Compile(
