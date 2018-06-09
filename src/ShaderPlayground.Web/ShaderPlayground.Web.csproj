@@ -4,10 +4,13 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>0d767b89-f281-4b11-a100-c06e6f634c5e</UserSecretsId>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationInsightsResourceId>/subscriptions/890b998c-6372-4369-8f70-cb6709a640d4/resourcegroups/DefaultResourceGroup/providers/microsoft.insights/components/tryhlsl</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/890b998c-6372-4369-8f70-cb6709a640d4/resourcegroups/DefaultResourceGroup/providers/microsoft.insights/components/tryhlsl</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.7.385" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="1.0.20" />
     <PackageReference Include="Octokit" Version="0.29.0" />
@@ -19,6 +22,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShaderPlayground.Core\ShaderPlayground.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>
