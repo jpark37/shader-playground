@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{BB8086EA-9859-4895-A710-5EC8BD06D582}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ShaderPlaygroundShimsHLSLcc</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(ProjectDir)\Source;$(ProjectDir)\Source\src;$(ProjectDir)\Source\src\cbstring;$(ProjectDir)\Source\src\internal_includes;$(ProjectDir)\Source\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(ProjectDir)\Source;$(ProjectDir)\Source\src;$(ProjectDir)\Source\src\cbstring;$(ProjectDir)\Source\src\internal_includes;$(ProjectDir)\Source\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="ShaderPlayground.Shims.HLSLcc.cpp" />
+    <ClCompile Include="Source\src\cbstring\bsafe.c" />
+    <ClCompile Include="Source\src\cbstring\bstraux.c" />
+    <ClCompile Include="Source\src\cbstring\bstrlib.c" />
+    <ClCompile Include="Source\src\ControlFlowGraph.cpp" />
+    <ClCompile Include="Source\src\ControlFlowGraphUtils.cpp" />
+    <ClCompile Include="Source\src\DataTypeAnalysis.cpp" />
+    <ClCompile Include="Source\src\Declaration.cpp" />
+    <ClCompile Include="Source\src\decode.cpp" />
+    <ClCompile Include="Source\src\HLSLcc.cpp" />
+    <ClCompile Include="Source\src\HLSLccToolkit.cpp" />
+    <ClCompile Include="Source\src\HLSLCrossCompilerContext.cpp" />
+    <ClCompile Include="Source\src\Instruction.cpp" />
+    <ClCompile Include="Source\src\LoopTransform.cpp" />
+    <ClCompile Include="Source\src\Operand.cpp" />
+    <ClCompile Include="Source\src\reflect.cpp" />
+    <ClCompile Include="Source\src\Shader.cpp" />
+    <ClCompile Include="Source\src\ShaderInfo.cpp" />
+    <ClCompile Include="Source\src\toGLSL.cpp" />
+    <ClCompile Include="Source\src\toGLSLDeclaration.cpp" />
+    <ClCompile Include="Source\src\toGLSLInstruction.cpp" />
+    <ClCompile Include="Source\src\toGLSLOperand.cpp" />
+    <ClCompile Include="Source\src\toMetal.cpp" />
+    <ClCompile Include="Source\src\toMetalDeclaration.cpp" />
+    <ClCompile Include="Source\src\toMetalInstruction.cpp" />
+    <ClCompile Include="Source\src\toMetalOperand.cpp" />
+    <ClCompile Include="Source\src\UseDefineChains.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\include\growing_array.h" />
+    <ClInclude Include="Source\include\hlslcc.h" />
+    <ClInclude Include="Source\include\hlslcc.hpp" />
+    <ClInclude Include="Source\include\pstdint.h" />
+    <ClInclude Include="Source\include\ShaderInfo.h" />
+    <ClInclude Include="Source\include\UnityInstancingFlexibleArraySize.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

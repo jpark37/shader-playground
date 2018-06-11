@@ -3,6 +3,7 @@ using System.Linq;
 using ShaderPlayground.Core.Compilers.Dxc;
 using ShaderPlayground.Core.Compilers.Fxc;
 using ShaderPlayground.Core.Compilers.Glslang;
+using ShaderPlayground.Core.Compilers.HlslCc;
 using ShaderPlayground.Core.Compilers.Mali;
 using ShaderPlayground.Core.Compilers.SpirVCross;
 using ShaderPlayground.Core.Compilers.XShaderCompiler;
@@ -23,6 +24,7 @@ namespace ShaderPlayground.Core
             new DxcCompiler(),
             new FxcCompiler(),
             new GlslangCompiler(),
+            new HlslCcCompiler(),
             new SpirVCrossCompiler(),
             new MaliCompiler(),
             new XscCompiler()

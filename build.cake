@@ -86,9 +86,9 @@ Task("Download-XShaderCompiler")
       "Xsc-v0.10-alpha/bin/Win32/xsc.exe");
   });
 
-Task("Build-Shims")
+Task("Build-Fxc-Shim")
   .Does(() => {
-    DotNetCorePublish("./shims/ShaderPlayground.Shims.sln", new DotNetCorePublishSettings
+    DotNetCorePublish("./shims/ShaderPlayground.Shims.Fxc/ShaderPlayground.Shims.Fxc.csproj", new DotNetCorePublishSettings
     {
       Configuration = configuration
     });
@@ -101,6 +101,26 @@ Task("Build-Shims")
       "./src/ShaderPlayground.Core/Binaries/Fxc",
       true);
   });
+
+Task("Build-HLSLcc-Shim")
+  .Does(() => {
+    MSBuild("./shims/ShaderPlayground.Shims.HLSLcc/ShaderPlayground.Shims.HLSLcc.vcxproj", new MSBuildSettings
+    {
+      Configuration = configuration
+    });
+
+    EnsureDirectoryExists("./src/ShaderPlayground.Core/Binaries/HLSLcc");
+    CleanDirectory("./src/ShaderPlayground.Core/Binaries/HLSLcc");
+
+    CopyFiles(
+      $"./shims/{configuration}/ShaderPlayground.Shims.HLSLcc.exe",
+      "./src/ShaderPlayground.Core/Binaries/HLSLcc",
+      true);
+  });
+
+Task("Build-Shims")
+  .IsDependentOn("Build-Fxc-Shim")
+  .IsDependentOn("Build-HLSLcc-Shim");
 
 Task("Build")
   .IsDependentOn("Build-Shims")
