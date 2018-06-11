@@ -7,6 +7,7 @@
         public const string Mali = "mali";
         public const string Glslang = "glslang";
         public const string SpirVCross = "spirv-cross";
+        public const string SpirVCrossIspc = "spirv-cross-ispc";
         public const string XShaderCompiler = "xsc";
         public const string HlslCc = "hlslcc";
     }

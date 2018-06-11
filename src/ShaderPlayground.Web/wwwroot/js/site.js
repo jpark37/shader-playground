@@ -187,6 +187,9 @@
             case "DXIL":
                 return "text/x-llvm-ir";
 
+            case "ISPC":
+                return "text/x-c";
+
             default:
                 return "text/plain";
         }

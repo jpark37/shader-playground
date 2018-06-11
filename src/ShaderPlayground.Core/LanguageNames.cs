@@ -9,5 +9,6 @@
         public const string Dxil = "DXIL";
         public const string Metal = "Metal";
         public const string Cpp = "C++";
+        public const string Ispc = "ISPC";
     }
 }

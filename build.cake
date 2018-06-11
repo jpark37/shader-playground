@@ -1,5 +1,6 @@
 #addin nuget:?package=SharpZipLib
 #addin nuget:?package=Cake.Compression
+#addin nuget:?package=Cake.Git
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -20,7 +21,7 @@ string DownloadCompiler(string url, string binariesFolderName)
   return tempFileName;
 }
 
-void DownloadAndUnzipCompiler(string url, string binariesFolderName, string filesToCopy)
+string DownloadAndUnzipCompiler(string url, string binariesFolderName)
 {
   var tempFileName = DownloadCompiler(url, binariesFolderName);
   var unzippedFolder = $"./build/{binariesFolderName}";
@@ -28,6 +29,13 @@ void DownloadAndUnzipCompiler(string url, string binariesFolderName, string file
   CleanDirectory(unzippedFolder);
 
   ZipUncompress(tempFileName, unzippedFolder);
+
+  return unzippedFolder;
+}
+
+void DownloadAndUnzipCompiler(string url, string binariesFolderName, string filesToCopy)
+{
+  var unzippedFolder = DownloadAndUnzipCompiler(url, binariesFolderName);
 
   var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/{binariesFolderName}";
   EnsureDirectoryExists(binariesFolder);
@@ -63,7 +71,7 @@ Task("Download-Mali-Offline-Compiler")
       "Mali_Offline_Compiler_v6.2.0/**/*.*");
   });
 
-Task("Download-SpirV-Cross")
+Task("Download-SPIRV-Cross")
   .Does(() => {
     var tempFileName = DownloadCompiler(
       "https://sdk.lunarg.com/sdk/download/1.1.73.0/windows/VulkanSDK-1.1.73.0-Installer.exe?u=",
@@ -84,6 +92,26 @@ Task("Download-XShaderCompiler")
       "https://github.com/LukasBanana/XShaderCompiler/releases/download/v0.10-alpha/Xsc-v0.10-alpha.zip",
       "XShaderCompiler",
       "Xsc-v0.10-alpha/bin/Win32/xsc.exe");
+  });
+
+Task("Download-SPIRV-Cross-ISPC")
+  .Does(() => {
+    var unzippedFolder = DownloadAndUnzipCompiler(
+      "https://github.com/GameTechDev/SPIRV-Cross/archive/master-ispc.zip",
+      "SpirVCrossIspc");
+
+    MSBuild(unzippedFolder + "/SPIRV-Cross-master-ispc/msvc/SPIRV-Cross.vcxproj", new MSBuildSettings()
+      .SetConfiguration(configuration)
+      .WithProperty("WindowsTargetPlatformVersion", "10.0.17134.0"));
+
+    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/SpirVCrossIspc";
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    CopyFiles(
+      $"{unzippedFolder}/SPIRV-Cross-master-ispc/msvc/{configuration}/SPIRV-Cross.exe",
+      binariesFolder,
+      true);
   });
 
 Task("Build-Fxc-Shim")
@@ -152,8 +180,9 @@ Task("Default")
   .IsDependentOn("Download-Dxc")
   .IsDependentOn("Download-Glslang")
   .IsDependentOn("Download-Mali-Offline-Compiler")
-  .IsDependentOn("Download-SpirV-Cross")
+  .IsDependentOn("Download-SPIRV-Cross")
   .IsDependentOn("Download-XShaderCompiler")
+  .IsDependentOn("Download-SPIRV-Cross-ISPC")
   .IsDependentOn("Build")
   .IsDependentOn("Test");
 

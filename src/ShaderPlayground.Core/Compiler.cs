@@ -6,6 +6,7 @@ using ShaderPlayground.Core.Compilers.Glslang;
 using ShaderPlayground.Core.Compilers.HlslCc;
 using ShaderPlayground.Core.Compilers.Mali;
 using ShaderPlayground.Core.Compilers.SpirVCross;
+using ShaderPlayground.Core.Compilers.SpirVCrossIspc;
 using ShaderPlayground.Core.Compilers.XShaderCompiler;
 using ShaderPlayground.Core.Languages;
 
@@ -26,6 +27,7 @@ namespace ShaderPlayground.Core
             new GlslangCompiler(),
             new HlslCcCompiler(),
             new SpirVCrossCompiler(),
+            new SpirVCrossIspcCompiler(),
             new MaliCompiler(),
             new XscCompiler()
         };
