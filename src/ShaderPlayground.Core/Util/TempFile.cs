@@ -7,7 +7,7 @@ namespace ShaderPlayground.Core.Util
     {
         public static TempFile FromShaderCode(ShaderCode shaderCode)
         {
-            var result = new TempFile();
+            var result = new TempFile(GetFileExtension(shaderCode.Language));
 
             switch (shaderCode.CodeType)
             {
@@ -26,11 +26,26 @@ namespace ShaderPlayground.Core.Util
             return result;
         }
 
+        private static string GetFileExtension(string language)
+        {
+            switch (language)
+            {
+                case LanguageNames.Slang:
+                    return ".slang";
+
+                case LanguageNames.Hlsl:
+                    return ".hlsl";
+
+                default:
+                    return ".tmp";
+            }
+        }
+
         public string FilePath { get; }
 
-        public TempFile()
+        private TempFile(string extension)
         {
-            FilePath = Path.GetTempFileName();
+            FilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + extension);
         }
 
         public void Dispose()

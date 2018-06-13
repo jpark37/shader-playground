@@ -114,6 +114,14 @@ Task("Download-SPIRV-Cross-ISPC")
       true);
   });
 
+Task("Download-Slang")
+  .Does(() => {
+    DownloadAndUnzipCompiler(
+      "https://github.com/shader-slang/slang/releases/download/v0.10.24/slang-0.10.24-win64.zip",
+      "Slang",
+      "bin/windows-x64/release/*.*");
+  });
+
 Task("Build-Fxc-Shim")
   .Does(() => {
     DotNetCorePublish("./shims/ShaderPlayground.Shims.Fxc/ShaderPlayground.Shims.Fxc.csproj", new DotNetCorePublishSettings
@@ -183,6 +191,7 @@ Task("Default")
   .IsDependentOn("Download-SPIRV-Cross")
   .IsDependentOn("Download-XShaderCompiler")
   .IsDependentOn("Download-SPIRV-Cross-ISPC")
+  .IsDependentOn("Download-Slang")
   .IsDependentOn("Build")
   .IsDependentOn("Test");
 

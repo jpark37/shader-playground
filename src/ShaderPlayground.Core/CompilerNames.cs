@@ -10,5 +10,6 @@
         public const string SpirVCrossIspc = "spirv-cross-ispc";
         public const string XShaderCompiler = "xsc";
         public const string HlslCc = "hlslcc";
+        public const string Slang = "slang";
     }
 }
