@@ -15,6 +15,10 @@
     {
       "library": "codemirror@5.37.0",
       "destination": "wwwroot/lib/codemirror"
+    },
+    {
+      "library": "viz.js@2.0.0",
+      "destination": "wwwroot/lib/vizjs"
     }
   ]
 }

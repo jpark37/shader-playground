@@ -86,6 +86,14 @@ Task("Download-SPIRV-Cross")
       $@"e -o""{binariesFolder}"" ""{tempFileName}"" Bin\spirv-cross.exe");
   });
 
+Task("Download-SPIRV-Tools")
+  .Does(() => {
+    DownloadAndUnzipCompiler(
+      "https://github.com/KhronosGroup/SPIRV-Tools/releases/download/master-tot/SPIRV-Tools-master-windows-x64-Release.zip",
+      "SpirVTools",
+      "bin/*.*");
+  });
+
 Task("Download-XShaderCompiler")
   .Does(() => {
     DownloadAndUnzipCompiler(
@@ -189,6 +197,7 @@ Task("Default")
   .IsDependentOn("Download-Glslang")
   .IsDependentOn("Download-Mali-Offline-Compiler")
   .IsDependentOn("Download-SPIRV-Cross")
+  .IsDependentOn("Download-SPIRV-Tools")
   .IsDependentOn("Download-XShaderCompiler")
   .IsDependentOn("Download-SPIRV-Cross-ISPC")
   .IsDependentOn("Download-Slang")

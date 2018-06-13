@@ -8,6 +8,7 @@
         public const string Glslang = "glslang";
         public const string SpirVCross = "spirv-cross";
         public const string SpirVCrossIspc = "spirv-cross-ispc";
+        public const string SpirvCfg = "spirv-cfg";
         public const string XShaderCompiler = "xsc";
         public const string HlslCc = "hlslcc";
         public const string Slang = "slang";
