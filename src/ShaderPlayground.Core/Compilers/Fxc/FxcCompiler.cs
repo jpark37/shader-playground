@@ -112,6 +112,7 @@ namespace ShaderPlayground.Core.Compilers.Fxc
                 FileHelper.DeleteIfExists(foPath);
 
                 return new ShaderCompilerResult(
+                    selectedOutputIndex == null,
                     new ShaderCode(LanguageNames.Dxbc, binaryOutput),
                     selectedOutputIndex,
                     new ShaderCompilerOutput("Disassembly", LanguageNames.Dxbc, disassembly),

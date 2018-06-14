@@ -66,6 +66,7 @@ namespace ShaderPlayground.Core.Compilers.Mali
                     out var stdError);
 
                 return new ShaderCompilerResult(
+                    true,
                     null,
                     null, 
                     new ShaderCompilerOutput("Output", null, stdOutput));

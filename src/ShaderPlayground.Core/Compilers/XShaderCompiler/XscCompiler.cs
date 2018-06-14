@@ -59,6 +59,7 @@ namespace ShaderPlayground.Core.Compilers.XShaderCompiler
                 FileHelper.DeleteIfExists(outputPath);
 
                 return new ShaderCompilerResult(
+                    !hasCompilationErrors,
                     new ShaderCode(LanguageNames.Glsl, textOutput),
                     hasCompilationErrors ? (int?) 1 : null,
                     new ShaderCompilerOutput("Output", LanguageNames.Glsl, textOutput),

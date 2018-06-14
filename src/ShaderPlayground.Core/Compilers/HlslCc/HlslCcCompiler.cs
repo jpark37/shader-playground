@@ -40,6 +40,7 @@ namespace ShaderPlayground.Core.Compilers.HlslCc
                 FileHelper.DeleteIfExists(outputPath);
 
                 return new ShaderCompilerResult(
+                    true,
                     new ShaderCode(outputLanguage, textOutput),
                     null,
                     new ShaderCompilerOutput("Output", outputLanguage, textOutput));

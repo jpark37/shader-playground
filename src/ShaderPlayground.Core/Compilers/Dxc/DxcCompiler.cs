@@ -96,6 +96,7 @@ namespace ShaderPlayground.Core.Compilers.Dxc
                     out var _);
 
                 return new ShaderCompilerResult(
+                    selectedOutputIndex == null,
                     new ShaderCode(outputLanguage, binaryOutput),
                     selectedOutputIndex,
                     new ShaderCompilerOutput("Disassembly", outputLanguage, disassembly),

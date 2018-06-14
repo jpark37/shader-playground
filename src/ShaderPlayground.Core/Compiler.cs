@@ -70,6 +70,11 @@ namespace ShaderPlayground.Core
 
                 result = compiler.Compile(eachShaderCode, arguments);
 
+                if (!result.Success)
+                {
+                    return result;
+                }
+
                 eachShaderCode = result.PipeableOutput;
             }
 

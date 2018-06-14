@@ -62,6 +62,7 @@ namespace ShaderPlayground.Core.Compilers.SpirVCross
                 FileHelper.DeleteIfExists(outputPath);
 
                 return new ShaderCompilerResult(
+                    !hasCompilationErrors,
                     new ShaderCode(outputLanguage, textOutput),
                     hasCompilationErrors ? (int?) 1 : null,
                     new ShaderCompilerOutput("Output", outputLanguage, textOutput),

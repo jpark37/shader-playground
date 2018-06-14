@@ -25,6 +25,7 @@ namespace ShaderPlayground.Core.Compilers.SpirvCfg
                     out var _);
 
                 return new ShaderCompilerResult(
+                    true,
                     null,
                     null,
                     new ShaderCompilerOutput("Output", "graphviz", stdOutput));

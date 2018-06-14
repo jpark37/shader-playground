@@ -79,6 +79,7 @@ namespace ShaderPlayground.Core.Compilers.Glslang
                 var hasValidationErrors = !string.IsNullOrWhiteSpace(validationErrors);
 
                 return new ShaderCompilerResult(
+                    !hasValidationErrors,
                     new ShaderCode(LanguageNames.SpirV, binaryOutput),
                     hasValidationErrors ? 2 : (int?) null,
                     new ShaderCompilerOutput("Disassembly", LanguageNames.SpirV, spirv),
