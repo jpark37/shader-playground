@@ -342,19 +342,21 @@
                     outputStepsSelect.options.remove(0);
                 }
 
-                var alreadySelected = false;
+                var selectedStep = 0;
+                var error = false;
 
-                for (var i = responses.results.length - 1; i >= 0; i--) {
-                    var isSelected = !alreadySelected && responses.results[i].success;
-                    if (isSelected) {
-                        alreadySelected = true;
+                for (var i = 0; i < responses.results.length; i++) {
+                    var step = responses.results[i];
+                    if (!error) {
+                        selectedStep = i;
                     }
+                    error = error || !step.success;
                     var compilerEditor = compilerEditors.compilerEditors[i];
                     outputStepsSelect.options.add(
-                        new Option(compilerEditor.fullDisplayName, compilerEditor.fullDisplayName, isSelected, isSelected),
-                        0);
+                        new Option(compilerEditor.fullDisplayName, compilerEditor.fullDisplayName, false, false));
                 }
 
+                outputStepsSelect.selectedIndex = selectedStep;
                 outputStepsSelect.onchange = selectStep;
 
                 outputStepsSelect.onchange();
