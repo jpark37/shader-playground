@@ -1,5 +1,9 @@
 # Changelog
 
+## 2018-06-15
+
+* Add option to toggle between outputs for all steps in pipeline
+
 ## 2018-06-13
 
 * New compiler - [Slang](https://github.com/shader-slang/slang)
