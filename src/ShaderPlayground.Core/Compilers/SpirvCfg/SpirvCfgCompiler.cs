@@ -7,7 +7,7 @@ namespace ShaderPlayground.Core.Compilers.SpirvCfg
     internal sealed class SpirvCfgCompiler : IShaderCompiler
     {
         public string Name { get; } = CompilerNames.SpirvCfg;
-        public string DisplayName { get; } = "SPIRV-Cfg";
+        public string DisplayName { get; } = "spirv-cfg";
         public string Description { get; } = "Shows the control flow graph in GraphViz 'dot' form.";
 
         public string[] InputLanguages { get; } = { LanguageNames.SpirV };

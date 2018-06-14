@@ -28,7 +28,7 @@ float4 PSMain(PSInput input) : SV_TARGET
                         { "TargetProfile", "ps_5_0" },
                         { "DisableOptimizations", "false" },
                         { "OptimizationLevel", "2" },
-                    }));
+                    }))[0];
 
             Assert.Equal("DXBC", result.Outputs[0].Language);
             Assert.Equal(713, result.Outputs[0].Value.Length);
@@ -48,7 +48,7 @@ float4 PSMain(PSInput input) : SV_TARGET
                         { "DisableOptimizations", "false" },
                         { "OptimizationLevel", "2" },
                         { "OutputLanguage", LanguageNames.Dxil },
-                    }));
+                    }))[0];
 
             Assert.Equal("DXIL", result.PipeableOutput.Language);
             Assert.Equal(ShaderCodeType.Binary, result.PipeableOutput.CodeType);
@@ -74,7 +74,7 @@ float4 PSMain(PSInput input) : SV_TARGET
                         { "DisableOptimizations", "false" },
                         { "OptimizationLevel", "2" },
                         { "OutputLanguage", LanguageNames.SpirV },
-                    }));
+                    }))[0];
 
             Assert.Equal("SPIR-V", result.PipeableOutput.Language);
             Assert.Equal(ShaderCodeType.Binary, result.PipeableOutput.CodeType);
@@ -95,7 +95,7 @@ float4 PSMain(PSInput input) : SV_TARGET
                         { "ShaderStage", "frag" },
                         { "Target", "Vulkan 1.0" },
                         { "EntryPoint", "PSMain" }
-                    }));
+                    }))[0];
 
             Assert.Equal("SPIR-V", result.Outputs[0].Language);
             Assert.Equal(1416, result.Outputs[0].Value.Length);
@@ -123,7 +123,7 @@ float4 PSMain(PSInput input) : SV_TARGET
                         { "ShaderStage", "frag" },
                         { "EntryPoint", "PSMain" },
                         { "Core", "Mali-G72" }
-                    }));
+                    }))[1];
 
             Assert.Null(result.Outputs[0].Language);
             Assert.Equal(663, result.Outputs[0].Value.Length);

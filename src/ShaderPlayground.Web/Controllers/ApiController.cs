@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShaderPlayground.Core;
@@ -15,32 +14,43 @@ namespace ShaderPlayground.Web.Controllers
         {
             try
             {
-                var compilationResult = Compiler.Compile(
+                var compilationResults = Compiler.Compile(
                     new ShaderCode(model.Language, model.Code),
                     model.CompilationSteps
                         .Select(x => new CompilationStep(x.Compiler, x.Arguments))
                         .ToArray());
 
-                var binaryOutput = compilationResult.PipeableOutput?.Binary != null
-                    ? Convert.ToBase64String(compilationResult.PipeableOutput.Binary)
-                    : null;
+                var viewModels = compilationResults
+                    .Select(x =>
+                    {
+                        var binaryOutput = x.PipeableOutput?.Binary != null
+                        ? Convert.ToBase64String(x.PipeableOutput.Binary)
+                        : null;
 
-                var viewModel = new ShaderCompilerResultViewModel(
-                    binaryOutput,
-                    compilationResult.SelectedOutputIndex, 
-                    compilationResult.Outputs);
+                        return new ShaderCompilerResultViewModel(
+                            x.Success,
+                            binaryOutput,
+                            x.SelectedOutputIndex,
+                            x.Outputs);
+                    })
+                    .ToArray();
 
-                return Json(viewModel);
+                return Json(new ShaderCompilerResultsViewModel(viewModels));
             }
             catch (Exception ex)
             {
-                return Json(new ShaderCompilerResultViewModel(
-                    null,
-                    0,
-                    new ShaderCompilerOutput(
-                        "Site error",
-                        null,
-                        ex.ToString())));
+                return Json(new ShaderCompilerResultsViewModel(
+                    new[]
+                    {
+                        new ShaderCompilerResultViewModel(
+                            false,
+                            null,
+                            0,
+                            new ShaderCompilerOutput(
+                                "Site error",
+                                null,
+                                ex.ToString()))
+                    }));
             }
         }
 

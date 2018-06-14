@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ShaderPlayground.Core.Compilers.Dxc;
 using ShaderPlayground.Core.Compilers.Fxc;
@@ -37,7 +38,7 @@ namespace ShaderPlayground.Core
             new XscCompiler()
         };
 
-        public static ShaderCompilerResult Compile(
+        public static IReadOnlyList<ShaderCompilerResult> Compile(
             ShaderCode shaderCode,
             params CompilationStep[] compilationSteps)
         {
@@ -53,10 +54,18 @@ namespace ShaderPlayground.Core
             }
 
             var eachShaderCode = shaderCode;
-            ShaderCompilerResult result = null;
+            var results = new List<ShaderCompilerResult>();
+
+            var error = false;
 
             foreach (var compilationStep in compilationSteps)
             {
+                if (error)
+                {
+                    results.Add(new ShaderCompilerResult(false, null, null, new ShaderCompilerOutput("Output", null, "Error in previous step")));
+                    continue;
+                }
+
                 var compiler = AllCompilers.First(x => x.Name == compilationStep.CompilerName);
 
                 if (!compiler.InputLanguages.Contains(eachShaderCode.Language))
@@ -68,17 +77,19 @@ namespace ShaderPlayground.Core
                     compiler,
                     compilationStep.Arguments);
 
-                result = compiler.Compile(eachShaderCode, arguments);
+                var result = compiler.Compile(eachShaderCode, arguments);
 
                 if (!result.Success)
                 {
-                    return result;
+                    error = true;
                 }
+
+                results.Add(result);
 
                 eachShaderCode = result.PipeableOutput;
             }
 
-            return result;
+            return results;
         }
     }
 }
