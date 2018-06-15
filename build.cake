@@ -148,12 +148,19 @@ Task("Download-XShaderCompiler")
 
 Task("Download-Slang")
   .Does(() => {
-    DownloadAndUnzipCompiler(
-      "https://github.com/shader-slang/slang/releases/download/v0.10.24/slang-0.10.24-win64.zip",
-      "slang",
-      "v0.10.24",
-      true,
-      "bin/windows-x64/release/*.*");
+    void DownloadSlang(string version)
+    {
+      DownloadAndUnzipCompiler(
+        $"https://github.com/shader-slang/slang/releases/download/v{version}/slang-{version}-win64.zip",
+        "slang",
+        $"v{version}",
+        true,
+        "bin/windows-x64/release/*.*");
+    }
+    
+    DownloadSlang("0.10.24");
+    DownloadSlang("0.10.25");
+    DownloadSlang("0.10.26");
   });
 
 Task("Build-Fxc-Shim")
