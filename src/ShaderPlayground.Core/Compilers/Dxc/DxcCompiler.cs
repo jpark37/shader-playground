@@ -14,6 +14,7 @@ namespace ShaderPlayground.Core.Compilers.Dxc
 
         public ShaderCompilerParameter[] Parameters { get; } = new[]
         {
+            CommonParameters.CreateVersionParameter("dxc"),
             CommonParameters.HlslEntryPoint,
             new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "ps_6_0"),
             new ShaderCompilerParameter("DisableOptimizations", "Disable optimizations", ShaderCompilerParameterType.CheckBox),
@@ -65,7 +66,7 @@ namespace ShaderPlayground.Core.Compilers.Dxc
 
                 args += $" \"{tempFile.FilePath}\"";
 
-                var dxcPath = Path.Combine(AppContext.BaseDirectory, "Binaries", "Dxc", "dxc.exe");
+                var dxcPath = CommonParameters.GetBinaryPath("dxc", arguments, "dxc.exe");
                 ProcessHelper.Run(
                     dxcPath, 
                     args,

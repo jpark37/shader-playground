@@ -14,6 +14,7 @@ namespace ShaderPlayground.Core.Compilers.Fxc
 
         public ShaderCompilerParameter[] Parameters { get; } = new[]
         {
+            CommonParameters.CreateVersionParameter("fxc"),
             CommonParameters.HlslEntryPoint,
             new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "ps_5_0"),
             new ShaderCompilerParameter("DisableOptimizations", "Disable optimizations", ShaderCompilerParameterType.CheckBox),
@@ -87,7 +88,7 @@ namespace ShaderPlayground.Core.Compilers.Fxc
                     args += " --disableoptimizations";
                 }
 
-                var fxcShimPath = Path.Combine(AppContext.BaseDirectory, "Binaries", "Fxc", "ShaderPlayground.Shims.Fxc.dll");
+                var fxcShimPath = CommonParameters.GetBinaryPath("fxc", arguments, "ShaderPlayground.Shims.Fxc.dll");
 
                 ProcessHelper.Run(
                     "dotnet.exe",

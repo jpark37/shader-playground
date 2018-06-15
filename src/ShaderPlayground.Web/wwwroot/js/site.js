@@ -84,6 +84,10 @@
         get isLanguageOutput() {
             return this.parameter.name === "OutputLanguage";
         }
+
+        get isVersion() {
+            return this.parameter.name === "Version";
+        }
     }
 
     class TextBoxParameterEditor extends ParameterEditor {
@@ -509,7 +513,7 @@
                 return false;
             };
 
-            let compilerSelect = element.querySelector("select");
+            let compilerSelect = element.querySelector("select[data-compiler-select]");
             compilerSelect.id = compilerSelectId;
             for (let compiler of shaderCompilers) {
                 if (compiler.inputLanguages.includes(inputLanguage.name)) {
@@ -517,6 +521,8 @@
                 }
             }
             this.compilerSelect = compilerSelect;
+
+            this.versionSelect = element.querySelector("div[data-version-select]");
 
             this.descriptionSpan = element.querySelector("span");
             this.cardBody = element.querySelector(".card-body");
@@ -540,7 +546,7 @@
             this.argumentsDiv.innerHTML = '';
             this.parameterEditors.length = 0;
 
-            if (compiler.parameters.length == 0) {
+            if (compiler.parameters.filter(x => x.name !== "Version").length == 0) {
                 this.cardBody.classList.add('d-none');
             } else {
                 this.cardBody.classList.remove('d-none');
@@ -559,7 +565,13 @@
                     });
 
                 this.parameterEditors.push(parameterEditor);
-                this.argumentsDiv.appendChild(parameterEditor.element);
+
+                if (parameterEditor.isVersion) {
+                    this.versionSelect.innerHTML = '';
+                    this.versionSelect.appendChild(parameterEditor.element.querySelector("select"));
+                } else {
+                    this.argumentsDiv.appendChild(parameterEditor.element);
+                }
             }
 
             this.descriptionSpan.textContent = compiler.description;
@@ -568,7 +580,7 @@
             let previousCompiler = compilerEditors.getPrevious(this);
             if (previousCompiler !== null) {
                 for (let parameterEditor of this.parameterEditors) {
-                    if (parameterEditor.isLanguageOutput) {
+                    if (parameterEditor.isLanguageOutput || parameterEditor.isVersion) {
                         continue;
                     }
                     let previousParameterEditor = previousCompiler.parameterEditors.find(x => x.parameter.name === parameterEditor.parameter.name);

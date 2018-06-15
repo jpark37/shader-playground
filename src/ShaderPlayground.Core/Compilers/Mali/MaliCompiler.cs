@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -10,19 +11,27 @@ namespace ShaderPlayground.Core.Compilers.Mali
     {
         static MaliCompiler()
         {
-            ProcessHelper.Run(
-                Path.Combine(AppContext.BaseDirectory, "Binaries", "Mali", "malisc.exe"),
-                "--list",
-                out var stdOutput,
-                out var _);
+            var coreOptions = new List<string>();
 
-            // Extract cores from output.
-            var coreRegex = new Regex(@"\s+(Mali-[a-zA-Z0-9]+) <");
-            var matches = coreRegex.Matches(stdOutput);
+            foreach (var versionDirectory in Directory.GetDirectories(Path.Combine(AppContext.BaseDirectory, "Binaries", "mali")))
+            {
+                ProcessHelper.Run(
+                    Path.Combine(versionDirectory, "malisc.exe"),
+                    "--list",
+                    out var stdOutput,
+                    out var _);
 
-            CoreOptions = matches
-                .Cast<Match>()
-                .Select(x => x.Groups[1].Value)
+                // Extract cores from output.
+                var coreRegex = new Regex(@"\s+(Mali-[a-zA-Z0-9]+) <");
+                var matches = coreRegex.Matches(stdOutput);
+
+                coreOptions.AddRange(matches
+                    .Cast<Match>()
+                    .Select(x => x.Groups[1].Value));
+            }
+
+            CoreOptions = 
+                coreOptions
                 .Distinct()
                 .OrderBy(x => x)
                 .ToArray();
@@ -36,6 +45,7 @@ namespace ShaderPlayground.Core.Compilers.Mali
 
         public ShaderCompilerParameter[] Parameters { get; } = new[]
         {
+            CommonParameters.CreateVersionParameter("mali"),
             CommonParameters.GlslShaderStage,
             CommonParameters.SpirVEntryPoint,
             new ShaderCompilerParameter("Core", "Core", ShaderCompilerParameterType.ComboBox, CoreOptions, "Mali-G72")
@@ -60,7 +70,7 @@ namespace ShaderPlayground.Core.Compilers.Mali
             using (var tempFile = TempFile.FromShaderCode(shaderCode))
             {
                 ProcessHelper.Run(
-                    Path.Combine(AppContext.BaseDirectory, "Binaries", "Mali", "malisc.exe"),
+                    CommonParameters.GetBinaryPath("mali", arguments, "malisc.exe"),
                     $"{stage} -c {core} {args} {tempFile.FilePath}",
                     out var stdOutput,
                     out var stdError);

@@ -14,6 +14,7 @@ namespace ShaderPlayground.Core.Compilers.HlslCc
 
         public ShaderCompilerParameter[] Parameters { get; } =
         {
+            CommonParameters.CreateVersionParameter("hlslcc"),
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.Glsl, LanguageNames.Metal })
         };
 
@@ -30,7 +31,7 @@ namespace ShaderPlayground.Core.Compilers.HlslCc
                     : 0; // LANG_DEFAULT
 
                 ProcessHelper.Run(
-                    Path.Combine(AppContext.BaseDirectory, "Binaries", "HLSLcc", "ShaderPlayground.Shims.HLSLcc.exe"),
+                    CommonParameters.GetBinaryPath("hlslcc", arguments, "ShaderPlayground.Shims.HLSLcc.exe"),
                     $"\"{tempFile.FilePath}\" {lang} \"{outputPath}\"",
                     out var _,
                     out var _);

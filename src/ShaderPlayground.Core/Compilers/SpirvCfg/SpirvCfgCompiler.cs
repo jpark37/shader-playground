@@ -12,14 +12,17 @@ namespace ShaderPlayground.Core.Compilers.SpirvCfg
 
         public string[] InputLanguages { get; } = { LanguageNames.SpirV };
 
-        public ShaderCompilerParameter[] Parameters { get; } = new ShaderCompilerParameter[0];
+        public ShaderCompilerParameter[] Parameters { get; } =
+        {
+            CommonParameters.CreateVersionParameter("spirv-tools")
+        };
 
         public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
         {
             using (var tempFile = TempFile.FromShaderCode(shaderCode))
             {
                 ProcessHelper.Run(
-                    Path.Combine(AppContext.BaseDirectory, "Binaries", "SpirVTools", "spirv-cfg.exe"),
+                    CommonParameters.GetBinaryPath("spirv-tools", arguments, "spirv-cfg.exe"),
                     $"\"{tempFile.FilePath}\"",
                     out var stdOutput,
                     out var _);

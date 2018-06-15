@@ -18,6 +18,7 @@ namespace ShaderPlayground.Core.Compilers.Glslang
 
         public ShaderCompilerParameter[] Parameters { get; } =
         {
+            CommonParameters.CreateVersionParameter("glslang"),
             CommonParameters.GlslShaderStage,
             new ShaderCompilerParameter("Target", "Target", ShaderCompilerParameterType.ComboBox, TargetOptions, SpirVVulkan1_0),
             CommonParameters.HlslEntryPoint, // TODO: Only visible when input language is HLSL?
@@ -68,9 +69,9 @@ namespace ShaderPlayground.Core.Compilers.Glslang
 
                 var args = targetOption + $" -o \"{binaryPath}\" --auto-map-locations";
 
-                var validationErrors = RunGlslValidator(stage, tempFile, args);
-                var spirv = RunGlslValidator(stage, tempFile, args + " -H");
-                var ast = RunGlslValidator(stage, tempFile, args + " -i");
+                var validationErrors = RunGlslValidator(arguments, stage, tempFile, args);
+                var spirv = RunGlslValidator(arguments, stage, tempFile, args + " -H");
+                var ast = RunGlslValidator(arguments, stage, tempFile, args + " -i");
 
                 var binaryOutput = FileHelper.ReadAllBytesIfExists(binaryPath);
 
@@ -88,11 +89,11 @@ namespace ShaderPlayground.Core.Compilers.Glslang
             }
         }
 
-        private static string RunGlslValidator(string stage, string codeFilePath, string arguments)
+        private static string RunGlslValidator(ShaderCompilerArguments arguments, string stage, string codeFilePath, string args)
         {
             ProcessHelper.Run(
-                Path.Combine(AppContext.BaseDirectory, "Binaries", "Glslang", "glslangValidator.exe"),
-                $"-S {stage} -d {arguments} {codeFilePath}",
+                CommonParameters.GetBinaryPath("glslang", arguments, "glslangValidator.exe"),
+                $"-S {stage} -d {args} {codeFilePath}",
                 out var stdOutput,
                 out var stdError);
 

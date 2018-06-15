@@ -14,6 +14,7 @@ namespace ShaderPlayground.Core.Compilers.Slang
 
         public ShaderCompilerParameter[] Parameters { get; } =
         {
+            CommonParameters.CreateVersionParameter("slang"),
             CommonParameters.HlslEntryPoint,
             new ShaderCompilerParameter("Profile", "Profile", ShaderCompilerParameterType.ComboBox, ProfileOptions, "cs_5_0"),
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.Hlsl, LanguageNames.Glsl })
@@ -65,7 +66,7 @@ namespace ShaderPlayground.Core.Compilers.Slang
                 var outputPath = $"{tempFile.FilePath}.out";
 
                 ProcessHelper.Run(
-                    Path.Combine(AppContext.BaseDirectory, "Binaries", "Slang", "slangc.exe"),
+                    CommonParameters.GetBinaryPath("slang", arguments, "slangc.exe"),
                     $"\"{tempFile.FilePath}\" -o \"{outputPath}\" {args}",
                     out var _,
                     out var stdError);

@@ -14,6 +14,7 @@ namespace ShaderPlayground.Core.Compilers.SpirVCross
 
         public ShaderCompilerParameter[] Parameters { get; } =
         {
+            CommonParameters.CreateVersionParameter("spirv-cross"),
             //CommonParameters.GlslShaderStage,
             CommonParameters.HlslEntryPoint, // TODO: Only visible when input language is HLSL?
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.Glsl, LanguageNames.Metal, LanguageNames.Hlsl, LanguageNames.Cpp })
@@ -50,7 +51,7 @@ namespace ShaderPlayground.Core.Compilers.SpirVCross
                 var outputPath = $"{tempFile.FilePath}.out";
 
                 ProcessHelper.Run(
-                    Path.Combine(AppContext.BaseDirectory, "Binaries", "SpirVCross", "spirv-cross.exe"),
+                    CommonParameters.GetBinaryPath("spirv-cross", arguments, "spirv-cross.exe"),
                     $"--output \"{outputPath}\" \"{tempFile.FilePath}\" {args}",
                     out var _,
                     out var stdError);

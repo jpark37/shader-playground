@@ -8,24 +8,28 @@ var configuration = Argument("configuration", "Release");
 Task("Prepare-Build-Directory")
   .Does(() => {
     EnsureDirectoryExists("./build");
+
+    EnsureDirectoryExists("./src/ShaderPlayground.Core/Binaries");
+    CleanDirectory("./src/ShaderPlayground.Core/Binaries");
   });
 
-string DownloadCompiler(string url, string binariesFolderName)
+string DownloadCompiler(string url, string binariesFolderName, string version, bool cache)
 {
-  var tempFileName = $"./build/{binariesFolderName}.zip";
+  var tempFileName = $"./build/{binariesFolderName}-{version}.zip";
 
-  if (!FileExists(tempFileName)) {
+  if (!cache || !FileExists(tempFileName)) {
     DownloadFile(url, tempFileName);
   }
 
   return tempFileName;
 }
 
-string DownloadAndUnzipCompiler(string url, string binariesFolderName)
+string DownloadAndUnzipCompiler(string url, string binariesFolderName, string version, bool cache)
 {
-  var tempFileName = DownloadCompiler(url, binariesFolderName);
-  var unzippedFolder = $"./build/{binariesFolderName}";
+  var tempFileName = DownloadCompiler(url, binariesFolderName, version, cache);
+  var unzippedFolder = $"./build/{binariesFolderName}/{version}";
 
+  EnsureDirectoryExists(unzippedFolder);
   CleanDirectory(unzippedFolder);
 
   ZipUncompress(tempFileName, unzippedFolder);
@@ -33,11 +37,11 @@ string DownloadAndUnzipCompiler(string url, string binariesFolderName)
   return unzippedFolder;
 }
 
-void DownloadAndUnzipCompiler(string url, string binariesFolderName, string filesToCopy)
+void DownloadAndUnzipCompiler(string url, string binariesFolderName, string version, bool cache, string filesToCopy)
 {
-  var unzippedFolder = DownloadAndUnzipCompiler(url, binariesFolderName);
+  var unzippedFolder = DownloadAndUnzipCompiler(url, binariesFolderName, version, cache);
 
-  var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/{binariesFolderName}";
+  var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/{binariesFolderName}/{version}";
   EnsureDirectoryExists(binariesFolder);
   CleanDirectory(binariesFolder);
 
@@ -50,16 +54,20 @@ void DownloadAndUnzipCompiler(string url, string binariesFolderName, string file
 Task("Download-Dxc")
   .Does(() => {
     DownloadAndUnzipCompiler(
-      "https://ci.appveyor.com/api/projects/antiagainst/directxshadercompiler/artifacts/build%2FRelease%2Fbin%2Fdxc-artifacts.zip?branch=master&pr=false",
-      "Dxc",
-      "**/*.*");
+      "https://ci.appveyor.com/api/projects/antiagainst/directxshadercompiler/artifacts/build%2FRelease%2Fdxc-artifacts.zip?branch=master&pr=false",
+      "dxc",
+      "trunk",
+      false,
+      "bin/*.*");
   });
 
 Task("Download-Glslang")
   .Does(() => {
     DownloadAndUnzipCompiler(
       "https://github.com/KhronosGroup/glslang/releases/download/master-tot/glslang-master-windows-x64-Release.zip",
-      "Glslang",
+      "glslang",
+      "trunk",
+      false,
       "bin/*.*");
   });
 
@@ -67,52 +75,48 @@ Task("Download-Mali-Offline-Compiler")
   .Does(() => {
     DownloadAndUnzipCompiler(
       "https://armkeil.blob.core.windows.net/developer/Files/downloads/opengl-es-open-cl-offline-compiler/6.2/Mali_Offline_Compiler_v6.2.0.7d271f_Windows_x64.zip",
-      "Mali",
+      "mali",
+      "6.2.0",
+      true,
       "Mali_Offline_Compiler_v6.2.0/**/*.*");
   });
 
 Task("Download-SPIRV-Cross")
   .Does(() => {
-    var tempFileName = DownloadCompiler(
-      "https://sdk.lunarg.com/sdk/download/1.1.73.0/windows/VulkanSDK-1.1.73.0-Installer.exe?u=",
-      "SpirVCross");
+    var unzippedFolder = DownloadAndUnzipCompiler(
+      "https://github.com/KhronosGroup/SPIRV-Cross/archive/master.zip",
+      "spirv-cross",
+      "trunk",
+      false);
 
-    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/SpirVCross";
+    MSBuild(unzippedFolder + "/SPIRV-Cross-master/msvc/SPIRV-Cross.vcxproj", new MSBuildSettings()
+      .SetConfiguration(configuration)
+      .WithProperty("WindowsTargetPlatformVersion", "10.0.17134.0")
+      .WithProperty("PlatformToolset", "v141"));
+
+    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/spirv-cross/trunk";
     EnsureDirectoryExists(binariesFolder);
     CleanDirectory(binariesFolder);
 
-    StartProcess(
-      @"C:\Program Files\7-Zip\7z.exe",
-      $@"e -o""{binariesFolder}"" ""{tempFileName}"" Bin\spirv-cross.exe");
-  });
-
-Task("Download-SPIRV-Tools")
-  .Does(() => {
-    DownloadAndUnzipCompiler(
-      "https://github.com/KhronosGroup/SPIRV-Tools/releases/download/master-tot/SPIRV-Tools-master-windows-x64-Release.zip",
-      "SpirVTools",
-      "bin/*.*");
-  });
-
-Task("Download-XShaderCompiler")
-  .Does(() => {
-    DownloadAndUnzipCompiler(
-      "https://github.com/LukasBanana/XShaderCompiler/releases/download/v0.10-alpha/Xsc-v0.10-alpha.zip",
-      "XShaderCompiler",
-      "Xsc-v0.10-alpha/bin/Win32/xsc.exe");
+    CopyFiles(
+      $"{unzippedFolder}/SPIRV-Cross-master/msvc/{configuration}/SPIRV-Cross.exe",
+      binariesFolder,
+      true);
   });
 
 Task("Download-SPIRV-Cross-ISPC")
   .Does(() => {
     var unzippedFolder = DownloadAndUnzipCompiler(
       "https://github.com/GameTechDev/SPIRV-Cross/archive/master-ispc.zip",
-      "SpirVCrossIspc");
+      "spirv-cross-ispc",
+      "trunk",
+      false);
 
     MSBuild(unzippedFolder + "/SPIRV-Cross-master-ispc/msvc/SPIRV-Cross.vcxproj", new MSBuildSettings()
       .SetConfiguration(configuration)
       .WithProperty("WindowsTargetPlatformVersion", "10.0.17134.0"));
 
-    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/SpirVCrossIspc";
+    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/spirv-cross-ispc/trunk";
     EnsureDirectoryExists(binariesFolder);
     CleanDirectory(binariesFolder);
 
@@ -122,11 +126,33 @@ Task("Download-SPIRV-Cross-ISPC")
       true);
   });
 
+Task("Download-SPIRV-Tools")
+  .Does(() => {
+    DownloadAndUnzipCompiler(
+      "https://github.com/KhronosGroup/SPIRV-Tools/releases/download/master-tot/SPIRV-Tools-master-windows-x64-Release.zip",
+      "spirv-tools",
+      "trunk",
+      false,
+      "bin/*.*");
+  });
+
+Task("Download-XShaderCompiler")
+  .Does(() => {
+    DownloadAndUnzipCompiler(
+      "https://github.com/LukasBanana/XShaderCompiler/releases/download/v0.10-alpha/Xsc-v0.10-alpha.zip",
+      "xshadercompiler",
+      "v0.10-alpha",
+      true,
+      "Xsc-v0.10-alpha/bin/Win32/xsc.exe");
+  });
+
 Task("Download-Slang")
   .Does(() => {
     DownloadAndUnzipCompiler(
       "https://github.com/shader-slang/slang/releases/download/v0.10.24/slang-0.10.24-win64.zip",
-      "Slang",
+      "slang",
+      "v0.10.24",
+      true,
       "bin/windows-x64/release/*.*");
   });
 
@@ -137,12 +163,15 @@ Task("Build-Fxc-Shim")
       Configuration = configuration
     });
 
-    EnsureDirectoryExists("./src/ShaderPlayground.Core/Binaries/Fxc");
-    CleanDirectory("./src/ShaderPlayground.Core/Binaries/Fxc");
+    var fxcVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo("./lib/x64/d3dcompiler_47.dll").ProductVersion;
+    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/fxc/{fxcVersion}";
+
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
 
     CopyFiles(
       $"./shims/ShaderPlayground.Shims.Fxc/bin/{configuration}/netcoreapp2.0/publish/**/*.*",
-      "./src/ShaderPlayground.Core/Binaries/Fxc",
+      binariesFolder,
       true);
   });
 
@@ -153,12 +182,14 @@ Task("Build-HLSLcc-Shim")
       Configuration = configuration
     });
 
-    EnsureDirectoryExists("./src/ShaderPlayground.Core/Binaries/HLSLcc");
-    CleanDirectory("./src/ShaderPlayground.Core/Binaries/HLSLcc");
+    var binariesFolder = "./src/ShaderPlayground.Core/Binaries/hlslcc/trunk";
+
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
 
     CopyFiles(
-      $"./shims/{configuration}/ShaderPlayground.Shims.HLSLcc.exe",
-      "./src/ShaderPlayground.Core/Binaries/HLSLcc",
+      $"./shims/ShaderPlayground.Shims.HLSLcc/{configuration}/ShaderPlayground.Shims.HLSLcc.exe",
+      binariesFolder,
       true);
   });
 

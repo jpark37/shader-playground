@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace OnlineShaderCompiler
+namespace ShaderPlayground.Web
 {
     public class Program
     {

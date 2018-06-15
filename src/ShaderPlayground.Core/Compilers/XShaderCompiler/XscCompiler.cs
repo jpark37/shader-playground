@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using ShaderPlayground.Core.Util;
+﻿using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.XShaderCompiler
 {
@@ -14,6 +12,7 @@ namespace ShaderPlayground.Core.Compilers.XShaderCompiler
 
         public ShaderCompilerParameter[] Parameters { get; } =
         {
+            CommonParameters.CreateVersionParameter("xshadercompiler"),
             CommonParameters.GlslShaderStage,
             CommonParameters.HlslEntryPoint,
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.Glsl }),
@@ -47,7 +46,7 @@ namespace ShaderPlayground.Core.Compilers.XShaderCompiler
                 var outputPath = $"{tempFile.FilePath}.out";
 
                 ProcessHelper.Run(
-                    Path.Combine(AppContext.BaseDirectory, "Binaries", "XShaderCompiler", "xsc.exe"),
+                    CommonParameters.GetBinaryPath("xshadercompiler", arguments, "xsc.exe"),
                     $"-T {stage} -E {entryPoint} -Vout {glslVersion} -o \"{outputPath}\" \"{tempFile.FilePath}\"",
                     out var stdOutput,
                     out var _);

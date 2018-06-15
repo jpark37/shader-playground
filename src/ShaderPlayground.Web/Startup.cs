@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace OnlineShaderCompiler
+namespace ShaderPlayground.Web
 {
     public class Startup
     {
