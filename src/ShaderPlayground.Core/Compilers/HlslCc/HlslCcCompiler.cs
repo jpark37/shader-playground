@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using ShaderPlayground.Core.Util;
+﻿using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.HlslCc
 {

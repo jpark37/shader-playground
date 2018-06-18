@@ -11,6 +11,7 @@ Shader Playground is a website for exploring shader compilers.
 * [DXC](https://github.com/Microsoft/DirectXShaderCompiler)
 * [FXC](https://msdn.microsoft.com/en-us/library/windows/desktop/bb232919(v=vs.85).aspx)
 * [Glslang](https://github.com/KhronosGroup/glslang)
+* [GLSL optimizer](https://github.com/aras-p/glsl-optimizer)
 * [HLSLcc](https://github.com/Unity-Technologies/HLSLcc)
 * [Mali offline compiler](https://developer.arm.com/products/software-development-tools/graphics-development-tools/mali-offline-compiler)
 * [Slang](https://github.com/shader-slang/slang)

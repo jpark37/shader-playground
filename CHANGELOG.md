@@ -1,8 +1,13 @@
 # Changelog
 
+## 2018-06-18
+
+* New compiler - [GLSL optimizer](https://github.com/aras-p/glsl-optimizer)
+
 ## 2018-06-15
 
 * Add option to toggle between outputs for all steps in pipeline
+* Add support for multiple versions of each compiler (only used for Slang at the moment)
 
 ## 2018-06-13
 

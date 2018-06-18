@@ -200,9 +200,32 @@ Task("Build-HLSLcc-Shim")
       true);
   });
 
+Task("Build-GLSL-Optimizer-Shim")
+  .Does(() => {
+    MSBuild("./shims/ShaderPlayground.Shims.GlslOptimizer/Source/projects/vs2010/glsl_optimizer_lib.vcxproj", new MSBuildSettings()
+      .WithProperty("PlatformToolset", "v141")
+      .WithProperty("WindowsTargetPlatformVersion", "10.0.17134.0")
+      .SetConfiguration(configuration)
+      .SetPlatformTarget(PlatformTarget.Win32));
+
+    MSBuild("./shims/ShaderPlayground.Shims.GlslOptimizer/ShaderPlayground.Shims.GlslOptimizer.vcxproj", new MSBuildSettings()
+      .SetConfiguration(configuration));
+
+    var binariesFolder = "./src/ShaderPlayground.Core/Binaries/glsl-optimizer/trunk";
+
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    CopyFiles(
+      $"./shims/ShaderPlayground.Shims.GlslOptimizer/{configuration}/ShaderPlayground.Shims.GlslOptimizer.exe",
+      binariesFolder,
+      true);
+  });
+
 Task("Build-Shims")
   .IsDependentOn("Build-Fxc-Shim")
-  .IsDependentOn("Build-HLSLcc-Shim");
+  .IsDependentOn("Build-HLSLcc-Shim")
+  .IsDependentOn("Build-GLSL-Optimizer-Shim");
 
 Task("Build")
   .IsDependentOn("Build-Shims")

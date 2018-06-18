@@ -1,3 +1,6 @@
 [submodule "shims/ShaderPlayground.Shims.HLSLcc/Source"]
 	path = shims/ShaderPlayground.Shims.HLSLcc/Source
 	url = https://github.com/Unity-Technologies/HLSLcc.git
+[submodule "shims/ShaderPlayground.Shims.GlslOptimizer/Source"]
+	path = shims/ShaderPlayground.Shims.GlslOptimizer/Source
+	url = https://github.com/aras-p/glsl-optimizer.git

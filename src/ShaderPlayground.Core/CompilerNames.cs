@@ -12,5 +12,6 @@
         public const string XShaderCompiler = "xsc";
         public const string HlslCc = "hlslcc";
         public const string Slang = "slang";
+        public const string GlslOptimizer = "glsl-optimizer";
     }
 }

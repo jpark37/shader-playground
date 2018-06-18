@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShaderPlayground.Shims.Fxc"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShaderPlayground.Shims.HLSLcc", "ShaderPlayground.Shims.HLSLcc\ShaderPlayground.Shims.HLSLcc.vcxproj", "{BB8086EA-9859-4895-A710-5EC8BD06D582}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShaderPlayground.Shims.GlslOptimizer", "ShaderPlayground.Shims.GlslOptimizer\ShaderPlayground.Shims.GlslOptimizer.vcxproj", "{BF0280E3-68A8-4CEF-9D46-FEA0F44100E5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glsl_optimizer_lib", "ShaderPlayground.Shims.GlslOptimizer\Source\projects\vs2010\glsl_optimizer_lib.vcxproj", "{B475A403-9D9B-410D-8A93-BA49FC4DD811}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +24,13 @@ Global
 		{BB8086EA-9859-4895-A710-5EC8BD06D582}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{BB8086EA-9859-4895-A710-5EC8BD06D582}.Debug|Any CPU.Build.0 = Debug|Win32
 		{BB8086EA-9859-4895-A710-5EC8BD06D582}.Release|Any CPU.ActiveCfg = Release|Win32
+		{BB8086EA-9859-4895-A710-5EC8BD06D582}.Release|Any CPU.Build.0 = Release|Win32
+		{BF0280E3-68A8-4CEF-9D46-FEA0F44100E5}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{BF0280E3-68A8-4CEF-9D46-FEA0F44100E5}.Debug|Any CPU.Build.0 = Debug|Win32
+		{BF0280E3-68A8-4CEF-9D46-FEA0F44100E5}.Release|Any CPU.ActiveCfg = Release|Win32
+		{BF0280E3-68A8-4CEF-9D46-FEA0F44100E5}.Release|Any CPU.Build.0 = Release|Win32
+		{B475A403-9D9B-410D-8A93-BA49FC4DD811}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{B475A403-9D9B-410D-8A93-BA49FC4DD811}.Release|Any CPU.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
