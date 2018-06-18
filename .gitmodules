@@ -4,3 +4,6 @@
 [submodule "shims/ShaderPlayground.Shims.GlslOptimizer/Source"]
 	path = shims/ShaderPlayground.Shims.GlslOptimizer/Source
 	url = https://github.com/aras-p/glsl-optimizer.git
+[submodule "shims/ShaderPlayground.Shims.Hlsl2Glsl/Source"]
+	path = shims/ShaderPlayground.Shims.Hlsl2Glsl/Source
+	url = https://github.com/aras-p/hlsl2glslfork.git

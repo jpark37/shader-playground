@@ -13,5 +13,6 @@
         public const string HlslCc = "hlslcc";
         public const string Slang = "slang";
         public const string GlslOptimizer = "glsl-optimizer";
+        public const string Hlsl2Glsl = "hlsl2glsl";
     }
 }

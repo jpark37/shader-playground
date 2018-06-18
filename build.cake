@@ -222,10 +222,34 @@ Task("Build-GLSL-Optimizer-Shim")
       true);
   });
 
+Task("Build-HLSL2GLSL-Shim")
+  .Does(() => {
+    MSBuild("./shims/ShaderPlayground.Shims.Hlsl2Glsl/Source/hlslang.vcxproj", new MSBuildSettings()
+      .WithProperty("PlatformToolset", "v141")
+      .WithProperty("WindowsTargetPlatformVersion", "10.0.17134.0")
+      .WithProperty("ForcedIncludeFiles", "<algorithm>")
+      .SetConfiguration(configuration)
+      .SetPlatformTarget(PlatformTarget.Win32));
+
+    MSBuild("./shims/ShaderPlayground.Shims.Hlsl2Glsl/ShaderPlayground.Shims.Hlsl2Glsl.vcxproj", new MSBuildSettings()
+      .SetConfiguration(configuration));
+
+    var binariesFolder = "./src/ShaderPlayground.Core/Binaries/hlsl2glsl/trunk";
+
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    CopyFiles(
+      $"./shims/ShaderPlayground.Shims.Hlsl2Glsl/{configuration}/ShaderPlayground.Shims.Hlsl2Glsl.exe",
+      binariesFolder,
+      true);
+  });
+
 Task("Build-Shims")
   .IsDependentOn("Build-Fxc-Shim")
   .IsDependentOn("Build-HLSLcc-Shim")
-  .IsDependentOn("Build-GLSL-Optimizer-Shim");
+  .IsDependentOn("Build-GLSL-Optimizer-Shim")
+  .IsDependentOn("Build-HLSL2GLSL-Shim");
 
 Task("Build")
   .IsDependentOn("Build-Shims")

@@ -5,6 +5,7 @@ using ShaderPlayground.Core.Compilers.Dxc;
 using ShaderPlayground.Core.Compilers.Fxc;
 using ShaderPlayground.Core.Compilers.Glslang;
 using ShaderPlayground.Core.Compilers.GlslOptimizer;
+using ShaderPlayground.Core.Compilers.Hlsl2Glsl;
 using ShaderPlayground.Core.Compilers.HlslCc;
 using ShaderPlayground.Core.Compilers.Mali;
 using ShaderPlayground.Core.Compilers.Slang;
@@ -31,6 +32,7 @@ namespace ShaderPlayground.Core
             new FxcCompiler(),
             new GlslangCompiler(),
             new GlslOptimizerCompiler(),
+            new Hlsl2GlslCompiler(),
             new HlslCcCompiler(),
             new MaliCompiler(),
             new SlangCompiler(),
