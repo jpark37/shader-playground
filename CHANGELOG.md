@@ -3,7 +3,7 @@
 ## 2018-06-18
 
 * New compiler - [GLSL optimizer](https://github.com/aras-p/glsl-optimizer)
-* New compiler - [HLSL2GLSL](https://github.com/aras-p/hlsl2glslfork)
+* New compiler - [hlsl2glslfork](https://github.com/aras-p/hlsl2glslfork)
 
 ## 2018-06-15
 

@@ -6,7 +6,7 @@ namespace ShaderPlayground.Core.Compilers.Hlsl2Glsl
     internal sealed class Hlsl2GlslCompiler : IShaderCompiler
     {
         public string Name { get; } = CompilerNames.Hlsl2Glsl;
-        public string DisplayName { get; } = "HLSL2GLSL (fork)";
+        public string DisplayName { get; } = "hlsl2glslfork";
         public string Description { get; } = "HLSL to GLSL language translator based on ATI's HLSL2GLSL. Previously used in Unity.";
 
         public string[] InputLanguages { get; } = { LanguageNames.Hlsl };
