@@ -22,6 +22,7 @@ Shader Playground is a website for exploring shader compilers.
 * [SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools)
   * spirv-cfg
   * spirv-opt
+  * spirv-stats
 * [XShaderCompiler](https://github.com/LukasBanana/XShaderCompiler)
 
 ## Contributions
