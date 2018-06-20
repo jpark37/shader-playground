@@ -57,12 +57,23 @@ namespace ShaderPlayground.Core.Compilers.XShaderCompiler
 
                 FileHelper.DeleteIfExists(outputPath);
 
+                string ast = null;
+                if (!hasCompilationErrors)
+                {
+                    ProcessHelper.Run(
+                        CommonParameters.GetBinaryPath("xshadercompiler", arguments, "xsc.exe"),
+                        $"-E {entryPoint} -Valid --show-ast \"{tempFile.FilePath}\"",
+                        out ast,
+                        out var _);
+                }
+
                 return new ShaderCompilerResult(
                     !hasCompilationErrors,
                     new ShaderCode(LanguageNames.Glsl, textOutput),
                     hasCompilationErrors ? (int?) 1 : null,
                     new ShaderCompilerOutput("Output", LanguageNames.Glsl, textOutput),
-                    new ShaderCompilerOutput("Build output", null, stdOutput));
+                    new ShaderCompilerOutput("Build output", null, stdOutput),
+                    new ShaderCompilerOutput("AST", null, ast));
             }
         }
     }
