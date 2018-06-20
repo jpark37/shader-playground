@@ -1,5 +1,12 @@
 # Changelog
 
+## 2018-06-20
+
+* New compiler - [spirv-opt](https://github.com/KhronosGroup/SPIRV-Tools#optimizer-tool)
+* Add AST output to XShaderCompiler
+* New compiler - [HLSLParser](https://github.com/Thekla/hlslparser)
+* New compiler - spirv-stats
+
 ## 2018-06-18
 
 * New compiler - [GLSL optimizer](https://github.com/aras-p/glsl-optimizer)

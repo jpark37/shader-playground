@@ -37,7 +37,7 @@ string DownloadAndUnzipCompiler(string url, string binariesFolderName, string ve
   return unzippedFolder;
 }
 
-void DownloadAndUnzipCompiler(string url, string binariesFolderName, string version, bool cache, string filesToCopy)
+string DownloadAndUnzipCompiler(string url, string binariesFolderName, string version, bool cache, string filesToCopy)
 {
   var unzippedFolder = DownloadAndUnzipCompiler(url, binariesFolderName, version, cache);
 
@@ -49,6 +49,8 @@ void DownloadAndUnzipCompiler(string url, string binariesFolderName, string vers
     $"{unzippedFolder}/{filesToCopy}",
     binariesFolder,
     true);
+
+  return binariesFolder;
 }
 
 Task("Download-Dxc")
@@ -161,6 +163,29 @@ Task("Download-Slang")
     DownloadSlang("0.10.24");
     DownloadSlang("0.10.25");
     DownloadSlang("0.10.26");
+  });
+
+Task("Download-HLSLParser")
+  .Does(() => {
+    var unzippedFolder = DownloadAndUnzipCompiler(
+      "https://github.com/Thekla/hlslparser/archive/master.zip",
+      "hlslparser",
+      "trunk",
+      false);
+
+    MSBuild(unzippedFolder + "/hlslparser-master/hlslparser.vcxproj", new MSBuildSettings()
+      .SetConfiguration(configuration)
+      .WithProperty("WindowsTargetPlatformVersion", "10.0.17134.0")
+      .WithProperty("PlatformToolset", "v141"));
+
+    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/hlslparser/trunk";
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    CopyFiles(
+      $"{unzippedFolder}/hlslparser-master/{configuration}/hlslparser.exe",
+      binariesFolder,
+      true);
   });
 
 Task("Build-Fxc-Shim")
@@ -286,6 +311,7 @@ Task("Default")
   .IsDependentOn("Download-XShaderCompiler")
   .IsDependentOn("Download-SPIRV-Cross-ISPC")
   .IsDependentOn("Download-Slang")
+  .IsDependentOn("Download-HLSLParser")
   .IsDependentOn("Build")
   .IsDependentOn("Test");
 

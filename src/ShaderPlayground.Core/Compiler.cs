@@ -7,6 +7,7 @@ using ShaderPlayground.Core.Compilers.Glslang;
 using ShaderPlayground.Core.Compilers.GlslOptimizer;
 using ShaderPlayground.Core.Compilers.Hlsl2Glsl;
 using ShaderPlayground.Core.Compilers.HlslCc;
+using ShaderPlayground.Core.Compilers.HlslParser;
 using ShaderPlayground.Core.Compilers.Mali;
 using ShaderPlayground.Core.Compilers.Slang;
 using ShaderPlayground.Core.Compilers.SpirvCfg;
@@ -34,6 +35,7 @@ namespace ShaderPlayground.Core
             new GlslOptimizerCompiler(),
             new Hlsl2GlslCompiler(),
             new HlslCcCompiler(),
+            new HlslParserCompiler(),
             new MaliCompiler(),
             new SlangCompiler(),
             new SpirVCrossCompiler(),
