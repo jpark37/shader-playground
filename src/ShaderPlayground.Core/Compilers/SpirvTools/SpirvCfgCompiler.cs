@@ -1,8 +1,6 @@
-﻿using System;
-using System.IO;
-using ShaderPlayground.Core.Util;
+﻿using ShaderPlayground.Core.Util;
 
-namespace ShaderPlayground.Core.Compilers.SpirvCfg
+namespace ShaderPlayground.Core.Compilers.SpirvTools
 {
     internal sealed class SpirvCfgCompiler : IShaderCompiler
     {

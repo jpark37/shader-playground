@@ -21,6 +21,7 @@ Shader Playground is a website for exploring shader compilers.
 * [SPIRV-Cross - Intel fork with ISPC backend](https://github.com/GameTechDev/SPIRV-Cross)
 * [SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools)
   * spirv-cfg
+  * spirv-opt
 * [XShaderCompiler](https://github.com/LukasBanana/XShaderCompiler)
 
 ## Contributions
