@@ -270,11 +270,30 @@ Task("Build-HLSL2GLSL-Shim")
       true);
   });
 
+Task("Build-SMOL-V-Shim")
+  .Does(() => {
+    MSBuild("./shims/ShaderPlayground.Shims.Smolv/ShaderPlayground.Shims.Smolv.vcxproj", new MSBuildSettings
+    {
+      Configuration = configuration
+    });
+
+    var binariesFolder = "./src/ShaderPlayground.Core/Binaries/smol-v/trunk";
+
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    CopyFiles(
+      $"./shims/ShaderPlayground.Shims.Smolv/{configuration}/ShaderPlayground.Shims.Smolv.exe",
+      binariesFolder,
+      true);
+  });
+
 Task("Build-Shims")
   .IsDependentOn("Build-Fxc-Shim")
   .IsDependentOn("Build-HLSLcc-Shim")
   .IsDependentOn("Build-GLSL-Optimizer-Shim")
-  .IsDependentOn("Build-HLSL2GLSL-Shim");
+  .IsDependentOn("Build-HLSL2GLSL-Shim")
+  .IsDependentOn("Build-SMOL-V-Shim");
 
 Task("Build")
   .IsDependentOn("Build-Shims")

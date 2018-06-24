@@ -10,6 +10,7 @@ using ShaderPlayground.Core.Compilers.HlslCc;
 using ShaderPlayground.Core.Compilers.HlslParser;
 using ShaderPlayground.Core.Compilers.Mali;
 using ShaderPlayground.Core.Compilers.Slang;
+using ShaderPlayground.Core.Compilers.Smolv;
 using ShaderPlayground.Core.Compilers.SpirVCross;
 using ShaderPlayground.Core.Compilers.SpirVCrossIspc;
 using ShaderPlayground.Core.Compilers.SpirvTools;
@@ -38,11 +39,13 @@ namespace ShaderPlayground.Core
             new HlslParserCompiler(),
             new MaliCompiler(),
             new SlangCompiler(),
+            new SmolvToSpirvCompiler(),
             new SpirVCrossCompiler(),
             new SpirVCrossIspcCompiler(),
             new SpirvCfgCompiler(),
             new SpirvOptCompiler(),
             new SpirvStatsCompiler(),
+            new SpirvToSmolvCompiler(),
             new XscCompiler()
         };
 

@@ -17,5 +17,7 @@
         public const string GlslOptimizer = "glsl-optimizer";
         public const string Hlsl2Glsl = "hlsl2glsl";
         public const string HlslParser = "hlslparser";
+        public const string SmolvToSpirv = "smolv-to-spirv";
+        public const string SpirvToSmolv = "spirv-to-smolv";
     }
 }

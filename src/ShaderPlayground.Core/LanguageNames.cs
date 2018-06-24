@@ -11,5 +11,6 @@
         public const string Cpp = "C++";
         public const string Ispc = "ISPC";
         public const string Slang = "Slang";
+        public const string Smolv = "SMOL-V";
     }
 }

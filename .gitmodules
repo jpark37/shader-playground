@@ -7,3 +7,6 @@
 [submodule "shims/ShaderPlayground.Shims.Hlsl2Glsl/Source"]
 	path = shims/ShaderPlayground.Shims.Hlsl2Glsl/Source
 	url = https://github.com/aras-p/hlsl2glslfork.git
+[submodule "shims/ShaderPlayground.Shims.Smolv/Source"]
+	path = shims/ShaderPlayground.Shims.Smolv/Source
+	url = https://github.com/aras-p/smol-v.git
