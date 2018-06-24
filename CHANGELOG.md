@@ -1,5 +1,9 @@
 # Changelog
 
+## 2018-06-24
+
+* New compiler - [SMOL-V](https://github.com/aras-p/smol-v)
+
 ## 2018-06-20
 
 * New compiler - [spirv-opt](https://github.com/KhronosGroup/SPIRV-Tools#optimizer-tool)
