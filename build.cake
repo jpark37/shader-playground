@@ -188,6 +188,21 @@ Task("Download-HLSLParser")
       true);
   });
 
+Task("Download-zstd")
+  .Does(() => {
+    void DownloadZstd(string version)
+    {
+      DownloadAndUnzipCompiler(
+        $"https://github.com/facebook/zstd/releases/download/v{version}/zstd-v{version}-win64.zip",
+        "zstd",
+        $"v{version}",
+        true,
+        "zstd.exe");
+    }
+    
+    DownloadZstd("1.3.4");
+  });
+
 Task("Build-Fxc-Shim")
   .Does(() => {
     DotNetCorePublish("./shims/ShaderPlayground.Shims.Fxc/ShaderPlayground.Shims.Fxc.csproj", new DotNetCorePublishSettings
@@ -331,6 +346,7 @@ Task("Default")
   .IsDependentOn("Download-SPIRV-Cross-ISPC")
   .IsDependentOn("Download-Slang")
   .IsDependentOn("Download-HLSLParser")
+  .IsDependentOn("Download-zstd")
   .IsDependentOn("Build")
   .IsDependentOn("Test");
 

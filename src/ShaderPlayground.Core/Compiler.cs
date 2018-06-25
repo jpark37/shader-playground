@@ -15,6 +15,7 @@ using ShaderPlayground.Core.Compilers.SpirVCross;
 using ShaderPlayground.Core.Compilers.SpirVCrossIspc;
 using ShaderPlayground.Core.Compilers.SpirvTools;
 using ShaderPlayground.Core.Compilers.XShaderCompiler;
+using ShaderPlayground.Core.Compilers.Zstd;
 using ShaderPlayground.Core.Languages;
 
 namespace ShaderPlayground.Core
@@ -46,7 +47,9 @@ namespace ShaderPlayground.Core
             new SpirvOptCompiler(),
             new SpirvStatsCompiler(),
             new SpirvToSmolvCompiler(),
-            new XscCompiler()
+            new XscCompiler(),
+            new ZstdCompressionCompiler(),
+            new ZstdDecompressionCompiler(),
         };
 
         public static IReadOnlyList<ShaderCompilerResult> Compile(

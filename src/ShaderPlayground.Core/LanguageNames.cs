@@ -12,5 +12,6 @@
         public const string Ispc = "ISPC";
         public const string Slang = "Slang";
         public const string Smolv = "SMOL-V";
+        public const string Zstd = "zst";
     }
 }
