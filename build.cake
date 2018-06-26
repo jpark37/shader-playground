@@ -303,12 +303,31 @@ Task("Build-SMOL-V-Shim")
       true);
   });
 
+Task("Build-Miniz-Shim")
+  .Does(() => {
+    MSBuild("./shims/ShaderPlayground.Shims.Miniz/ShaderPlayground.Shims.Miniz.vcxproj", new MSBuildSettings
+    {
+      Configuration = configuration
+    });
+
+    var binariesFolder = "./src/ShaderPlayground.Core/Binaries/miniz/2.0.7";
+
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    CopyFiles(
+      $"./shims/ShaderPlayground.Shims.Miniz/{configuration}/ShaderPlayground.Shims.Miniz.exe",
+      binariesFolder,
+      true);
+  });
+
 Task("Build-Shims")
   .IsDependentOn("Build-Fxc-Shim")
   .IsDependentOn("Build-HLSLcc-Shim")
   .IsDependentOn("Build-GLSL-Optimizer-Shim")
   .IsDependentOn("Build-HLSL2GLSL-Shim")
-  .IsDependentOn("Build-SMOL-V-Shim");
+  .IsDependentOn("Build-SMOL-V-Shim")
+  .IsDependentOn("Build-Miniz-Shim");
 
 Task("Build")
   .IsDependentOn("Build-Shims")

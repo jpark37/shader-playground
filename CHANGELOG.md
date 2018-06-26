@@ -1,5 +1,13 @@
 # Changelog
 
+## 2018-06-26
+
+* New compression backend - [miniz](https://github.com/richgel999/miniz)
+
+## 2018-06-25
+
+* New compression backend - [ZStandard](http://zstd.net)
+
 ## 2018-06-24
 
 * New compiler - [SMOL-V](https://github.com/aras-p/smol-v)

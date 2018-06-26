@@ -21,5 +21,6 @@
         public const string SpirvToSmolv = "spirv-to-smolv";
         public const string ZstdCompress = "zstd-compress";
         public const string ZstdDecompress = "zstd-decompress";
+        public const string MinizCompress = "miniz-compress";
     }
 }
