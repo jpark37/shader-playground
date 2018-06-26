@@ -52,8 +52,7 @@ namespace ShaderPlayground.Core
             new SpirvStatsCompiler(),
             new SpirvToSmolvCompiler(),
             new XscCompiler(),
-            new ZstdCompressionCompiler(),
-            new ZstdDecompressionCompiler(),
+            new ZstdCompiler(),
         };
 
         public static IReadOnlyList<ShaderCompilerResult> Compile(

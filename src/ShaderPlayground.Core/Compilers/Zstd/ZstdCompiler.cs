@@ -2,7 +2,7 @@
 
 namespace ShaderPlayground.Core.Compilers.Zstd
 {
-    internal sealed class ZstdCompressionCompiler : IShaderCompiler
+    internal sealed class ZstdCompiler : IShaderCompiler
     {
         public string Name { get; } = CompilerNames.ZstdCompress;
         public string DisplayName { get; } = "Zstandard";
