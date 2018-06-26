@@ -3,6 +3,7 @@
 ## 2018-06-26
 
 * New compression backend - [miniz](https://github.com/richgel999/miniz)
+* New compression backend - [LZMA](https://www.7-zip.org/sdk.html)
 
 ## 2018-06-25
 

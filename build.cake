@@ -203,6 +203,26 @@ Task("Download-zstd")
     DownloadZstd("1.3.4");
   });
 
+Task("Download-LZMA")
+  .Does(() => {
+    void DownloadLzma(string version, string displayVersion)
+    {
+      var tempFileName = DownloadCompiler(
+        $"https://www.7-zip.org/a/lzma{version}.7z",
+        "lzma",
+        displayVersion,
+        true);
+
+      var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/lzma/{displayVersion}";
+
+      StartProcess(
+        @"C:\Program Files\7-Zip\7z.exe",
+        $@"e -o""{binariesFolder}"" ""{tempFileName}"" bin\lzma.exe");
+    }
+    
+    DownloadLzma("1805", "18.05");
+  });
+
 Task("Build-Fxc-Shim")
   .Does(() => {
     DotNetCorePublish("./shims/ShaderPlayground.Shims.Fxc/ShaderPlayground.Shims.Fxc.csproj", new DotNetCorePublishSettings
@@ -366,6 +386,7 @@ Task("Default")
   .IsDependentOn("Download-Slang")
   .IsDependentOn("Download-HLSLParser")
   .IsDependentOn("Download-zstd")
+  .IsDependentOn("Download-LZMA")
   .IsDependentOn("Build")
   .IsDependentOn("Test");
 
