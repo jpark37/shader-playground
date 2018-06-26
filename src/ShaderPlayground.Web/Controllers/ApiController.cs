@@ -24,12 +24,23 @@ namespace ShaderPlayground.Web.Controllers
                     .Select(x =>
                     {
                         var binaryOutput = x.PipeableOutput?.Binary != null
-                        ? Convert.ToBase64String(x.PipeableOutput.Binary)
-                        : null;
+                            ? Convert.ToBase64String(x.PipeableOutput.Binary)
+                            : null;
+
+                        string outputSize = null;
+                        if (x.PipeableOutput?.Binary != null)
+                        {
+                            outputSize = x.PipeableOutput.Binary.Length + " bytes";
+                        }
+                        else if (x.PipeableOutput?.Text != null)
+                        {
+                            outputSize = x.PipeableOutput.Text.Length + " characters";
+                        }
 
                         return new ShaderCompilerResultViewModel(
                             x.Success,
                             binaryOutput,
+                            outputSize,
                             x.SelectedOutputIndex,
                             x.Outputs);
                     })
@@ -44,6 +55,7 @@ namespace ShaderPlayground.Web.Controllers
                     {
                         new ShaderCompilerResultViewModel(
                             false,
+                            null,
                             null,
                             0,
                             new ShaderCompilerOutput(

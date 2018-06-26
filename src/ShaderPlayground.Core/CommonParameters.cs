@@ -42,7 +42,7 @@ namespace ShaderPlayground.Core
         {
             return new ShaderCompilerParameter(
                 OutputLanguageParameterName,
-                "Output language",
+                "Output format",
                 ShaderCompilerParameterType.ComboBox,
                 languages,
                 languages[0]);

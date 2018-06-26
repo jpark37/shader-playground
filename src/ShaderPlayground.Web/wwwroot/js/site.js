@@ -253,13 +253,24 @@
                 function selectStep() {
                     var response = responses.results[outputStepsSelect.selectedIndex];
 
-                    var downloadBinaryButton = document.getElementById('download-binary-button');
+                    var downloadButton = document.getElementById('download-button');
+
                     if (response.binaryOutput !== null) {
-                        downloadBinaryButton.classList.remove('invisible');
+                        downloadButton.classList.remove('invisible');
+
+                        var downloadBinaryButton = document.getElementById('download-binary-button');
                         downloadBinaryButton.href = `data:text/plain;base64,${response.binaryOutput}`;
                         downloadBinaryButton.download = 'shader-binary.o';
                     } else {
-                        downloadBinaryButton.classList.add('invisible');
+                        downloadButton.classList.add('invisible');
+                    }
+
+                    var outputSize = document.getElementById('output-size');
+                    if (response.outputSize !== null) {
+                        outputSize.innerText = response.outputSize;
+                        outputSize.classList.remove('invisible');
+                    } else {
+                        outputSize.classList.add('invisible');
                     }
 
                     var selectedOutputTab = document.querySelector('input[name="output-tab-selector"]:checked');
@@ -346,6 +357,14 @@
                     outputStepsSelect.options.remove(0);
                 }
 
+                var compilationSummaryButton = document.getElementById('compilation-summary-button');
+                compilationSummaryButton.classList.remove('invisible');
+
+                var compilationSummaryContent = document.getElementById('compilation-summary-content');
+                compilationSummaryContent.innerHTML = '';
+
+                let compilationSummaryRowTemplate = document.getElementById("compilation-summary-row-template");
+
                 var selectedStep = 0;
                 var error = false;
 
@@ -358,6 +377,13 @@
                     var compilerEditor = compilerEditors.compilerEditors[i];
                     outputStepsSelect.options.add(
                         new Option(compilerEditor.fullDisplayName, compilerEditor.fullDisplayName, false, false));
+
+                    let compilationSummaryRow = document.importNode(compilationSummaryRowTemplate.content, true);
+                    compilationSummaryRow.querySelector("[data-field='compiler']").innerText = compilerEditor.fullDisplayName;
+                    compilationSummaryRow.querySelector("[data-field='result']").innerText = step.success ? "Succeeded" : "Failed";
+                    compilationSummaryRow.querySelector("[data-field='output-language']").innerText = compilerEditor.outputLanguage;
+                    compilationSummaryRow.querySelector("[data-field='output-size']").innerText = step.outputSize;
+                    compilationSummaryContent.appendChild(compilationSummaryRow);
                 }
 
                 outputStepsSelect.selectedIndex = selectedStep;
@@ -741,5 +767,9 @@
         $('#changelog-dialog').modal({});
 
         return false;
+    };
+
+    document.getElementById("compilation-summary-button").onclick = () => {
+        $('#compilation-summary-dialog').modal({});
     };
 });

@@ -61,8 +61,12 @@ body {
     
 }
 
-.row > div > .navbar {
+.row > div > .navbar:first-child {
     border-bottom: 1px solid #dee2e6;
+}
+
+.row > div > .navbar:last-child {
+    border-top: 1px solid #dee2e6;
 }
 
 .cm-s-neat span.cm-type {

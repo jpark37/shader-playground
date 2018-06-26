@@ -24,7 +24,39 @@
                     <select id="output-tabs" class="form-control form-control-sm"></select>
                 </div>
             </form>
-            <a id="download-binary-button" class="btn btn-sm btn-link invisible">Download binary</a>
+
+            <a id="compilation-summary-button" class="btn-link btn-sm invisible" href="#">Compilation summary</a>
+
+            <div class="modal fade" id="compilation-summary-dialog" tabindex="-1">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Compilation summary</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Compiler</th>
+                                        <th>Result</th>
+                                        <th>Output format</th>
+                                        <th>Output size</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="compilation-summary-content">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </nav>
 
         <div class="d-flex flex-fill flex-column position-relative" style="overflow:hidden">
@@ -36,6 +68,17 @@
                 </div>
             </div>
         </div>
+
+        <nav class="navbar navbar-expand navbar-light bg-light justify-content-between flex-shrink-0">
+            <div class="dropup">
+                <a id="download-button" class="btn btn-link btn-sm dropdown-toggle invisible" href="#" data-toggle="dropdown">Download binary</a>
+
+                <div class="dropdown-menu">
+                    <a id="download-binary-button" class="dropdown-item small" href="#">Raw file</a>
+                </div>
+            </div>
+            <span id="output-size" class="small">824 bytes</span>
+        </nav>
     </div>
 
     <div id="options-panel" class="col-lg-auto d-flex flex-column shadow-sm" style="overflow:hidden">
@@ -102,6 +145,15 @@
             </div>
         </div>
     </div>
+</template>
+
+<template id="compilation-summary-row-template">
+    <tr>
+        <td data-field="compiler"></td>
+        <td data-field="result"></td>
+        <td data-field="output-language"></td>
+        <td data-field="output-size"></td>
+    </tr>
 </template>
 
 <script type="text/javascript">
