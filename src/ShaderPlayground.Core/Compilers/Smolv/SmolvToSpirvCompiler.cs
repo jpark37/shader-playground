@@ -5,7 +5,7 @@ namespace ShaderPlayground.Core.Compilers.Smolv
     internal sealed class SmolvToSpirvCompiler : IShaderCompiler
     {
         public string Name { get; } = CompilerNames.SmolvToSpirv;
-        public string DisplayName { get; } = "SMOL-V";
+        public string DisplayName { get; } = "SMOL-V (decode)";
         public string Description { get; } = "SMOL-V encodes Vulkan/Khronos SPIR-V format programs into a form that is \"smoller\", and is more compressible.";
 
         public string[] InputLanguages { get; } = { LanguageNames.Smolv };
