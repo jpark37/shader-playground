@@ -6,25 +6,36 @@ Shader Playground is a website for exploring shader compilers.
 
 ![](art/screenshot.jpg)
 
-## Supported compilers / backends
+## Supported backends
+
+### Compilers
 
 * [DXC](https://github.com/Microsoft/DirectXShaderCompiler)
 * [FXC](https://msdn.microsoft.com/en-us/library/windows/desktop/bb232919(v=vs.85).aspx)
 * [Glslang](https://github.com/KhronosGroup/glslang)
-* [GLSL optimizer](https://github.com/aras-p/glsl-optimizer)
 * [hlsl2glslfork](https://github.com/aras-p/hlsl2glslfork)
 * [HLSLcc](https://github.com/Unity-Technologies/HLSLcc)
 * [HLSLParser](https://github.com/Thekla/hlslparser)
 * [Mali offline compiler](https://developer.arm.com/products/software-development-tools/graphics-development-tools/mali-offline-compiler)
 * [Slang](https://github.com/shader-slang/slang)
-* [SMOL-V](https://github.com/aras-p/smol-v)
 * [SPIRV-Cross](https://github.com/KhronosGroup/SPIRV-Cross)
 * [SPIRV-Cross - Intel fork with ISPC backend](https://github.com/GameTechDev/SPIRV-Cross)
+* [XShaderCompiler](https://github.com/LukasBanana/XShaderCompiler)
+
+### Analyzers and optimizers
+
+* [GLSL optimizer](https://github.com/aras-p/glsl-optimizer)
+* [SMOL-V](https://github.com/aras-p/smol-v)
 * [SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools)
   * spirv-cfg
   * spirv-opt
   * spirv-stats
-* [XShaderCompiler](https://github.com/LukasBanana/XShaderCompiler)
+
+### Compressors
+
+* [LZMA](https://www.7-zip.org/sdk.html)
+* [miniz](https://github.com/richgel999/miniz)
+* [ZStandard](http://zstd.net)
 
 ## Contributions
 
