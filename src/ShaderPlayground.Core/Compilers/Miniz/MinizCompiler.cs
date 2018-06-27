@@ -8,7 +8,7 @@ namespace ShaderPlayground.Core.Compilers.Miniz
         public string DisplayName { get; } = "zlib (miniz)";
         public string Description { get; } = "Miniz is a lossless, high performance data compression library in a single source file that implements the zlib (RFC 1950) and Deflate (RFC 1951) compressed data format specification standards.";
 
-        public string[] InputLanguages { get; } = { LanguageNames.Dxbc, LanguageNames.Dxil, LanguageNames.Smolv, LanguageNames.SpirV };
+        public string[] InputLanguages { get; } = { LanguageNames.Dxbc, LanguageNames.Dxil, LanguageNames.Smolv, LanguageNames.SpirV, LanguageNames.Markv };
 
         public ShaderCompilerParameter[] Parameters { get; } =
         {

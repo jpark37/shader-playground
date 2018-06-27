@@ -28,6 +28,7 @@ Shader Playground is a website for exploring shader compilers.
 * [SMOL-V](https://github.com/aras-p/smol-v)
 * [SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools)
   * spirv-cfg
+  * spirv-markv
   * spirv-opt
   * spirv-stats
 

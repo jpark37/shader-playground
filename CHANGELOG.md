@@ -1,5 +1,9 @@
 # Changelog
 
+# 2018-06-27
+
+* New compiler - [MARK-V](https://github.com/KhronosGroup/SPIRV-Tools/blob/master/tools/comp/markv.cpp)
+
 ## 2018-06-26
 
 * New compression backend - [miniz](https://github.com/richgel999/miniz)

@@ -48,6 +48,8 @@ namespace ShaderPlayground.Core
             new SpirVCrossCompiler(),
             new SpirVCrossIspcCompiler(),
             new SpirvCfgCompiler(),
+            new SpirvMarkvEncoderCompiler(),
+            new SpirvMarkvDecoderCompiler(),
             new SpirvOptCompiler(),
             new SpirvStatsCompiler(),
             new SpirvToSmolvCompiler(),
