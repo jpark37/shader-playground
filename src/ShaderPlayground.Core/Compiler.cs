@@ -51,6 +51,7 @@ namespace ShaderPlayground.Core
             new SpirvMarkvEncoderCompiler(),
             new SpirvMarkvDecoderCompiler(),
             new SpirvOptCompiler(),
+            new SpirvRemapCompiler(),
             new SpirvStatsCompiler(),
             new SpirvToSmolvCompiler(),
             new XscCompiler(),

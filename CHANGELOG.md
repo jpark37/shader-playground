@@ -1,6 +1,10 @@
 # Changelog
 
-# 2018-06-27
+## 2018-06-28
+
+* New compiler - [spirv-remap](https://github.com/KhronosGroup/glslang/blob/master/README-spirv-remap.txt)
+
+## 2018-06-27
 
 * New compiler - [MARK-V](https://github.com/KhronosGroup/SPIRV-Tools/blob/master/tools/comp/markv.cpp)
 

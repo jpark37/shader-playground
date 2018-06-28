@@ -12,6 +12,7 @@
         public const string SpirvMarkvEncoder = "spirv-markv-encoder";
         public const string SpirvMarkvDecoder = "spirv-markv-decoder";
         public const string SpirvOpt = "spirv-opt";
+        public const string SpirvRemap = "spirv-remap";
         public const string SpirvStats = "spirv-stats";
         public const string XShaderCompiler = "xsc";
         public const string HlslCc = "hlslcc";

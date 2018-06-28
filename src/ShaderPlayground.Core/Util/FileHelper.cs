@@ -12,6 +12,14 @@ namespace ShaderPlayground.Core.Util
             }
         }
 
+        public static void DeleteDirectoryIfExists(string directoryPath)
+        {
+            if (Directory.Exists(directoryPath))
+            {
+                Directory.Delete(directoryPath, true);
+            }
+        }
+
         public static string ReadAllTextIfExists(string filePath)
         {
             if (File.Exists(filePath))

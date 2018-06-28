@@ -26,6 +26,7 @@ Shader Playground is a website for exploring shader compilers.
 
 * [GLSL optimizer](https://github.com/aras-p/glsl-optimizer)
 * [SMOL-V](https://github.com/aras-p/smol-v)
+* [spirv-remap](https://github.com/KhronosGroup/glslang/blob/master/README-spirv-remap.txt)
 * [SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools)
   * spirv-cfg
   * spirv-markv
