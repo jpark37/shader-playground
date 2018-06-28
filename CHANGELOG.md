@@ -5,6 +5,7 @@
 * New compiler - [spirv-remap](https://github.com/KhronosGroup/glslang/blob/master/README-spirv-remap.txt)
 * New compiler - [spirv-as](https://github.com/KhronosGroup/SPIRV-Tools#assembler-binary-parser-and-disassembler)
 * SPIR-V assembly can now be used as input language
+* Binary output can now be downloaded as C header file
 
 ## 2018-06-27
 

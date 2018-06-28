@@ -237,6 +237,47 @@
             $("#output-container").removeClass("loading");
         }
 
+        function base64ToArrayBuffer(base64) {
+            var binaryString = atob(base64);
+            var len = binaryString.length;
+            var bytes = new Uint8Array(len);
+            for (var i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes;
+        }
+
+        function createCHeader(base64) {
+            var decoded = base64ToArrayBuffer(base64);
+            var bytes = "";
+            for (var i = 0; i < decoded.byteLength; i += 16) {
+                var end = Math.min(i + 16, decoded.byteLength);
+                var ascii = "";
+                for (var j = i; j < end; j++) {
+                    bytes += "0x" + decoded[j].toString(16).padStart(2, "0");
+                    if (decoded[j] >= 32 && decoded[j] <= 126) {
+                        ascii += String.fromCharCode(decoded[j]);
+                    } else {
+                        ascii += ".";
+                    }
+                    if (j < decoded.byteLength - 1) {
+                        bytes += ", ";
+                    }
+                }
+
+                bytes += " // " + ascii;
+
+                if (i + 16 < decoded.byteLength - 1) {
+                    bytes += "\n    ";
+                }
+            }
+            return `static const uint8_t shader[${decoded.byteLength}] =
+{
+    ${bytes}
+};
+`; 
+        }
+
         $.ajax({
             url: window.CompileUrl,
             type: "POST",
@@ -261,6 +302,10 @@
                         var downloadBinaryButton = document.getElementById('download-binary-button');
                         downloadBinaryButton.href = `data:text/plain;base64,${response.binaryOutput}`;
                         downloadBinaryButton.download = 'shader-binary.o';
+
+                        var downloadCHeaderButton = document.getElementById('download-c-header-button');
+                        downloadCHeaderButton.href = `data:text/plain,${encodeURI(createCHeader(response.binaryOutput))}`;
+                        downloadCHeaderButton.download = 'shader.h';
                     } else {
                         downloadButton.classList.add('invisible');
                     }
