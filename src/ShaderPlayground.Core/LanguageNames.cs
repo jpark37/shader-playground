@@ -5,6 +5,7 @@
         public const string Hlsl = "HLSL";
         public const string Glsl = "GLSL";
         public const string SpirV = "SPIR-V";
+        public const string SpirvAssembly = "SPIR-V ASM";
         public const string Dxbc = "DXBC";
         public const string Dxil = "DXIL";
         public const string Lzma = "lzma";

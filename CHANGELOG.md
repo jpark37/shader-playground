@@ -3,6 +3,8 @@
 ## 2018-06-28
 
 * New compiler - [spirv-remap](https://github.com/KhronosGroup/glslang/blob/master/README-spirv-remap.txt)
+* New compiler - [spirv-as](https://github.com/KhronosGroup/SPIRV-Tools#assembler-binary-parser-and-disassembler)
+* SPIR-V assembly can now be used as input language
 
 ## 2018-06-27
 

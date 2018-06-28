@@ -6,6 +6,7 @@
         public const string Fxc = "fxc";
         public const string Mali = "mali";
         public const string Glslang = "glslang";
+        public const string SpirvAssembler = "spirv-as";
         public const string SpirVCross = "spirv-cross";
         public const string SpirVCrossIspc = "spirv-cross-ispc";
         public const string SpirvCfg = "spirv-cfg";

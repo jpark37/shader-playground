@@ -28,7 +28,8 @@ namespace ShaderPlayground.Core
         {
             new HlslLanguage(),
             new GlslLanguage(),
-            new SlangLanguage()
+            new SlangLanguage(),
+            new SpirvLanguage(),
         };
 
         public static readonly IShaderCompiler[] AllCompilers =
@@ -45,6 +46,7 @@ namespace ShaderPlayground.Core
             new MinizCompiler(),
             new SlangCompiler(),
             new SmolvToSpirvCompiler(),
+            new SpirvAssemblerCompiler(),
             new SpirVCrossCompiler(),
             new SpirVCrossIspcCompiler(),
             new SpirvCfgCompiler(),
