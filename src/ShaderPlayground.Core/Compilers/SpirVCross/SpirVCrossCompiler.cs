@@ -43,7 +43,8 @@ namespace ShaderPlayground.Core.Compilers.SpirVCross
                     break;
             }
 
-            args += $" --entry {arguments.GetString("EntryPoint")}";
+            var entryPointArg = $" --entry {arguments.GetString("EntryPoint")}";
+            args += entryPointArg;
 
             using (var tempFile = TempFile.FromShaderCode(shaderCode))
             {
@@ -61,11 +62,26 @@ namespace ShaderPlayground.Core.Compilers.SpirVCross
 
                 FileHelper.DeleteIfExists(outputPath);
 
+                string reflectionJson = null;
+                if (!hasCompilationErrors)
+                {
+                    ProcessHelper.Run(
+                        CommonParameters.GetBinaryPath("spirv-cross", arguments, "spirv-cross.exe"),
+                        $"--output \"{outputPath}\" \"{tempFile.FilePath}\" --reflect {entryPointArg}",
+                        out var _,
+                        out var _);
+
+                    reflectionJson = FileHelper.ReadAllTextIfExists(outputPath);
+
+                    FileHelper.DeleteIfExists(outputPath);
+                }
+
                 return new ShaderCompilerResult(
                     !hasCompilationErrors,
                     new ShaderCode(outputLanguage, textOutput),
                     hasCompilationErrors ? (int?) 1 : null,
                     new ShaderCompilerOutput("Output", outputLanguage, textOutput),
+                    new ShaderCompilerOutput("Reflection", "JSON", reflectionJson),
                     new ShaderCompilerOutput("Errors", null, hasCompilationErrors ? stdError : "<No compilation errors>"));
             }
         }
