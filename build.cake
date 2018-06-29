@@ -223,6 +223,22 @@ Task("Download-LZMA")
     DownloadLzma("1805", "18.05");
   });
 
+Task("Build-ANGLE")
+  .Does(() => {
+    StartProcess(MakeAbsolute(File("./external/angle/build.bat")), new ProcessSettings {
+      WorkingDirectory = MakeAbsolute(Directory("./external/angle"))
+    });
+    
+    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/angle/trunk";
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    CopyFiles(
+      "./external/angle/source/out/Release/shader_translator.exe",
+      binariesFolder,
+      true);
+  });
+
 Task("Build-Fxc-Shim")
   .Does(() => {
     DotNetCorePublish("./shims/ShaderPlayground.Shims.Fxc/ShaderPlayground.Shims.Fxc.csproj", new DotNetCorePublishSettings
@@ -387,6 +403,7 @@ Task("Default")
   .IsDependentOn("Download-HLSLParser")
   .IsDependentOn("Download-zstd")
   .IsDependentOn("Download-LZMA")
+  .IsDependentOn("Build-ANGLE")
   .IsDependentOn("Build")
   .IsDependentOn("Test");
 

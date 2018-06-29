@@ -2,6 +2,7 @@
 {
     public static class CompilerNames
     {
+        public const string Angle = "angle";
         public const string Dxc = "dxc";
         public const string Fxc = "fxc";
         public const string Mali = "mali";

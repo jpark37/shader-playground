@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ShaderPlayground.Core.Compilers.Angle;
 using ShaderPlayground.Core.Compilers.Dxc;
 using ShaderPlayground.Core.Compilers.Fxc;
 using ShaderPlayground.Core.Compilers.Glslang;
@@ -58,6 +59,10 @@ namespace ShaderPlayground.Core
             new SpirvToSmolvCompiler(),
             new XscCompiler(),
             new ZstdCompiler(),
+
+            // Should be first alphabetically, but I want Glslang to be the default,
+            // and I haven't implemented not-first defaults.
+            new AngleCompiler(),
         };
 
         public static IReadOnlyList<ShaderCompilerResult> Compile(

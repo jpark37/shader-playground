@@ -10,3 +10,6 @@
 [submodule "shims/ShaderPlayground.Shims.Smolv/Source"]
 	path = shims/ShaderPlayground.Shims.Smolv/Source
 	url = https://github.com/aras-p/smol-v.git
+[submodule "external/angle/source"]
+	path = external/angle/source
+	url = https://chromium.googlesource.com/angle/angle
