@@ -1,5 +1,10 @@
 # Changelog
 
+## 2018-06-29
+
+* New compiler - [ANGLE](https://github.com/google/angle)
+* Added [JSON reflection backend](https://github.com/KhronosGroup/SPIRV-Cross/issues/544) to SPIRV-Cross compiler
+
 ## 2018-06-28
 
 * New compiler - [spirv-remap](https://github.com/KhronosGroup/glslang/blob/master/README-spirv-remap.txt)

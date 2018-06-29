@@ -10,6 +10,7 @@ Shader Playground is a website for exploring shader compilers.
 
 ### Compilers
 
+* [ANGLE](https://github.com/google/angle)
 * [DXC](https://github.com/Microsoft/DirectXShaderCompiler)
 * [FXC](https://msdn.microsoft.com/en-us/library/windows/desktop/bb232919(v=vs.85).aspx)
 * [Glslang](https://github.com/KhronosGroup/glslang)
