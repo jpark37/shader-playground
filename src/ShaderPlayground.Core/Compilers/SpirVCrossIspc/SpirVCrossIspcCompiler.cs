@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using ShaderPlayground.Core.Util;
+﻿using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.SpirVCrossIspc
 {
@@ -8,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.SpirVCrossIspc
     {
         public string Name { get; } = CompilerNames.SpirVCrossIspc;
         public string DisplayName { get; } = "SPIRV-Cross (ISPC)";
+        public string Url { get; } = "https://github.com/GameTechDev/SPIRV-Cross";
         public string Description { get; } = "Intel fork of SPIRV-Cross with support for compiling to ISPC";
 
         public string[] InputLanguages { get; } = { LanguageNames.SpirV };

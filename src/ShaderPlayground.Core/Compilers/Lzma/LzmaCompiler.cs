@@ -6,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.Lzma
     {
         public string Name { get; } = CompilerNames.LzmaCompress;
         public string DisplayName { get; } = "LZMA";
+        public string Url { get; } = "https://www.7-zip.org/sdk.html";
         public string Description { get; } = "The Lempel–Ziv–Markov chain algorithm (LZMA) is an algorithm used to perform lossless data compression.";
 
         public string[] InputLanguages { get; } = { LanguageNames.Dxbc, LanguageNames.Dxil, LanguageNames.Smolv, LanguageNames.SpirV, LanguageNames.Markv };

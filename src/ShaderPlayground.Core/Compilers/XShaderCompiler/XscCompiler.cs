@@ -6,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.XShaderCompiler
     {
         public string Name { get; } = CompilerNames.XShaderCompiler;
         public string DisplayName { get; } = "XShaderCompiler";
+        public string Url { get; } = "https://github.com/LukasBanana/XShaderCompiler";
         public string Description { get; } = "Lukas Hermanns' XShaderCompiler";
 
         public string[] InputLanguages { get; } = { LanguageNames.Hlsl };

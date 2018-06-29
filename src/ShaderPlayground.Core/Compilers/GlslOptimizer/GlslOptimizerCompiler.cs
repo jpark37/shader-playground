@@ -6,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.GlslOptimizer
     {
         public string Name { get; } = CompilerNames.GlslOptimizer;
         public string DisplayName { get; } = "GLSL optimizer";
+        public string Url { get; } = "https://github.com/aras-p/glsl-optimizer";
         public string Description { get; } = "A C++ library that takes GLSL shaders, does some GPU-independent optimizations on them and outputs GLSL or Metal source back.";
 
         public string[] InputLanguages { get; } = { LanguageNames.Glsl };

@@ -6,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.Smolv
     {
         public string Name { get; } = CompilerNames.SpirvToSmolv;
         public string DisplayName { get; } = "SMOL-V (encode)";
+        public string Url { get; } = "https://github.com/aras-p/smol-v";
         public string Description { get; } = "SMOL-V encodes Vulkan/Khronos SPIR-V format programs into a form that is \"smoller\", and is more compressible.";
 
         public string[] InputLanguages { get; } = { LanguageNames.SpirV };

@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using ShaderPlayground.Core.Util;
+﻿using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Glslang
 {
@@ -8,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.Glslang
     {
         public string Name { get; } = CompilerNames.Glslang;
         public string DisplayName { get; } = "glslang";
+        public string Url { get; } = "https://github.com/KhronosGroup/glslang";
         public string Description { get; } = "Khronos glslangvalidator.exe";
 
         public string[] InputLanguages { get; } = 

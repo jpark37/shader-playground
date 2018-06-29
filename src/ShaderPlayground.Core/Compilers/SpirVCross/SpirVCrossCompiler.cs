@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using ShaderPlayground.Core.Util;
+﻿using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.SpirVCross
 {
@@ -8,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.SpirVCross
     {
         public string Name { get; } = CompilerNames.SpirVCross;
         public string DisplayName { get; } = "SPIRV-Cross";
+        public string Url { get; } = "https://github.com/KhronosGroup/SPIRV-Cross";
         public string Description { get; } = "Khronos spirv-cross.exe";
 
         public string[] InputLanguages { get; } = { LanguageNames.SpirV };

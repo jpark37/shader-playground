@@ -39,6 +39,7 @@ namespace ShaderPlayground.Core.Compilers.Mali
 
         public string Name { get; } = CompilerNames.Mali;
         public string DisplayName { get; } = "Mali offline compiler";
+        public string Url { get; } = "https://developer.arm.com/products/software-development-tools/graphics-development-tools/mali-offline-compiler";
         public string Description { get; } = "ARM Mali offline compiler";
 
         public string[] InputLanguages { get; } = { LanguageNames.Glsl, LanguageNames.SpirV };

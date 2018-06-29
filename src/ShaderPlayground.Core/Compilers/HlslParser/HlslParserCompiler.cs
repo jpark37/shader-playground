@@ -7,6 +7,7 @@ namespace ShaderPlayground.Core.Compilers.HlslParser
     {
         public string Name { get; } = CompilerNames.HlslParser;
         public string DisplayName { get; } = "HLSLParser";
+        public string Url { get; } = "https://github.com/Thekla/hlslparser";
         public string Description { get; } = "HLSL Parser and Translator for HLSL, GLSL, and MSL.";
 
         public string[] InputLanguages { get; } = { LanguageNames.Hlsl };

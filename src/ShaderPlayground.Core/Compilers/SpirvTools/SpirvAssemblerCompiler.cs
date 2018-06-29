@@ -6,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.SpirvTools
     {
         public string Name { get; } = CompilerNames.SpirvAssembler;
         public string DisplayName { get; } = "spirv-as";
+        public string Url { get; } = "https://github.com/KhronosGroup/SPIRV-Tools#assembler-binary-parser-and-disassembler";
         public string Description { get; } = "Reads the assembly language text, and emits the binary form.";
 
         public string[] InputLanguages { get; } = { LanguageNames.SpirvAssembly };

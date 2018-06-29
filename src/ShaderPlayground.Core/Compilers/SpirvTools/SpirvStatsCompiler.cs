@@ -6,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.SpirvTools
     {
         public string Name { get; } = CompilerNames.SpirvStats;
         public string DisplayName { get; } = "spirv-stats";
+        public string Url { get; } = "https://github.com/KhronosGroup/SPIRV-Tools/blob/master/tools/stats/stats.cpp";
         public string Description { get; } = "Shows statistics from SPIR-V files.";
 
         public string[] InputLanguages { get; } = { LanguageNames.SpirV };

@@ -7,6 +7,7 @@ namespace ShaderPlayground.Core.Compilers.Glslang
     {
         public string Name { get; } = CompilerNames.SpirvRemap;
         public string DisplayName { get; } = "spirv-remap";
+        public string Url { get; } = "https://github.com/KhronosGroup/glslang/blob/master/README-spirv-remap.txt";
         public string Description { get; } = "spirv-remap is a utility to improve compression of SPIR-V binary files via entropy reduction, plus optional stripping of debug information and load/store optimization.";
 
         public string[] InputLanguages { get; } = { LanguageNames.SpirV };

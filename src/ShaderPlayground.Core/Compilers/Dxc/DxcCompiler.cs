@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Dxc
@@ -8,6 +7,7 @@ namespace ShaderPlayground.Core.Compilers.Dxc
     {
         public string Name { get; } = CompilerNames.Dxc;
         public string DisplayName { get; } = "Microsoft DXC";
+        public string Url { get; } = "https://github.com/Microsoft/DirectXShaderCompiler";
         public string Description { get; } = "New open-source HLSL-to-DXIL compiler (dxc.exe)";
 
         public string[] InputLanguages { get; } = { LanguageNames.Hlsl };

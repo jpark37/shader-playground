@@ -6,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.Zstd
     {
         public string Name { get; } = CompilerNames.ZstdCompress;
         public string DisplayName { get; } = "Zstandard";
+        public string Url { get; } = "http://zstd.net";
         public string Description { get; } = "Zstandard is a real-time compression algorithm, providing high compression ratios.";
 
         public string[] InputLanguages { get; } = { LanguageNames.Dxbc, LanguageNames.Dxil, LanguageNames.Smolv, LanguageNames.SpirV, LanguageNames.Markv };

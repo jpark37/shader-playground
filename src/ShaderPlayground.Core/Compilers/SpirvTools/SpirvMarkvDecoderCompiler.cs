@@ -6,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.SpirvTools
     {
         public string Name { get; } = CompilerNames.SpirvMarkvDecoder;
         public string DisplayName { get; } = "spirv-markv (decode)";
+        public string Url { get; } = "https://github.com/KhronosGroup/SPIRV-Tools/blob/master/source/comp/markv_codec.cpp";
         public string Description { get; } = "Decodes a SPIR-V binary from a MARK-V binary.";
 
         public string[] InputLanguages { get; } = { LanguageNames.Markv };

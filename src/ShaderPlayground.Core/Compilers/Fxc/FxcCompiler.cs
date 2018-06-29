@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Fxc
@@ -8,6 +7,7 @@ namespace ShaderPlayground.Core.Compilers.Fxc
     {
         public string Name { get; } = CompilerNames.Fxc;
         public string DisplayName { get; } = "Microsoft FXC";
+        public string Url { get; } = "https://msdn.microsoft.com/en-us/library/windows/desktop/bb232919(v=vs.85).aspx";
         public string Description { get; } = "Legacy HLSL-to-DXBC compiler (fxc.exe)";
 
         public string[] InputLanguages { get; } = { LanguageNames.Hlsl };

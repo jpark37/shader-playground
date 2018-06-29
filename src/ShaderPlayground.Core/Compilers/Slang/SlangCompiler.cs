@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using ShaderPlayground.Core.Util;
+﻿using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Slang
 {
@@ -8,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.Slang
     {
         public string Name { get; } = CompilerNames.Slang;
         public string DisplayName { get; } = "Slang";
+        public string Url { get; } = "https://github.com/shader-slang/slang";
         public string Description { get; } = "Slang is a shading language that extends HLSL with new capabilities for building modular, extensible, and high-performance real-time shading systems";
 
         public string[] InputLanguages { get; } = { LanguageNames.Slang, LanguageNames.Hlsl };

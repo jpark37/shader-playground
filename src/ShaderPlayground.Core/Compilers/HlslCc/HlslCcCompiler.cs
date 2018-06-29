@@ -6,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.HlslCc
     {
         public string Name { get; } = CompilerNames.HlslCc;
         public string DisplayName { get; } = "HLSLcc";
+        public string Url { get; } = "https://github.com/Unity-Technologies/HLSLcc";
         public string Description { get; } = "Unity Technologies' DirectX shader bytecode cross compiler";
 
         public string[] InputLanguages { get; } = { LanguageNames.Dxbc };

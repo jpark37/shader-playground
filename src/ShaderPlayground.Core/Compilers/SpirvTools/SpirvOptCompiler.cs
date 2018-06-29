@@ -6,6 +6,7 @@ namespace ShaderPlayground.Core.Compilers.SpirvTools
     {
         public string Name { get; } = CompilerNames.SpirvOpt;
         public string DisplayName { get; } = "spirv-opt";
+        public string Url { get; } = "https://github.com/KhronosGroup/SPIRV-Tools#optimizer";
         public string Description { get; } = "Processes a SPIR-V binary module, applying transformations in the specified order.";
 
         public string[] InputLanguages { get; } = { LanguageNames.SpirV };

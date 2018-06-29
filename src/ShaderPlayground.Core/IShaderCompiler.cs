@@ -4,6 +4,7 @@
     {
         string Name { get; }
         string DisplayName { get; }
+        string Url { get; }
         string Description { get; }
 
         string[] InputLanguages { get; }
