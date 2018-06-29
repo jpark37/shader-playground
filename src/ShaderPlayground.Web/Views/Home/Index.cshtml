@@ -136,9 +136,17 @@
                 <div class="form-group">
                     <label class="lead">Compiler</label>
                     <a data-remove-link class="float-right small" href="#">Remove</a>
-                    <select data-compiler-select="true" class="form-control form-control-sm"></select>
-                    <div data-version-select="true" class="mt-2"></div>
-                    <span class="form-text text-muted small"></span>
+                    <div class="input-group input-group-sm mb-3">
+                        <select data-compiler-select="true" class="form-control"></select>
+                        <div class="input-group-append">
+                            <span class="input-group-text" style="padding:0">
+                                <button data-info-button class="btn btn-sm" type="button" style="border-width:0;color:#777">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div data-version-select="true" class="mt-2 mb-2"></div>
                 </div>
             </div>
             <div class="card-body">
@@ -156,6 +164,33 @@
         <td data-field="output-size"></td>
     </tr>
 </template>
+
+<div class="modal fade" id="compiler-info-dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><a data-link></a></p>
+
+                <p data-description></p>
+
+                <h5>Input formats</h5>
+                <ul data-inputs></ul>
+
+                <h5 data-outputs-header>Output formats</h5>
+                <ul data-outputs></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     window.CompileUrl = "@Url.Action("Compile", "Api")";
