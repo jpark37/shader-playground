@@ -14,6 +14,7 @@ namespace ShaderPlayground.Core.Compilers.SpirVCrossIspc
         public ShaderCompilerParameter[] Parameters { get; } =
         {
             CommonParameters.CreateVersionParameter("spirv-cross-ispc"),
+            new ShaderCompilerParameter("IspcInterfaceName", "ISPC interface name", ShaderCompilerParameterType.TextBox, defaultValue: "Shader"),
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.Ispc })
         };
 
@@ -27,7 +28,7 @@ namespace ShaderPlayground.Core.Compilers.SpirVCrossIspc
 
                 ProcessHelper.Run(
                     CommonParameters.GetBinaryPath("spirv-cross-ispc", arguments, "spirv-cross.exe"),
-                    $"--output \"{outputPath}\" \"{tempFile.FilePath}\" {args}",
+                    $"--ispc-interface-name {arguments.GetString("IspcInterfaceName")} --output \"{outputPath}\" \"{tempFile.FilePath}\" {args}",
                     out var _,
                     out var stdError);
 

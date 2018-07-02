@@ -1,5 +1,9 @@
 # Changelog
 
+## 2018-07-02
+
+* Fixed ISPC interface name (#36)
+
 ## 2018-06-29
 
 * New compiler - [ANGLE](https://github.com/google/angle)
