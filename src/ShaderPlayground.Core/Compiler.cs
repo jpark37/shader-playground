@@ -12,6 +12,7 @@ using ShaderPlayground.Core.Compilers.HlslParser;
 using ShaderPlayground.Core.Compilers.Lzma;
 using ShaderPlayground.Core.Compilers.Mali;
 using ShaderPlayground.Core.Compilers.Miniz;
+using ShaderPlayground.Core.Compilers.Rga;
 using ShaderPlayground.Core.Compilers.Slang;
 using ShaderPlayground.Core.Compilers.Smolv;
 using ShaderPlayground.Core.Compilers.SpirVCross;
@@ -45,6 +46,7 @@ namespace ShaderPlayground.Core
             new LzmaCompiler(),
             new MaliCompiler(),
             new MinizCompiler(),
+            new RgaCompiler(),
             new SlangCompiler(),
             new SmolvToSpirvCompiler(),
             new SpirvAssemblerCompiler(),

@@ -1,6 +1,6 @@
-#addin nuget:?package=SharpZipLib
-#addin nuget:?package=Cake.Compression
-#addin nuget:?package=Cake.Git
+#addin nuget:?package=SharpZipLib&version=1.0.0
+#addin nuget:?package=Cake.Compression&version=0.2.1
+#addin nuget:?package=Cake.Git&version=0.18.0
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -223,6 +223,39 @@ Task("Download-LZMA")
     DownloadLzma("1805", "18.05");
   });
 
+Task("Download-RGA")
+  .Does(() => {
+    var amdDriverExePath = DownloadCompiler(
+      "https://www2.ati.com/drivers/win10-64bit-radeon-software-adrenalin-edition-18.5.1-may23.exe", 
+      "amd-driver", 
+      "18.5.1", 
+      true);
+
+    var amdDriverFolder = "./build/amd-driver/18.5.1";
+    EnsureDirectoryExists(amdDriverFolder);
+    CleanDirectory(amdDriverFolder);
+
+    StartProcess(
+      @"C:\Program Files\7-Zip\7z.exe",
+      $@"e -o""{amdDriverFolder}"" ""{amdDriverExePath}"" Packages\Drivers\Display\WT6A_INF\B328940\atidxx64.dll");
+
+    var driverDllPath = amdDriverFolder + "/atidxx64.dll";
+
+    void DownloadRga(string version)
+    {
+      var binariesFolder = DownloadAndUnzipCompiler(
+        $"https://github.com/GPUOpen-Tools/RGA/releases/download/{version}/rga-windows-x64-{version}.zip",
+        "rga",
+        version,
+        true,
+        "bin/**/*.*");
+
+      CopyFiles(driverDllPath, binariesFolder);
+    }
+    
+    DownloadRga("2.0.1");
+  });
+
 Task("Build-ANGLE")
   .Does(() => {
     StartProcess(MakeAbsolute(File("./external/angle/build.bat")), new ProcessSettings {
@@ -403,6 +436,7 @@ Task("Default")
   .IsDependentOn("Download-HLSLParser")
   .IsDependentOn("Download-zstd")
   .IsDependentOn("Download-LZMA")
+  .IsDependentOn("Download-RGA")
   .IsDependentOn("Build-ANGLE")
   .IsDependentOn("Build")
   .IsDependentOn("Test");

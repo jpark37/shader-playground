@@ -1,5 +1,9 @@
 # Changelog
 
+## 2018-08-25
+
+* New compiler - [RGA](https://github.com/GPUOpen-Tools/RGA)
+
 ## 2018-07-02
 
 * Fixed ISPC interface name (#36)

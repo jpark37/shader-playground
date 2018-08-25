@@ -10,6 +10,8 @@
      * @property {ShaderCompilerParameterType} parameterType
      * @property {string[]} options
      * @property {string} defaultValue
+     * @property {string} description
+     * @property {string} onlyForInputLanguage
      */
 
     /**
@@ -570,6 +572,8 @@
          * @param {ShaderLanguage} inputLanguage
          */
         constructor(inputLanguage) {
+            this.inputLanguage = inputLanguage;
+
             /** @type {HTMLTemplateElement} */
             let template = document.getElementById("compiler-editor-template");
 
@@ -641,7 +645,9 @@
                     this.versionSelect.innerHTML = '';
                     this.versionSelect.appendChild(parameterEditor.element.querySelector("select"));
                 } else {
-                    this.argumentsDiv.appendChild(parameterEditor.element);
+                    if (parameter.onlyForInputLanguage === null || parameter.onlyForInputLanguage === this.inputLanguage.name) {
+                        this.argumentsDiv.appendChild(parameterEditor.element);
+                    }
                 }
             }
 
