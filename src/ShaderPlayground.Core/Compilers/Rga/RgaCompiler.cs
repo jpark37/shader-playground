@@ -43,7 +43,7 @@ namespace ShaderPlayground.Core.Compilers.Rga
             new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "ps_5_0", onlyForInputLanguage: LanguageNames.Hlsl),
 
             // GLSL
-            new ShaderCompilerParameter("GlslTarget", "Target", ShaderCompilerParameterType.ComboBox, TargetOptions, TargetOpenGL, onlyForInputLanguage: LanguageNames.Glsl),
+            new ShaderCompilerParameter("GlslTarget", "Target", ShaderCompilerParameterType.ComboBox, TargetOptions, TargetVulkan, onlyForInputLanguage: LanguageNames.Glsl),
             CommonParameters.GlslShaderStage.WithOnlyForInputLanguage(LanguageNames.Glsl)
         };
 
