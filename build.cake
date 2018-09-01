@@ -256,6 +256,18 @@ Task("Download-RGA")
     DownloadRga("2.0.1");
   });
 
+  Task("Copy-PowerVR")
+  .Does(() => {
+    void CopyVersion(string version)
+    {
+      var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/powervr/{version}";
+      EnsureDirectoryExists(binariesFolder);
+      CleanDirectory(binariesFolder);
+
+      CopyFiles($"./lib/PowerVR/{version}/*.*", binariesFolder);
+    }
+  });
+
 Task("Build-ANGLE")
   .Does(() => {
     StartProcess(MakeAbsolute(File("./external/angle/build.bat")), new ProcessSettings {
@@ -437,6 +449,7 @@ Task("Default")
   .IsDependentOn("Download-zstd")
   .IsDependentOn("Download-LZMA")
   .IsDependentOn("Download-RGA")
+  .IsDependentOn("Copy-PowerVR")
   .IsDependentOn("Build-ANGLE")
   .IsDependentOn("Build")
   .IsDependentOn("Test");
