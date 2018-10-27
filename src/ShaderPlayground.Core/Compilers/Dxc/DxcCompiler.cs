@@ -19,17 +19,42 @@ namespace ShaderPlayground.Core.Compilers.Dxc
             new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "ps_6_0"),
             new ShaderCompilerParameter("DisableOptimizations", "Disable optimizations", ShaderCompilerParameterType.CheckBox),
             new ShaderCompilerParameter("OptimizationLevel", "Optimization level", ShaderCompilerParameterType.ComboBox, OptimizationLevelOptions, "3"),
-            CommonParameters.CreateOutputParameter(new[] { LanguageNames.Dxil, LanguageNames.SpirV })
+            CommonParameters.CreateOutputParameter(new[] { LanguageNames.Dxil, LanguageNames.SpirV }),
+            new ShaderCompilerParameter("SpirvTarget", "SPIR-V target", ShaderCompilerParameterType.ComboBox, SpirvTargetOptions, "vulkan1.0", filter: new ParameterFilter(CommonParameters.OutputLanguageParameterName, LanguageNames.SpirV)),
         };
 
         private static readonly string[] TargetProfileOptions =
         {
             "cs_6_0",
+            "cs_6_1",
+            "cs_6_2",
+            "cs_6_3",
+            "cs_6_4",
             "ds_6_0",
+            "ds_6_1",
+            "ds_6_2",
+            "ds_6_3",
+            "ds_6_4",
             "gs_6_0",
+            "gs_6_1",
+            "gs_6_2",
+            "gs_6_3",
+            "gs_6_4",
             "hs_6_0",
+            "hs_6_1",
+            "hs_6_2",
+            "hs_6_3",
+            "hs_6_4",
             "ps_6_0",
-            "vs_6_0"
+            "ps_6_1",
+            "ps_6_2",
+            "ps_6_3",
+            "ps_6_4",
+            "vs_6_0",
+            "vs_6_1",
+            "vs_6_2",
+            "vs_6_3",
+            "vs_6_4"
         };
 
         private static readonly string[] OptimizationLevelOptions =
@@ -40,6 +65,12 @@ namespace ShaderPlayground.Core.Compilers.Dxc
             "3",
             "4"
         };
+
+        private static readonly string[] SpirvTargetOptions =
+        {
+            "vulkan1.0",
+            "vulkan1.1"
+        };
         
         public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
         {
@@ -49,7 +80,7 @@ namespace ShaderPlayground.Core.Compilers.Dxc
             var optimizationLevel = Convert.ToInt32(arguments.GetString("OptimizationLevel"));
             var outputLanguage = arguments.GetString(CommonParameters.OutputLanguageParameterName);
 
-            var spirv = (outputLanguage == LanguageNames.SpirV) ? "-spirv" : string.Empty;
+            var spirv = (outputLanguage == LanguageNames.SpirV) ? $"-spirv -fspv-target-env={arguments.GetString("SpirvTarget")}" : string.Empty;
 
             using (var tempFile = TempFile.FromShaderCode(shaderCode))
             {

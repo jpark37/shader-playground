@@ -48,6 +48,8 @@ namespace ShaderPlayground.Core
                 languages[0]);
         }
 
+        public const string InputLanguageParameterName = "__InputLanguage";
+
         private const string VersionParameterName = "Version";
 
         public static ShaderCompilerParameter CreateVersionParameter(string binaryFolderName)

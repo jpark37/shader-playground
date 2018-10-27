@@ -17,7 +17,7 @@ namespace ShaderPlayground.Core
 
         public string Description { get; }
 
-        public string OnlyForInputLanguage { get; }
+        public ParameterFilter Filter { get; }
 
         internal ShaderCompilerParameter(
             string name, 
@@ -26,7 +26,7 @@ namespace ShaderPlayground.Core
             string[] options = null, 
             string defaultValue = null, 
             string description = null,
-            string onlyForInputLanguage = null)
+            ParameterFilter filter = null)
         {
             Name = name;
             DisplayName = displayName;
@@ -34,10 +34,10 @@ namespace ShaderPlayground.Core
             Options = options ?? Array.Empty<string>();
             DefaultValue = defaultValue;
             Description = description;
-            OnlyForInputLanguage = onlyForInputLanguage;
+            Filter = filter;
         }
 
-        public ShaderCompilerParameter WithOnlyForInputLanguage(string language)
+        public ShaderCompilerParameter WithFilter(string name, string value)
         {
             return new ShaderCompilerParameter(
                 Name,
@@ -46,7 +46,19 @@ namespace ShaderPlayground.Core
                 Options,
                 DefaultValue,
                 Description,
-                language);
+                new ParameterFilter(name, value));
+        }
+    }
+
+    public sealed class ParameterFilter
+    {
+        public string Name { get; }
+        public string Value { get; }
+
+        public ParameterFilter(string name, string value)
+        {
+            Name = name;
+            Value = value;
         }
     }
 }

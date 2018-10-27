@@ -20,7 +20,7 @@ namespace ShaderPlayground.Core.Compilers.Glslang
             CommonParameters.CreateVersionParameter("glslang"),
             CommonParameters.GlslShaderStage,
             new ShaderCompilerParameter("Target", "Target", ShaderCompilerParameterType.ComboBox, TargetOptions, SpirVVulkan1_0),
-            CommonParameters.HlslEntryPoint.WithOnlyForInputLanguage(LanguageNames.Hlsl),
+            CommonParameters.HlslEntryPoint.WithFilter(CommonParameters.InputLanguageParameterName, LanguageNames.Hlsl),
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.SpirV })
         };
 
