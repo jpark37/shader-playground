@@ -56,17 +56,29 @@ namespace ShaderPlayground.Core
         {
             var fullBinaryFolderName = Path.Combine(AppContext.BaseDirectory, "Binaries", binaryFolderName);
 
-            var versions = Directory
+            var versionDirectories = Directory
                 .GetDirectories(fullBinaryFolderName)
-                .Select(x => new DirectoryInfo(x).Name)
+                .Select(x => new DirectoryInfo(x));
+
+            var versions = versionDirectories
+                .Select(x => x.Name)
                 .ToArray();
+
+            var trunkDescription = string.Empty;
+            var trunkVersion = versionDirectories.FirstOrDefault(x => x.Name == "trunk");
+            if (trunkVersion != null)
+            {
+                var trunkVersionLastUpdated = trunkVersion.LastWriteTimeUtc;
+                trunkDescription = $"Updated from trunk on {trunkVersionLastUpdated.ToString("yyyy-MM-dd")}";
+            }
 
             return new ShaderCompilerParameter(
                 VersionParameterName,
                 "Version",
                 ShaderCompilerParameterType.ComboBox,
                 versions,
-                versions.Last());
+                versions.Last(),
+                trunkDescription);
         }
 
         public static string GetBinaryPath(string binaryFolderName, ShaderCompilerArguments arguments, string executableFileName)

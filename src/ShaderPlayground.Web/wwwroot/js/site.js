@@ -83,6 +83,9 @@
             this.inputElement.id = inputElementId;
             this.inputElement.title = parameter.displayName;
 
+            this.descriptionElement = this.element.querySelector("small");
+            this.descriptionElement.innerText = parameter.description;
+
             initializeElementCallback(this.inputElement);
         }
 
@@ -605,6 +608,7 @@
             this.compilerSelect = compilerSelect;
 
             this.versionSelect = element.querySelector("div[data-version-select]");
+            this.versionDescription = element.querySelector("[data-version-description]");
 
             this.infoButton = element.querySelector("button[data-info-button]");
             this.cardBody = element.querySelector(".card-body");
@@ -651,6 +655,7 @@
                 if (parameterEditor.isVersion) {
                     this.versionSelect.innerHTML = '';
                     this.versionSelect.appendChild(parameterEditor.element.querySelector("select"));
+                    this.versionDescription.innerText = parameter.description;
                 } else {
                     var newlyAddedElement;
                     if (parameter.filter === null || parameter.filter.name !== "__InputLanguage" || parameter.filter.value === this.inputLanguage.name) {
