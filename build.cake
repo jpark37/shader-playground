@@ -163,6 +163,7 @@ Task("Download-Slang")
     DownloadSlang("0.10.24");
     DownloadSlang("0.10.25");
     DownloadSlang("0.10.26");
+    DownloadSlang("0.11.18");
   });
 
 Task("Download-HLSLParser")
