@@ -39,6 +39,11 @@ namespace ShaderPlayground.Core
 
         public ShaderCompilerParameter WithFilter(string name, string value)
         {
+            return WithFilter(new ParameterFilter(name, value));
+        }
+
+        public ShaderCompilerParameter WithFilter(ParameterFilter filter)
+        {
             return new ShaderCompilerParameter(
                 Name,
                 DisplayName,
@@ -46,7 +51,7 @@ namespace ShaderPlayground.Core
                 Options,
                 DefaultValue,
                 Description,
-                new ParameterFilter(name, value));
+                filter);
         }
     }
 

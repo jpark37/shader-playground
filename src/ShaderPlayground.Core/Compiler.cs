@@ -9,6 +9,7 @@ using ShaderPlayground.Core.Compilers.GlslOptimizer;
 using ShaderPlayground.Core.Compilers.Hlsl2Glsl;
 using ShaderPlayground.Core.Compilers.HlslCc;
 using ShaderPlayground.Core.Compilers.HlslParser;
+using ShaderPlayground.Core.Compilers.IntelShaderAnalyzer;
 using ShaderPlayground.Core.Compilers.Lzma;
 using ShaderPlayground.Core.Compilers.Mali;
 using ShaderPlayground.Core.Compilers.Miniz;
@@ -44,6 +45,7 @@ namespace ShaderPlayground.Core
             new Hlsl2GlslCompiler(),
             new HlslCcCompiler(),
             new HlslParserCompiler(),
+            new IntelShaderAnalyzerCompiler(),
             new LzmaCompiler(),
             new MaliCompiler(),
             new MinizCompiler(),

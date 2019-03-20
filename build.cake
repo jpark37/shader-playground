@@ -257,6 +257,16 @@ Task("Download-RGA")
     DownloadRga("2.0.1");
   });
 
+Task("Download-IntelShaderAnalyzer")
+  .Does(() => {
+    DownloadAndUnzipCompiler(
+      "https://github.com/GameTechDev/IntelShaderAnalyzer/releases/download/v1/IntelShaderAnalyzer_v1.zip",
+      "intelshaderanalyzer",
+      "v1",
+      true,
+      "IntelShaderAnalyzer/*.*");
+  });
+
   Task("Copy-PowerVR")
   .Does(() => {
     void CopyVersion(string version)
@@ -450,6 +460,7 @@ Task("Default")
   .IsDependentOn("Download-zstd")
   .IsDependentOn("Download-LZMA")
   .IsDependentOn("Download-RGA")
+  .IsDependentOn("Download-IntelShaderAnalyzer")
   .IsDependentOn("Copy-PowerVR")
   .IsDependentOn("Build-ANGLE")
   .IsDependentOn("Build")
