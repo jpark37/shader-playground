@@ -11,7 +11,7 @@ namespace ShaderPlayground.Core.Compilers.Rga
         static RgaCompiler()
         {
             ProcessHelper.Run(
-                Path.Combine(AppContext.BaseDirectory, "Binaries", "rga", "2.0.1", "rga.exe"),
+                Path.Combine(AppContext.BaseDirectory, "Binaries", "rga", "2.1", "rga.exe"),
                 "-s hlsl --list-asics",
                 out var stdOutput,
                 out var _);
@@ -78,6 +78,10 @@ namespace ShaderPlayground.Core.Compilers.Rga
 
         public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
         {
+            var version = Version.Parse(arguments.GetString(CommonParameters.VersionParameterName));
+
+            var isVersion21OrLater = version >= new Version(2, 1);
+
             var asic = arguments.GetString("Asic");
             var entryPoint = arguments.GetString("EntryPoint");
             var targetProfile = arguments.GetString("TargetProfile");
@@ -106,13 +110,13 @@ namespace ShaderPlayground.Core.Compilers.Rga
                                 break;
 
                             case TargetVulkan:
-                                args += $" -s vulkan --{shaderStage}";
+                                args += $" -s {(isVersion21OrLater ? "vk-offline" : "vulkan")} --{shaderStage}";
                                 break;
                         }
                         break;
 
                     case LanguageNames.SpirvAssembly:
-                        args += $" -s vulkan-spv-txt --{shaderStage}";
+                        args += $" -s {(isVersion21OrLater ? "vk-spv-txt-offline" : "vulkan-spv-text")} --{shaderStage}";
                         break;
                 }
 
@@ -125,6 +129,8 @@ namespace ShaderPlayground.Core.Compilers.Rga
                     out var stdOutput,
                     out _);
 
+                var actualOutputPathPrefix = Path.GetDirectoryName(tempFile.FilePath);
+
                 string GetActualOutputPath(string extension)
                 {
                     if (extension == "analysis" && shaderCode.Language == LanguageNames.Hlsl)
@@ -134,13 +140,27 @@ namespace ShaderPlayground.Core.Compilers.Rga
                             $"{entryPoint}_{Path.GetFileName(tempFile.FilePath)}.analysis");
                     }
 
-                    var name = shaderCode.Language == LanguageNames.Hlsl
-                        ? entryPoint
-                        : shaderStage;
+                    switch (shaderCode.Language)
+                    {
+                        case LanguageNames.Hlsl:
+                            return Path.Combine(
+                                actualOutputPathPrefix,
+                                $"{asic}_{entryPoint}_{Path.GetFileName(tempFile.FilePath)}.{extension}");
 
-                    return Path.Combine(
-                        Path.GetDirectoryName(tempFile.FilePath),
-                        $"{asic}_{name}_{Path.GetFileName(tempFile.FilePath)}.{extension}");
+                        default:
+                            if (isVersion21OrLater)
+                            {
+                                return Path.Combine(
+                                    actualOutputPathPrefix,
+                                    $"{asic}_{Path.GetFileName(tempFile.FilePath)}_{shaderStage}.{extension}");
+                            }
+                            else
+                            {
+                                return Path.Combine(
+                                    actualOutputPathPrefix,
+                                    $"{asic}_{shaderStage}_{Path.GetFileName(tempFile.FilePath)}.{extension}");
+                            }
+                    }
                 }
 
                 outputAnalysisPath = GetActualOutputPath("analysis");

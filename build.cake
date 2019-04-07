@@ -236,25 +236,36 @@ Task("Download-RGA")
     EnsureDirectoryExists(amdDriverFolder);
     CleanDirectory(amdDriverFolder);
 
-    StartProcess(
-      @"C:\Program Files\7-Zip\7z.exe",
-      $@"e -o""{amdDriverFolder}"" ""{amdDriverExePath}"" Packages\Drivers\Display\WT6A_INF\B328940\atidxx64.dll");
+    void ExtractFile(string fileName)
+    {
+      StartProcess(
+        @"C:\Program Files\7-Zip\7z.exe",
+        $@"e -o""{amdDriverFolder}"" ""{amdDriverExePath}"" Packages\Drivers\Display\WT6A_INF\B328940\{fileName}");
+    }
 
-    var driverDllPath = amdDriverFolder + "/atidxx64.dll";
+    ExtractFile("atidxx64.dll");
+    ExtractFile("amdvlk64.dll");
 
-    void DownloadRga(string version)
+    var driverDllPaths = new[]
+    {
+      amdDriverFolder + "/atidxx64.dll",
+      amdDriverFolder + "/amdvlk64.dll"
+    };
+
+    void DownloadRga(string version, string filesToCopy)
     {
       var binariesFolder = DownloadAndUnzipCompiler(
         $"https://github.com/GPUOpen-Tools/RGA/releases/download/{version}/rga-windows-x64-{version}.zip",
         "rga",
         version,
         true,
-        "bin/**/*.*");
+        filesToCopy);
 
-      CopyFiles(driverDllPath, binariesFolder);
+      CopyFiles(driverDllPaths, binariesFolder);
     }
     
-    DownloadRga("2.0.1");
+    DownloadRga("2.0.1", "bin/**/*.*");
+    DownloadRga("2.1", "**/*.*");
   });
 
 Task("Download-IntelShaderAnalyzer")
