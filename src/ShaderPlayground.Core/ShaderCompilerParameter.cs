@@ -39,7 +39,12 @@ namespace ShaderPlayground.Core
 
         public ShaderCompilerParameter WithFilter(string name, string value)
         {
-            return WithFilter(new ParameterFilter(name, value));
+            return WithFilter(new ParameterFilter(name, new[] { value }));
+        }
+
+        public ShaderCompilerParameter WithFilter(string name, string[] values)
+        {
+            return WithFilter(new ParameterFilter(name, values));
         }
 
         public ShaderCompilerParameter WithFilter(ParameterFilter filter)
@@ -58,12 +63,18 @@ namespace ShaderPlayground.Core
     public sealed class ParameterFilter
     {
         public string Name { get; }
-        public string Value { get; }
+        public string[] Values { get; }
 
-        public ParameterFilter(string name, string value)
+        public ParameterFilter(string name, string[] values)
         {
             Name = name;
-            Value = value;
+            Values = values;
+        }
+
+        public ParameterFilter(string name, string value)
+            : this(name, new[] {  value })
+        {
+            
         }
     }
 }

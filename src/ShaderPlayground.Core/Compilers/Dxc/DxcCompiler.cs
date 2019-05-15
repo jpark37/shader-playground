@@ -17,6 +17,7 @@ namespace ShaderPlayground.Core.Compilers.Dxc
             CommonParameters.CreateVersionParameter("dxc"),
             CommonParameters.HlslEntryPoint,
             new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "ps_6_0"),
+            new ShaderCompilerParameter("Enable16BitTypes", "Enable 16-bit types", ShaderCompilerParameterType.CheckBox, description: "Enable 16bit types and disable min precision types. Available in HLSL 2018 and shader model 6.2", filter: new ParameterFilter("TargetProfile", Enable16BitTypesFilters)),
             new ShaderCompilerParameter("DisableOptimizations", "Disable optimizations", ShaderCompilerParameterType.CheckBox),
             new ShaderCompilerParameter("OptimizationLevel", "Optimization level", ShaderCompilerParameterType.ComboBox, OptimizationLevelOptions, "3"),
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.Dxil, LanguageNames.SpirV }),
@@ -71,7 +72,29 @@ namespace ShaderPlayground.Core.Compilers.Dxc
             "vulkan1.0",
             "vulkan1.1"
         };
-        
+
+        private static readonly string[] Enable16BitTypesFilters =
+        {
+            "cs_6_2",
+            "cs_6_3",
+            "cs_6_4",
+            "ds_6_2",
+            "ds_6_3",
+            "ds_6_4",
+            "gs_6_2",
+            "gs_6_3",
+            "gs_6_4",
+            "hs_6_2",
+            "hs_6_3",
+            "hs_6_4",
+            "ps_6_2",
+            "ps_6_3",
+            "ps_6_4",
+            "vs_6_2",
+            "vs_6_3",
+            "vs_6_4"
+        };
+
         public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
         {
             var entryPoint = arguments.GetString("EntryPoint");
@@ -93,6 +116,11 @@ namespace ShaderPlayground.Core.Compilers.Dxc
                 if (disableOptimizations)
                 {
                     args += " -Od";
+                }
+
+                if (arguments.GetBoolean("Enable16BitTypes"))
+                {
+                    args += " -enable-16bit-types";
                 }
 
                 args += $" \"{tempFile.FilePath}\"";
