@@ -18,10 +18,27 @@ namespace ShaderPlayground.Core.Compilers.Glslang
         public ShaderCompilerParameter[] Parameters { get; } =
         {
             CommonParameters.CreateVersionParameter("glslang"),
-            CommonParameters.GlslShaderStage,
+            new ShaderCompilerParameter("ShaderStage", "Shader stage", ShaderCompilerParameterType.ComboBox, ShaderStageOptions, defaultValue: "frag"),
             new ShaderCompilerParameter("Target", "Target", ShaderCompilerParameterType.ComboBox, TargetOptions, SpirVVulkan1_0),
             CommonParameters.HlslEntryPoint.WithFilter(CommonParameters.InputLanguageParameterName, LanguageNames.Hlsl),
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.SpirV })
+        };
+
+        private static readonly string[] ShaderStageOptions =
+        {
+            "vert",
+            "tesc",
+            "tese",
+            "geom",
+            "frag",
+            "comp",
+            "mesh",
+            "task",
+            "rint",
+            "rahit",
+            "rchit",
+            "rmiss",
+            "rcall",
         };
 
         private const string SpirVVulkan1_0 = "Vulkan 1.0";
