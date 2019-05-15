@@ -68,7 +68,7 @@ namespace ShaderPlayground.Core
             var trunkVersion = versionDirectories.FirstOrDefault(x => x.Name == "trunk");
             if (trunkVersion != null)
             {
-                var trunkVersionLastUpdated = trunkVersion.LastWriteTimeUtc;
+                var trunkVersionLastUpdated = trunkVersion.EnumerateFiles().Max(x => x.LastWriteTimeUtc);
                 trunkDescription = $"Updated from trunk on {trunkVersionLastUpdated.ToString("yyyy-MM-dd")}";
             }
 
