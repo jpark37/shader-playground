@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Dxc
@@ -15,8 +16,8 @@ namespace ShaderPlayground.Core.Compilers.Dxc
         public ShaderCompilerParameter[] Parameters { get; } = new[]
         {
             CommonParameters.CreateVersionParameter("dxc"),
-            CommonParameters.HlslEntryPoint,
             new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "ps_6_0"),
+            CommonParameters.HlslEntryPoint.WithFilter("TargetProfile", EntryPointFilter),
             new ShaderCompilerParameter("Enable16BitTypes", "Enable 16-bit types", ShaderCompilerParameterType.CheckBox, description: "Enable 16bit types and disable min precision types. Available in HLSL 2018 and shader model 6.2", filter: new ParameterFilter("TargetProfile", Enable16BitTypesFilters)),
             new ShaderCompilerParameter("DisableOptimizations", "Disable optimizations", ShaderCompilerParameterType.CheckBox),
             new ShaderCompilerParameter("OptimizationLevel", "Optimization level", ShaderCompilerParameterType.ComboBox, OptimizationLevelOptions, "3"),
@@ -24,7 +25,7 @@ namespace ShaderPlayground.Core.Compilers.Dxc
             new ShaderCompilerParameter("SpirvTarget", "SPIR-V target", ShaderCompilerParameterType.ComboBox, SpirvTargetOptions, "vulkan1.0", filter: new ParameterFilter(CommonParameters.OutputLanguageParameterName, LanguageNames.SpirV)),
         };
 
-        private static readonly string[] TargetProfileOptions =
+        private static readonly string[] EntryPointFilter =
         {
             "cs_6_0",
             "cs_6_1",
@@ -55,8 +56,14 @@ namespace ShaderPlayground.Core.Compilers.Dxc
             "vs_6_1",
             "vs_6_2",
             "vs_6_3",
-            "vs_6_4"
+            "vs_6_4",
         };
+
+        private static readonly string[] TargetProfileOptions = EntryPointFilter.Concat(new[]
+        {
+            "lib_6_3",
+            "lib_6_4",
+        }).ToArray();
 
         private static readonly string[] OptimizationLevelOptions =
         {
@@ -92,7 +99,9 @@ namespace ShaderPlayground.Core.Compilers.Dxc
             "ps_6_4",
             "vs_6_2",
             "vs_6_3",
-            "vs_6_4"
+            "vs_6_4",
+            "lib_6_3",
+            "lib_6_4",
         };
 
         public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
@@ -111,7 +120,12 @@ namespace ShaderPlayground.Core.Compilers.Dxc
                 var fePath = $"{tempFile.FilePath}.fe";
                 var foPath = $"{tempFile.FilePath}.fo";
 
-                var args = $"{spirv} -T {targetProfile} -E {entryPoint} -O{optimizationLevel} -Fc \"{fcPath}\" -Fe \"{fePath}\" -Fo \"{foPath}\"";
+                var args = $"{spirv} -T {targetProfile} -O{optimizationLevel} -Fc \"{fcPath}\" -Fe \"{fePath}\" -Fo \"{foPath}\"";
+
+                if (!targetProfile.StartsWith("lib_"))
+                {
+                    args += $" -E {entryPoint}";
+                }
 
                 if (disableOptimizations)
                 {
