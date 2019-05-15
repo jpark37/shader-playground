@@ -169,7 +169,7 @@
     /** @type {CodeMirror.Editor} */
     var outputEditor = null;
 
-    const codeMirrorTheme = "duotone-light";
+    const codeMirrorTheme = "default";
 
     var codeEditor = CodeMirror.fromTextArea(document.getElementById('code'), {
         mode: "x-shader/hlsl",
