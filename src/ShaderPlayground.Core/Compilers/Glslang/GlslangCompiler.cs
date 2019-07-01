@@ -34,6 +34,7 @@ namespace ShaderPlayground.Core.Compilers.Glslang
             "comp",
             "mesh",
             "task",
+            "rgen",
             "rint",
             "rahit",
             "rchit",
