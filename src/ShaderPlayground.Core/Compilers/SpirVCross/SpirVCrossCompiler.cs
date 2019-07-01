@@ -15,7 +15,7 @@ namespace ShaderPlayground.Core.Compilers.SpirVCross
         {
             CommonParameters.CreateVersionParameter("spirv-cross"),
             //CommonParameters.GlslShaderStage,
-            CommonParameters.HlslEntryPoint, // TODO: Only visible when input language is HLSL?
+            CommonParameters.HlslEntryPoint.WithDisplayName("Entry point override").WithDefaultValue(string.Empty), // TODO: Only visible when input language is HLSL?
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.Glsl, LanguageNames.Metal, LanguageNames.Hlsl, LanguageNames.Cpp })
         };
 
@@ -43,8 +43,13 @@ namespace ShaderPlayground.Core.Compilers.SpirVCross
                     break;
             }
 
-            var entryPointArg = $" --entry {arguments.GetString("EntryPoint")}";
-            args += entryPointArg;
+            var entryPointArg = string.Empty;
+            var entryPoint = arguments.GetString("EntryPoint");
+            if (!string.IsNullOrWhiteSpace(entryPoint))
+            {
+                entryPointArg = $" --entry {entryPoint}";
+                args += entryPointArg;
+            }
 
             using (var tempFile = TempFile.FromShaderCode(shaderCode))
             {

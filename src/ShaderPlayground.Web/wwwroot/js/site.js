@@ -719,7 +719,7 @@
                         continue;
                     }
                     let previousParameterEditor = previousCompiler.parameterEditors.find(x => x.parameter.name === parameterEditor.parameter.name);
-                    if (previousParameterEditor !== undefined) {
+                    if (previousParameterEditor !== undefined && previousParameterEditor.element.parentElement !== null) {
                         parameterEditor.value = previousParameterEditor.value;
                     }
                 }

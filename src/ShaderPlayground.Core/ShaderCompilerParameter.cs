@@ -58,6 +58,30 @@ namespace ShaderPlayground.Core
                 Description,
                 filter);
         }
+
+        public ShaderCompilerParameter WithDisplayName(string displayName)
+        {
+            return new ShaderCompilerParameter(
+                Name,
+                displayName,
+                ParameterType,
+                Options,
+                DefaultValue,
+                Description,
+                Filter);
+        }
+
+        public ShaderCompilerParameter WithDefaultValue(string defaultValue)
+        {
+            return new ShaderCompilerParameter(
+                Name,
+                DisplayName,
+                ParameterType,
+                Options,
+                defaultValue,
+                Description,
+                Filter);
+        }
     }
 
     public sealed class ParameterFilter
