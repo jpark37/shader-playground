@@ -16,7 +16,17 @@ namespace ShaderPlayground.Core.Compilers.SpirVCross
             CommonParameters.CreateVersionParameter("spirv-cross"),
             //CommonParameters.GlslShaderStage,
             CommonParameters.HlslEntryPoint.WithDisplayName("Entry point override").WithDefaultValue(string.Empty), // TODO: Only visible when input language is HLSL?
-            CommonParameters.CreateOutputParameter(new[] { LanguageNames.Glsl, LanguageNames.Metal, LanguageNames.Hlsl, LanguageNames.Cpp })
+            CommonParameters.CreateOutputParameter(new[] { LanguageNames.Glsl, LanguageNames.Metal, LanguageNames.Hlsl, LanguageNames.Cpp }),
+            new ShaderCompilerParameter("ShaderModel", "Shader model", ShaderCompilerParameterType.ComboBox, ShaderModelOptions, "50").WithFilter(CommonParameters.OutputLanguageParameterName, LanguageNames.Hlsl),
+        };
+
+        private static readonly string[] ShaderModelOptions =
+        {
+            "30",
+            "40",
+            "50",
+            "51",
+            "60"
         };
 
         public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
@@ -36,6 +46,7 @@ namespace ShaderPlayground.Core.Compilers.SpirVCross
 
                 case LanguageNames.Hlsl:
                     args += " --hlsl";
+                    args += $" --shader-model {arguments.GetString("ShaderModel")}";
                     break;
 
                 case LanguageNames.Cpp:

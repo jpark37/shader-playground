@@ -24,7 +24,13 @@ string DownloadCompiler(string url, string binariesFolderName, string version, b
   return tempFileName;
 }
 
-string DownloadAndUnzipCompiler(string url, string binariesFolderName, string version, bool cache)
+enum ZipFormat
+{
+  Zip,
+  GZip
+}
+
+string DownloadAndUnzipCompiler(string url, string binariesFolderName, string version, bool cache, ZipFormat format = ZipFormat.Zip)
 {
   var tempFileName = DownloadCompiler(url, binariesFolderName, version, cache);
   var unzippedFolder = $"./build/{binariesFolderName}/{version}";
@@ -32,14 +38,26 @@ string DownloadAndUnzipCompiler(string url, string binariesFolderName, string ve
   EnsureDirectoryExists(unzippedFolder);
   CleanDirectory(unzippedFolder);
 
-  ZipUncompress(tempFileName, unzippedFolder);
+  switch (format)
+  {
+    case ZipFormat.Zip:
+      ZipUncompress(tempFileName, unzippedFolder);
+      break;
+
+    case ZipFormat.GZip:
+      GZipUncompress(tempFileName, unzippedFolder);
+      break;
+
+    default:
+      throw new InvalidOperationException();
+  }
 
   return unzippedFolder;
 }
 
-string DownloadAndUnzipCompiler(string url, string binariesFolderName, string version, bool cache, string filesToCopy)
+string DownloadAndUnzipCompiler(string url, string binariesFolderName, string version, bool cache, string filesToCopy, ZipFormat format = ZipFormat.Zip)
 {
-  var unzippedFolder = DownloadAndUnzipCompiler(url, binariesFolderName, version, cache);
+  var unzippedFolder = DownloadAndUnzipCompiler(url, binariesFolderName, version, cache, format);
 
   var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/{binariesFolderName}/{version}";
   EnsureDirectoryExists(binariesFolder);
@@ -85,13 +103,35 @@ Task("Download-Mali-Offline-Compiler")
 
 Task("Download-SPIRV-Cross")
   .Does(() => {
+    void DownloadSpirvCross(string version, string hash)
+    {
+      DownloadAndUnzipCompiler(
+        $"https://github.com/KhronosGroup/SPIRV-Cross/releases/download/2019-06-21/spirv-cross-vs2017-64bit-{hash}.tar.gz",
+        "spirv-cross",
+        version,
+        true,
+        "bin/spirv-cross.exe",
+        ZipFormat.GZip);
+    }
+    
+    DownloadSpirvCross("2019-06-21", "b4e0163749");
+
     var unzippedFolder = DownloadAndUnzipCompiler(
       "https://github.com/KhronosGroup/SPIRV-Cross/archive/master.zip",
       "spirv-cross",
       "trunk",
       false);
 
-    MSBuild(unzippedFolder + "/SPIRV-Cross-master/msvc/SPIRV-Cross.vcxproj", new MSBuildSettings()
+    var srcDirectory = $"{unzippedFolder}/SPIRV-Cross-master";
+    StartProcess(
+        @"cmake.exe",
+        new ProcessSettings
+        {
+          Arguments = ".",
+          WorkingDirectory = srcDirectory
+        });
+
+    MSBuild(srcDirectory + "/SPIRV-Cross.vcxproj", new MSBuildSettings()
       .SetConfiguration(configuration)
       .WithProperty("WindowsTargetPlatformVersion", "10.0.17134.0")
       .WithProperty("PlatformToolset", "v141"));
@@ -101,7 +141,7 @@ Task("Download-SPIRV-Cross")
     CleanDirectory(binariesFolder);
 
     CopyFiles(
-      $"{unzippedFolder}/SPIRV-Cross-master/msvc/{configuration}/SPIRV-Cross.exe",
+      $"{srcDirectory}/{configuration}/SPIRV-Cross.exe",
       binariesFolder,
       true);
   });
