@@ -79,7 +79,7 @@ namespace ShaderPlayground.Core.Compilers.SpirVCross
                 return new ShaderCompilerResult(
                     !hasCompilationErrors,
                     new ShaderCode(outputLanguage, textOutput),
-                    hasCompilationErrors ? (int?) 1 : null,
+                    hasCompilationErrors ? (int?) 2 : null,
                     new ShaderCompilerOutput("Output", outputLanguage, textOutput),
                     new ShaderCompilerOutput("Reflection", "JSON", reflectionJson),
                     new ShaderCompilerOutput("Errors", null, hasCompilationErrors ? stdError : "<No compilation errors>"));

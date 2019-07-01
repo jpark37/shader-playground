@@ -386,7 +386,7 @@
                                 });
                         } else {
                             outputEditor = CodeMirror(outputContainerDiv, {
-                                value: output.value,
+                                value: output.value || "",
                                 mode: getCodeMirrorMode(output.language),
                                 theme: codeMirrorTheme,
                                 matchBrackets: true,
