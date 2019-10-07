@@ -5,7 +5,7 @@ namespace ShaderPlayground.Core.Util
 {
     internal static class ProcessHelper
     {
-        public static void Run(string fileName, string arguments, out string stdOutput, out string stdError)
+        public static bool Run(string fileName, string arguments, out string stdOutput, out string stdError)
         {
             var processStartInfo = new ProcessStartInfo
             {
@@ -30,6 +30,8 @@ namespace ShaderPlayground.Core.Util
                 process.WaitForExit(4000);
 
                 stdOutput = stdOutputTemp;
+
+                return process.ExitCode == 0;
             }
         }
     }

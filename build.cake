@@ -267,12 +267,12 @@ Task("Download-LZMA")
 Task("Download-RGA")
   .Does(() => {
     var amdDriverExePath = DownloadCompiler(
-      "https://www2.ati.com/drivers/win10-64bit-radeon-software-adrenalin-edition-18.5.1-may23.exe", 
+      "https://drivers.amd.com/drivers/win10-64bit-radeon-software-adrenalin-2019-edition-19.9.2-sep23.exe",
       "amd-driver", 
-      "18.5.1", 
+      "19.9.2", 
       true);
 
-    var amdDriverFolder = "./build/amd-driver/18.5.1";
+    var amdDriverFolder = "./build/amd-driver/19.9.2";
     EnsureDirectoryExists(amdDriverFolder);
     CleanDirectory(amdDriverFolder);
 
@@ -280,7 +280,7 @@ Task("Download-RGA")
     {
       StartProcess(
         @"C:\Program Files\7-Zip\7z.exe",
-        $@"e -o""{amdDriverFolder}"" ""{amdDriverExePath}"" Packages\Drivers\Display\WT6A_INF\B328940\{fileName}");
+        $@"e -o""{amdDriverFolder}"" ""{amdDriverExePath}"" Packages\Drivers\Display\WT6A_INF\B346681\{fileName}");
     }
 
     ExtractFile("atidxx64.dll");
@@ -306,6 +306,7 @@ Task("Download-RGA")
     
     DownloadRga("2.0.1", "bin/**/*.*");
     DownloadRga("2.1", "**/*.*");
+    DownloadRga("2.2", "**/*.*");
   });
 
 Task("Download-IntelShaderAnalyzer")

@@ -11,8 +11,8 @@ namespace ShaderPlayground.Core.Compilers.Rga
         static RgaCompiler()
         {
             ProcessHelper.Run(
-                Path.Combine(AppContext.BaseDirectory, "Binaries", "rga", "2.1", "rga.exe"),
-                "-s hlsl --list-asics",
+                Path.Combine(AppContext.BaseDirectory, "Binaries", "rga", "2.2", "rga.exe"),
+                "-s dx11 --list-asics",
                 out var stdOutput,
                 out var _);
 
@@ -81,6 +81,7 @@ namespace ShaderPlayground.Core.Compilers.Rga
             var version = Version.Parse(arguments.GetString(CommonParameters.VersionParameterName));
 
             var isVersion21OrLater = version >= new Version(2, 1);
+            var isVersion22OrLater = version >= new Version(2, 2);
 
             var asic = arguments.GetString("Asic");
             var entryPoint = arguments.GetString("EntryPoint");
@@ -90,16 +91,19 @@ namespace ShaderPlayground.Core.Compilers.Rga
             using (var tempFile = TempFile.FromShaderCode(shaderCode))
             {
                 var outputAnalysisPath = $"{tempFile.FilePath}.analysis";
+                var ilPath = $"{tempFile.FilePath}.il";
                 var isaPath = $"{tempFile.FilePath}.isa";
                 var liveRegPath = $"{tempFile.FilePath}.livereg";
                 var cfgPath = $"{tempFile.FilePath}.cfg";
 
-                var args = $"--asic \"{asic}\" --analysis \"{outputAnalysisPath}\" --isa \"{isaPath}\" --livereg \"{liveRegPath}\" --cfg \"{cfgPath}\"";
+                var args = $"--asic \"{asic}\" --il \"{ilPath}\" --line-numbers --isa \"{isaPath}\" --livereg \"{liveRegPath}\" --cfg \"{cfgPath}\"";
 
                 switch (shaderCode.Language)
                 {
                     case LanguageNames.Hlsl:
-                        args += $" -s hlsl --profile {targetProfile} --function {entryPoint}";
+                        args += isVersion22OrLater ? $" -s dx11" : " -s hlsl";
+                        args += $" --profile {targetProfile} --function {entryPoint}";
+                        args += $" \"{tempFile.FilePath}\"";
                         break;
 
                     case LanguageNames.Glsl:
@@ -113,17 +117,17 @@ namespace ShaderPlayground.Core.Compilers.Rga
                                 args += $" -s {(isVersion21OrLater ? "vk-offline" : "vulkan")} --{shaderStage}";
                                 break;
                         }
+                        args += $" \"{tempFile.FilePath}\"";
                         break;
 
                     case LanguageNames.SpirvAssembly:
                         args += $" -s {(isVersion21OrLater ? "vk-spv-txt-offline" : "vulkan-spv-text")} --{shaderStage}";
+                        args += $" \"{tempFile.FilePath}\"";
                         break;
                 }
 
-                args += $" \"{tempFile.FilePath}\"";
-
                 var rgaPath = CommonParameters.GetBinaryPath("rga", arguments, "rga.exe");
-                ProcessHelper.Run(
+                var result = ProcessHelper.Run(
                     rgaPath,
                     args,
                     out var stdOutput,
@@ -164,29 +168,33 @@ namespace ShaderPlayground.Core.Compilers.Rga
                 }
 
                 outputAnalysisPath = GetActualOutputPath("analysis");
+                ilPath = GetActualOutputPath("il");
                 isaPath = GetActualOutputPath("isa");
                 liveRegPath = GetActualOutputPath("livereg");
                 cfgPath = GetActualOutputPath("cfg");
 
                 var outputAnalysis = FileHelper.ReadAllTextIfExists(outputAnalysisPath);
+                var il = FileHelper.ReadAllTextIfExists(ilPath);
                 var isa = FileHelper.ReadAllTextIfExists(isaPath);
                 var liveReg = FileHelper.ReadAllTextIfExists(liveRegPath);
                 var cfg = FileHelper.ReadAllTextIfExists(cfgPath);
 
                 FileHelper.DeleteIfExists(outputAnalysisPath);
+                FileHelper.DeleteIfExists(ilPath);
                 FileHelper.DeleteIfExists(isaPath);
                 FileHelper.DeleteIfExists(liveRegPath);
                 FileHelper.DeleteIfExists(cfgPath);
 
-                var selectedOutputIndex = stdOutput.Contains("\nError: ") || stdOutput.Contains("... failed.")
-                    ? 3
+                var selectedOutputIndex = !result || stdOutput.Contains("\nError: ") || stdOutput.Contains("... failed.")
+                    ? 4
                     : (int?) null;
 
                 return new ShaderCompilerResult(
                     selectedOutputIndex == null,
                     null,
                     selectedOutputIndex,
-                    new ShaderCompilerOutput("Disassembly", null, isa),
+                    new ShaderCompilerOutput("ISA Disassembly", null, isa),
+                    new ShaderCompilerOutput("IL Disassembly", null, il),
                     //new ShaderCompilerOutput("Analysis", null, outputAnalysis),
                     new ShaderCompilerOutput("Live register analysis", null, liveReg),
                     new ShaderCompilerOutput("Control flow graph", "graphviz", cfg),
