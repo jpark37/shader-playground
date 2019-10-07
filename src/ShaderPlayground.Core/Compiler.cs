@@ -21,6 +21,7 @@ using ShaderPlayground.Core.Compilers.SpirVCross;
 using ShaderPlayground.Core.Compilers.SpirVCrossIspc;
 using ShaderPlayground.Core.Compilers.SpirvTools;
 using ShaderPlayground.Core.Compilers.XShaderCompiler;
+using ShaderPlayground.Core.Compilers.Yariv;
 using ShaderPlayground.Core.Compilers.Zstd;
 using ShaderPlayground.Core.Languages;
 
@@ -63,6 +64,8 @@ namespace ShaderPlayground.Core
             new SpirvRemapCompiler(),
             new SpirvStatsCompiler(),
             new SpirvToSmolvCompiler(),
+            new SpirvToYarivCompiler(),
+            new YarivToSpirvCompiler(),
             new XscCompiler(),
             new ZstdCompiler(),
 

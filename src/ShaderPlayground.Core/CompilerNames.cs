@@ -30,5 +30,7 @@
         public const string ZstdCompress = "zstd-compress";
         public const string MinizCompress = "miniz-compress";
         public const string LzmaCompress = "lzma-compress";
+        public const string YarivToSpirv = "yariv-to-spirv";
+        public const string SpirvToYariv = "spirv-to-yariv";
     }
 }
