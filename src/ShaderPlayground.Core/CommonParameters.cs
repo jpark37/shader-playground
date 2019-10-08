@@ -36,6 +36,13 @@ namespace ShaderPlayground.Core
             defaultValue: "main",
             description: "Ignored when input language is GLSL.");
 
+        public static readonly ShaderCompilerParameter ExtraOptionsParameter = new ShaderCompilerParameter(
+            "ExtraOptions",
+            "Extra options",
+            ShaderCompilerParameterType.TextBox,
+            defaultValue: "",
+            description: "Arbitrary command-line options");
+
         public const string OutputLanguageParameterName = "OutputLanguage";
 
         public static ShaderCompilerParameter CreateOutputParameter(string[] languages)

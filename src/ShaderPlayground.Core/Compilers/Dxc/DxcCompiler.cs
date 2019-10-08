@@ -21,6 +21,7 @@ namespace ShaderPlayground.Core.Compilers.Dxc
             new ShaderCompilerParameter("Enable16BitTypes", "Enable 16-bit types", ShaderCompilerParameterType.CheckBox, description: "Enable 16bit types and disable min precision types. Available in HLSL 2018 and shader model 6.2", filter: new ParameterFilter("TargetProfile", Enable16BitTypesFilters)),
             new ShaderCompilerParameter("DisableOptimizations", "Disable optimizations", ShaderCompilerParameterType.CheckBox),
             new ShaderCompilerParameter("OptimizationLevel", "Optimization level", ShaderCompilerParameterType.ComboBox, OptimizationLevelOptions, "3"),
+            CommonParameters.ExtraOptionsParameter,
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.Dxil, LanguageNames.SpirV }),
             new ShaderCompilerParameter("SpirvTarget", "SPIR-V target", ShaderCompilerParameterType.ComboBox, SpirvTargetOptions, "vulkan1.0", filter: new ParameterFilter(CommonParameters.OutputLanguageParameterName, LanguageNames.SpirV)),
         };
@@ -137,14 +138,14 @@ namespace ShaderPlayground.Core.Compilers.Dxc
                     args += " -enable-16bit-types";
                 }
 
-                args += $" \"{tempFile.FilePath}\"";
+                args += $" {arguments.GetString(CommonParameters.ExtraOptionsParameter.Name)} \"{tempFile.FilePath}\"";
 
                 var dxcPath = CommonParameters.GetBinaryPath("dxc", arguments, "dxc.exe");
                 ProcessHelper.Run(
                     dxcPath, 
                     args,
-                    out var _,
-                    out var _);
+                    out var stdOutput,
+                    out _);
 
                 int? selectedOutputIndex = null;
 
@@ -157,6 +158,11 @@ namespace ShaderPlayground.Core.Compilers.Dxc
 
                 var binaryOutput = FileHelper.ReadAllBytesIfExists(foPath);
                 var buildOutput = FileHelper.ReadAllTextIfExists(fePath);
+
+                if (!string.IsNullOrWhiteSpace(stdOutput))
+                {
+                    buildOutput += Environment.NewLine + stdOutput;
+                }
 
                 FileHelper.DeleteIfExists(fcPath);
                 FileHelper.DeleteIfExists(fePath);

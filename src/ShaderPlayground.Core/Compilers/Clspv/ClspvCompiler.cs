@@ -1,4 +1,5 @@
-﻿using ShaderPlayground.Core.Util;
+﻿using System;
+using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Clspv
 {
@@ -14,6 +15,7 @@ namespace ShaderPlayground.Core.Compilers.Clspv
         public ShaderCompilerParameter[] Parameters { get; } =
         {
             CommonParameters.CreateVersionParameter("clspv"),
+            CommonParameters.ExtraOptionsParameter,
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.SpirV }),
         };
 
@@ -25,13 +27,13 @@ namespace ShaderPlayground.Core.Compilers.Clspv
 
                 ProcessHelper.Run(
                     CommonParameters.GetBinaryPath("clspv", arguments, "clspv.exe"),
-                    $"\"{tempFile.FilePath}\" -o \"{outputPath}\"",
-                    out _,
+                    $"{arguments.GetString(CommonParameters.ExtraOptionsParameter.Name)} \"{tempFile.FilePath}\" -o \"{outputPath}\"",
+                    out var stdOutput,
                     out var stdError);
 
                 var binaryOutput = FileHelper.ReadAllBytesIfExists(outputPath);
 
-                var hasCompilationError = stdError.Contains("error: ");
+                var hasCompilationError = binaryOutput == null;
 
                 var textOutput = "";
                 if (!hasCompilationError)
@@ -47,6 +49,11 @@ namespace ShaderPlayground.Core.Compilers.Clspv
                     textOutput = FileHelper.ReadAllTextIfExists(textOutputPath);
 
                     FileHelper.DeleteIfExists(textOutputPath);
+                }
+
+                if (!string.IsNullOrWhiteSpace(stdOutput))
+                {
+                    stdError += Environment.NewLine + stdOutput;
                 }
 
                 FileHelper.DeleteIfExists(outputPath);
