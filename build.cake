@@ -347,6 +347,22 @@ Task("Build-ANGLE")
       true);
   });
 
+Task("Build-Clspv")
+  .Does(() => {
+    StartProcess(MakeAbsolute(File("./external/clspv/build.bat")), new ProcessSettings {
+      WorkingDirectory = MakeAbsolute(Directory("./external/clspv"))
+    });
+    
+    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/clspv/trunk";
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    CopyFiles(
+      "./external/clspv/build/bin/clspv.exe",
+      binariesFolder,
+      true);
+  });
+
 Task("Build-Fxc-Shim")
   .Does(() => {
     DotNetCorePublish("./shims/ShaderPlayground.Shims.Fxc/ShaderPlayground.Shims.Fxc.csproj", new DotNetCorePublishSettings

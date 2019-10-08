@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ShaderPlayground.Core.Compilers.Angle;
+using ShaderPlayground.Core.Compilers.Clspv;
 using ShaderPlayground.Core.Compilers.Dxc;
 using ShaderPlayground.Core.Compilers.Fxc;
 using ShaderPlayground.Core.Compilers.Glslang;
@@ -33,12 +34,14 @@ namespace ShaderPlayground.Core
         {
             new HlslLanguage(),
             new GlslLanguage(),
+            new OpenCLCLanguage(),
             new SlangLanguage(),
             new SpirvLanguage(),
         };
 
         public static readonly IShaderCompiler[] AllCompilers =
         {
+            new ClspvCompiler(),
             new DxcCompiler(),
             new FxcCompiler(),
             new GlslangCompiler(),

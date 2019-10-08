@@ -13,3 +13,6 @@
 [submodule "external/angle/source"]
 	path = external/angle/source
 	url = https://chromium.googlesource.com/angle/angle
+[submodule "external/clspv/source"]
+	path = external/clspv/source
+	url = https://github.com/google/clspv.git
