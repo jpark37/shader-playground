@@ -27,7 +27,25 @@ namespace ShaderPlayground.Core.Util
 
                 stdError = process.StandardError.ReadToEnd();
 
-                process.WaitForExit(4000);
+                if (!process.WaitForExit(4000))
+                {
+                    try
+                    {
+                        process.Kill();
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // Process exited between calls to WaitForExit and Kill.
+                    }
+                }
+                else
+                {
+                    // From the WaitForExit(timeout) docs:
+                    // "To ensure that asynchronous event handling has been completed, 
+                    // call the WaitForExit() overload that takes no parameter 
+                    // after receiving a true from this overload."
+                    process.WaitForExit();
+                }
 
                 stdOutput = stdOutputTemp;
 
