@@ -355,48 +355,82 @@
 
                         outputContainerDiv.innerHTML = '';
 
-                        if (output.language === "graphviz") {
-                            const workerURL = '/lib/vizjs/full.render.js';
-                            let viz = new Viz({ workerURL });
+                        switch (output.language) {
+                            case "graphviz":
+                                const workerURL = '/lib/vizjs/full.render.js';
+                                let viz = new Viz({ workerURL });
 
-                            viz.renderSVGElement(output.value)
-                                .then(function (element) {
-                                    outputContainerDiv.appendChild(element);
-                                    var panZoom = svgPanZoom(element, {
-                                        controlIconsEnabled: true
-                                    });
+                                viz.renderSVGElement(output.value)
+                                    .then(function (element) {
+                                        outputContainerDiv.appendChild(element);
+                                        var panZoom = svgPanZoom(element, {
+                                            controlIconsEnabled: true
+                                        });
 
-                                    function resizePanZoom() {
-                                        if (element.parentElement === null) {
-                                            return;
+                                        function resizePanZoom() {
+                                            if (element.parentElement === null) {
+                                                return;
+                                            }
+                                            element.setAttribute('width', outputContainerDiv.offsetWidth);
+                                            element.setAttribute('height', outputContainerDiv.offsetHeight);
+                                            panZoom.resize();
+                                            panZoom.fit();
+                                            panZoom.center();
                                         }
-                                        element.setAttribute('width', outputContainerDiv.offsetWidth);
-                                        element.setAttribute('height', outputContainerDiv.offsetHeight);
-                                        panZoom.resize();
-                                        panZoom.fit();
-                                        panZoom.center();
+
+                                        resizePanZoom();
+
+                                        $(window).resize(resizePanZoom);
+                                    })
+                                    .catch(error => {
+                                        outputContainerDiv.innerText = 'Could not create graph: ' + error;
+                                    });
+                                break;
+
+                            case "jsontable":
+                                let jsonTable = JSON.parse(output.value);
+                                let tableElement = document.createElement('table');
+                                tableElement.classList.add("table", "table-sm");
+
+                                let headerRowElement = document.createElement('tr');
+                                for (let jsonHeaderData of jsonTable.Header.Data) {
+                                    let headerElement = document.createElement('th');
+                                    headerElement.innerText = jsonHeaderData;
+                                    headerRowElement.appendChild(headerElement);
+                                }
+                                tableElement.appendChild(headerRowElement);
+
+                                for (let jsonRow of jsonTable.Rows) {
+                                    let tableRowElement = document.createElement('tr');
+                                    for (let jsonRowData of jsonRow.Data) {
+                                        let cellElement = document.createElement('td');
+                                        cellElement.innerText = jsonRowData;
+                                        tableRowElement.appendChild(cellElement);
                                     }
+                                    tableElement.appendChild(tableRowElement);
+                                }
 
-                                    resizePanZoom();
+                                let tableContainerElement = document.createElement('div');
+                                tableContainerElement.style.overflowX = "auto";
+                                tableContainerElement.appendChild(tableElement);
 
-                                    $(window).resize(resizePanZoom);
-                                })
-                                .catch(error => {
-                                    outputContainerDiv.innerText = 'Could not create graph: ' + error;
+                                outputContainerDiv.appendChild(tableContainerElement);
+                                break;
+
+                            default:
+                                outputEditor = CodeMirror(outputContainerDiv, {
+                                    value: output.value || "",
+                                    mode: getCodeMirrorMode(output.language),
+                                    theme: codeMirrorTheme,
+                                    matchBrackets: true,
+                                    readOnly: true
                                 });
-                        } else {
-                            outputEditor = CodeMirror(outputContainerDiv, {
-                                value: output.value || "",
-                                mode: getCodeMirrorMode(output.language),
-                                theme: codeMirrorTheme,
-                                matchBrackets: true,
-                                readOnly: true
-                            });
 
-                            if (currentScrollY !== null) {
-                                outputEditor.scrollTo(null, currentScrollY);
-                                currentScrollY = null;
-                            }
+                                if (currentScrollY !== null) {
+                                    outputEditor.scrollTo(null, currentScrollY);
+                                    currentScrollY = null;
+                                }
+                                break;
                         }
                     };
 

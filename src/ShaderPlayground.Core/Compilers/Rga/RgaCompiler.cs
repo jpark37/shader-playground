@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using CsvHelper;
 using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Rga
@@ -96,7 +98,7 @@ namespace ShaderPlayground.Core.Compilers.Rga
                 var liveRegPath = $"{tempFile.FilePath}.livereg";
                 var cfgPath = $"{tempFile.FilePath}.cfg";
 
-                var args = $"--asic \"{asic}\" --il \"{ilPath}\" --line-numbers --isa \"{isaPath}\" --livereg \"{liveRegPath}\" --cfg \"{cfgPath}\"";
+                var args = $"--asic \"{asic}\" --il \"{ilPath}\" --line-numbers --isa \"{isaPath}\" --parse-isa --livereg \"{liveRegPath}\" --cfg \"{cfgPath}\"";
 
                 switch (shaderCode.Language)
                 {
@@ -170,18 +172,21 @@ namespace ShaderPlayground.Core.Compilers.Rga
                 outputAnalysisPath = GetActualOutputPath("analysis");
                 ilPath = GetActualOutputPath("il");
                 isaPath = GetActualOutputPath("isa");
+                var isaCsvPath = GetActualOutputPath("csv");
                 liveRegPath = GetActualOutputPath("livereg");
                 cfgPath = GetActualOutputPath("cfg");
 
                 var outputAnalysis = FileHelper.ReadAllTextIfExists(outputAnalysisPath);
                 var il = FileHelper.ReadAllTextIfExists(ilPath);
                 var isa = FileHelper.ReadAllTextIfExists(isaPath);
+                var isaCsv = FileHelper.ReadAllTextIfExists(isaCsvPath);
                 var liveReg = FileHelper.ReadAllTextIfExists(liveRegPath);
                 var cfg = FileHelper.ReadAllTextIfExists(cfgPath);
 
                 FileHelper.DeleteIfExists(outputAnalysisPath);
                 FileHelper.DeleteIfExists(ilPath);
                 FileHelper.DeleteIfExists(isaPath);
+                FileHelper.DeleteIfExists(isaCsvPath);
                 FileHelper.DeleteIfExists(liveRegPath);
                 FileHelper.DeleteIfExists(cfgPath);
 
@@ -189,17 +194,65 @@ namespace ShaderPlayground.Core.Compilers.Rga
                     ? 4
                     : (int?) null;
 
+                var isaBreakdownJson = GetIsaBreakdownJson(isaCsv);
+
                 return new ShaderCompilerResult(
                     selectedOutputIndex == null,
                     null,
                     selectedOutputIndex,
                     new ShaderCompilerOutput("ISA Disassembly", null, isa),
+                    new ShaderCompilerOutput("ISA Breakdown", "jsontable", isaBreakdownJson),
                     new ShaderCompilerOutput("IL Disassembly", null, il),
                     //new ShaderCompilerOutput("Analysis", null, outputAnalysis),
                     new ShaderCompilerOutput("Live register analysis", null, liveReg),
                     new ShaderCompilerOutput("Control flow graph", "graphviz", cfg),
                     new ShaderCompilerOutput("Build output", null, stdOutput));
             }
+        }
+
+        private static string GetIsaBreakdownJson(string isaCsv)
+        {
+            var tableRows = new List<JsonTableRow>();
+
+            using (var reader = new StringReader(isaCsv))
+            using (var csv = new CsvReader(reader, new CsvHelper.Configuration.Configuration { HasHeaderRecord = false }))
+            {
+                while (csv.Read())
+                {
+                    tableRows.Add(new JsonTableRow
+                    {
+                        Data = new[]
+                        {
+                            csv.GetField(0),
+                            csv.GetField(1),
+                            csv.GetField(2),
+                            csv.GetField(3),
+                            csv.GetField(4),
+                            //csv.GetField(5),
+                        }
+                    });
+                }
+            }
+
+            var table = new JsonTable
+            {
+                Header = new JsonTableRow
+                {
+                    Data = new[]
+                    {
+                        "Offset",
+                        "OpCode",
+                        "Parameters",
+                        "Category",
+                        "Cycles",
+                        //"Binary"
+                    }
+                },
+
+                Rows = tableRows
+            };
+
+            return table.ToJson();
         }
     }
 }
