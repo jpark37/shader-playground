@@ -219,15 +219,30 @@ namespace ShaderPlayground.Core.Compilers.Rga
             {
                 while (csv.Read())
                 {
+                    var field0 = csv.GetField(0);
+
+                    string field1, field2, field3, field4;
+                    if (field0.Contains("label"))
+                    {
+                        field1 = field2 = field3 = field4 = "";
+                    }
+                    else
+                    {
+                        field1 = csv.GetField(1);
+                        field2 = csv.GetField(2);
+                        field3 = csv.GetField(3);
+                        field4 = csv.GetField(4);
+                    }
+
                     tableRows.Add(new JsonTableRow
                     {
                         Data = new[]
                         {
-                            csv.GetField(0),
-                            csv.GetField(1),
-                            csv.GetField(2),
-                            csv.GetField(3),
-                            csv.GetField(4),
+                            field0,
+                            field1,
+                            field2,
+                            field3,
+                            field4
                             //csv.GetField(5),
                         }
                     });
