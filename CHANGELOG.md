@@ -7,6 +7,7 @@
 * Added Slang v0.13.10
 * Updated DXC to latest trunk
 * Updated glslang to latest trunk
+* Added spirv1.x output targets to glslang
 * Added RGA v2.3
 
 ## 2018-08-25

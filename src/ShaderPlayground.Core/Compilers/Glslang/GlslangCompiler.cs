@@ -19,7 +19,7 @@ namespace ShaderPlayground.Core.Compilers.Glslang
         {
             CommonParameters.CreateVersionParameter("glslang"),
             new ShaderCompilerParameter("ShaderStage", "Shader stage", ShaderCompilerParameterType.ComboBox, ShaderStageOptions, defaultValue: "frag"),
-            new ShaderCompilerParameter("Target", "Target", ShaderCompilerParameterType.ComboBox, TargetOptions, SpirVVulkan1_0),
+            new ShaderCompilerParameter("Target", "Target", ShaderCompilerParameterType.ComboBox, TargetOptions, TargetVulkan1_0),
             CommonParameters.HlslEntryPoint.WithFilter(CommonParameters.InputLanguageParameterName, LanguageNames.Hlsl),
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.SpirV })
         };
@@ -42,15 +42,27 @@ namespace ShaderPlayground.Core.Compilers.Glslang
             "rcall",
         };
 
-        private const string SpirVVulkan1_0 = "Vulkan 1.0";
-        private const string SpirVVulkan1_1 = "Vulkan 1.1";
-        private const string SpirVOpenGL = "OpenGL";
+        private const string TargetVulkan1_0 = "Vulkan 1.0";
+        private const string TargetVulkan1_1 = "Vulkan 1.1";
+        private const string TargetOpenGL = "OpenGL";
+        private const string TargetSpirV1_0 = "spirv1.0";
+        private const string TargetSpirV1_1 = "spirv1.1";
+        private const string TargetSpirV1_2 = "spirv1.2";
+        private const string TargetSpirV1_3 = "spirv1.3";
+        private const string TargetSpirV1_4 = "spirv1.4";
+        private const string TargetSpirV1_5 = "spirv1.5";
 
         private static readonly string[] TargetOptions =
         {
-            SpirVVulkan1_0,
-            SpirVVulkan1_1,
-            SpirVOpenGL
+            TargetVulkan1_0,
+            TargetVulkan1_1,
+            TargetOpenGL,
+            TargetSpirV1_0,
+            TargetSpirV1_1,
+            TargetSpirV1_2,
+            TargetSpirV1_3,
+            TargetSpirV1_4,
+            TargetSpirV1_5,
         };
 
         public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
@@ -61,16 +73,40 @@ namespace ShaderPlayground.Core.Compilers.Glslang
             var targetOption = string.Empty;
             switch (target)
             {
-                case SpirVVulkan1_0:
+                case TargetVulkan1_0:
                     targetOption = "--target-env vulkan1.0";
                     break;
 
-                case SpirVVulkan1_1:
+                case TargetVulkan1_1:
                     targetOption = "--target-env vulkan1.1";
                     break;
 
-                case SpirVOpenGL:
+                case TargetOpenGL:
                     targetOption = "--target-env opengl";
+                    break;
+
+                case TargetSpirV1_0:
+                    targetOption = "--target-env spirv1.0 -V";
+                    break;
+
+                case TargetSpirV1_1:
+                    targetOption = "--target-env spirv1.1 -V";
+                    break;
+
+                case TargetSpirV1_2:
+                    targetOption = "--target-env spirv1.2 -V";
+                    break;
+
+                case TargetSpirV1_3:
+                    targetOption = "--target-env spirv1.3 -V";
+                    break;
+
+                case TargetSpirV1_4:
+                    targetOption = "--target-env spirv1.4 -V";
+                    break;
+
+                case TargetSpirV1_5:
+                    targetOption = "--target-env spirv1.5 -V";
                     break;
             }
 
