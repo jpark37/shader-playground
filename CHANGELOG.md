@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-02-16
+
+* Fixed RGA compiler errors not being reported correctly (#62)
+* Added new release of SPIRV-Cross (2020-01-16)
+
 ## 2018-08-25
 
 * New compiler - [RGA](https://github.com/GPUOpen-Tools/RGA)

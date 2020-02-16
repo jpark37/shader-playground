@@ -106,7 +106,7 @@ Task("Download-SPIRV-Cross")
     void DownloadSpirvCross(string version, string hash)
     {
       DownloadAndUnzipCompiler(
-        $"https://github.com/KhronosGroup/SPIRV-Cross/releases/download/2019-06-21/spirv-cross-vs2017-64bit-{hash}.tar.gz",
+        $"https://github.com/KhronosGroup/SPIRV-Cross/releases/download/{version}/spirv-cross-vs2017-64bit-{hash}.tar.gz",
         "spirv-cross",
         version,
         true,
@@ -115,6 +115,7 @@ Task("Download-SPIRV-Cross")
     }
     
     DownloadSpirvCross("2019-06-21", "b4e0163749");
+    DownloadSpirvCross("2020-01-16", "f9818f0804");
 
     var unzippedFolder = DownloadAndUnzipCompiler(
       "https://github.com/KhronosGroup/SPIRV-Cross/archive/master.zip",
