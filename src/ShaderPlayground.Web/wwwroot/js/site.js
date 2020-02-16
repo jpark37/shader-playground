@@ -389,32 +389,34 @@
 
                             case "jsontable":
                                 let jsonTable = JSON.parse(output.value);
-                                let tableElement = document.createElement('table');
-                                tableElement.classList.add("table", "table-sm");
+                                if (jsonTable !== null) {
+                                    let tableElement = document.createElement('table');
+                                    tableElement.classList.add("table", "table-sm");
 
-                                let headerRowElement = document.createElement('tr');
-                                for (let jsonHeaderData of jsonTable.Header.Data) {
-                                    let headerElement = document.createElement('th');
-                                    headerElement.innerText = jsonHeaderData;
-                                    headerRowElement.appendChild(headerElement);
-                                }
-                                tableElement.appendChild(headerRowElement);
-
-                                for (let jsonRow of jsonTable.Rows) {
-                                    let tableRowElement = document.createElement('tr');
-                                    for (let jsonRowData of jsonRow.Data) {
-                                        let cellElement = document.createElement('td');
-                                        cellElement.innerText = jsonRowData;
-                                        tableRowElement.appendChild(cellElement);
+                                    let headerRowElement = document.createElement('tr');
+                                    for (let jsonHeaderData of jsonTable.Header.Data) {
+                                        let headerElement = document.createElement('th');
+                                        headerElement.innerText = jsonHeaderData;
+                                        headerRowElement.appendChild(headerElement);
                                     }
-                                    tableElement.appendChild(tableRowElement);
+                                    tableElement.appendChild(headerRowElement);
+
+                                    for (let jsonRow of jsonTable.Rows) {
+                                        let tableRowElement = document.createElement('tr');
+                                        for (let jsonRowData of jsonRow.Data) {
+                                            let cellElement = document.createElement('td');
+                                            cellElement.innerText = jsonRowData;
+                                            tableRowElement.appendChild(cellElement);
+                                        }
+                                        tableElement.appendChild(tableRowElement);
+                                    }
+
+                                    let tableContainerElement = document.createElement('div');
+                                    tableContainerElement.style.overflowX = "auto";
+                                    tableContainerElement.appendChild(tableElement);
+
+                                    outputContainerDiv.appendChild(tableContainerElement);
                                 }
-
-                                let tableContainerElement = document.createElement('div');
-                                tableContainerElement.style.overflowX = "auto";
-                                tableContainerElement.appendChild(tableElement);
-
-                                outputContainerDiv.appendChild(tableContainerElement);
                                 break;
 
                             default:

@@ -191,7 +191,7 @@ namespace ShaderPlayground.Core.Compilers.Rga
                 FileHelper.DeleteIfExists(cfgPath);
 
                 var selectedOutputIndex = !result || stdOutput.Contains("\nError: ") || stdOutput.Contains("... failed.")
-                    ? 4
+                    ? 5
                     : (int?) null;
 
                 var isaBreakdownJson = GetIsaBreakdownJson(isaCsv);
@@ -212,6 +212,11 @@ namespace ShaderPlayground.Core.Compilers.Rga
 
         private static string GetIsaBreakdownJson(string isaCsv)
         {
+            if (isaCsv == null)
+            {
+                return null;
+            }
+
             var tableRows = new List<JsonTableRow>();
 
             using (var reader = new StringReader(isaCsv))
