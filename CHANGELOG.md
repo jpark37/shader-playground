@@ -4,6 +4,7 @@
 
 * Fixed RGA compiler errors not being reported correctly (#62)
 * Added new release of SPIRV-Cross (2020-01-16)
+* Added new release of Slang (0.13.10)
 
 ## 2018-08-25
 
