@@ -309,6 +309,7 @@ Task("Download-RGA")
     DownloadRga("2.0.1", "bin/**/*.*");
     DownloadRga("2.1", "**/*.*");
     DownloadRga("2.2", "**/*.*");
+    DownloadRga("2.3", "**/*.*");
   });
 
 Task("Download-IntelShaderAnalyzer")
