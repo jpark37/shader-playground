@@ -3,12 +3,13 @@
 ## 2020-02-16
 
 * Fixed RGA compiler errors not being reported correctly (#62)
-* Added SPIRV-Cross v2020-01-16
-* Added Slang v0.13.10
 * Updated DXC to latest trunk
 * Updated glslang to latest trunk
-* Added spirv1.x output targets to glslang
+* Updated SMOL-V to latest trunk
+* Added SPIRV-Cross v2020-01-16
 * Added RGA v2.3
+* Added Slang v0.13.10
+* Added spirv1.x output targets to glslang
 
 ## 2018-08-25
 
