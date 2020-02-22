@@ -123,7 +123,7 @@ namespace ShaderPlayground.Core.Compilers.Glslang
                 var args = targetOption + $" -o \"{binaryPath}\" --auto-map-locations";
 
                 var validationErrors = RunGlslValidator(arguments, stage, tempFile, args);
-                var spirv = RunGlslValidator(arguments, stage, tempFile, args + " -H");
+                var spirv = RunGlslValidator(arguments, stage, tempFile, args + " --spirv-dis");
                 var ast = RunGlslValidator(arguments, stage, tempFile, args + " -i");
 
                 var binaryOutput = FileHelper.ReadAllBytesIfExists(binaryPath);

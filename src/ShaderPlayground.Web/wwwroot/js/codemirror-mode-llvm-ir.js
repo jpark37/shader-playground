@@ -94,7 +94,11 @@
                 }
                 if (ch == '@') {
                     stream.eatWhile(/[\w\$\.]/);
-                    return "variable";
+                    return "def";
+                }
+                if (ch == '%') {
+                    stream.eatWhile(/[\w\$\.]/);
+                    return "variable-2";
                 }
                 if (isPunctuationChar.test(ch)) {
                     return null;
@@ -106,7 +110,7 @@
                 }
                 if (ch == '!') {
                     stream.eatWhile(isMetadataChar);
-                    return "special";
+                    return "attribute";
                 }
 
                 stream.eatWhile(/[\w\$_\xa1-\uffff]/);

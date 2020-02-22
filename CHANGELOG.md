@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-02-22
+
+* Added SPIR-V syntax highlighting
+
 ## 2020-02-16
 
 * Fixed RGA compiler errors not being reported correctly (#62)
