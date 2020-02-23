@@ -63,12 +63,12 @@
     name: "clike",
     keywords: words("sampler1D sampler2D sampler3D samplerCube " +
                     "sampler1DShadow sampler2DShadow " +
-                    "const attribute uniform varying " +
+                    "const attribute uniform varying static " +
                     "break continue discard return " +
                     "for while do if else struct " +
                     "in out inout"),
     types: words("float int bool void " +
-                 "float2 float3 float4 int2 int3 int4 bool2 bool3 bool4 " +
+                 "float2 float3 float4 int2 int3 int4 bool2 bool3 bool4 uint2 uint3 uint4" +
                  "float2x2 float3x3 float4x4" +
                  "matrix"),
     blockKeywords: words("for while do if else struct"),

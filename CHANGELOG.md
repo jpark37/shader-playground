@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-02-23
+
+* Added GLSL syntax highlighting (#64)
+
 ## 2020-02-22
 
 * Added SPIR-V syntax highlighting

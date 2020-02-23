@@ -62,7 +62,7 @@ namespace ShaderPlayground.Core.Compilers.Clspv
                     !hasCompilationError,
                     !hasCompilationError ? new ShaderCode(LanguageNames.SpirV, binaryOutput) : null,
                     hasCompilationError ? (int?) 1 : null,
-                    new ShaderCompilerOutput("Assembly", LanguageNames.SpirvAssembly, textOutput),
+                    new ShaderCompilerOutput("Assembly", LanguageNames.SpirV, textOutput),
                     new ShaderCompilerOutput("Output", null, stdError));
             }
         }
