@@ -1,5 +1,5 @@
-﻿<div class="row no-gutters d-flex flex-fill">
-    <div class="col-lg d-flex flex-column" style="overflow:hidden">
+﻿<div id="home-container" class="row no-gutters d-flex flex-fill" style="overflow:hidden">
+    <div id="input-panel" class="col-lg d-flex flex-column" style="overflow:hidden">
         <nav class="navbar navbar-expand navbar-light bg-light flex-shrink-0">
             <form class="form-inline">
                 <div class="form-group">
@@ -9,12 +9,12 @@
             <button type="button" class="btn btn-sm btn-primary invisible">[Sizer]</button>
         </nav>
 
-        <div id="code-editor-container" class="d-flex flex-fill">
+        <div id="code-editor-container" class="d-flex flex-fill" style="overflow:auto">
             <textarea id="code"></textarea>
         </div>
     </div>
 
-    <div class="col-lg order-last d-flex flex-column" style="overflow:hidden">
+    <div id="output-panel" class="col-lg order-last d-flex flex-column" style="overflow:hidden">
         <nav class="navbar navbar-expand navbar-light bg-light justify-content-between flex-shrink-0">
             <form class="form-inline">
                 <div class="form-group mr-2">
@@ -59,7 +59,7 @@
             </div>
         </nav>
 
-        <div class="d-flex flex-fill flex-column position-relative" style="overflow:hidden">
+        <div class="d-flex flex-fill flex-column position-relative" style="overflow:auto">
             <div id="output-container" class="d-flex flex-fill"></div>
 
             <div id="output-loading" class="position-absolute w-25 d-none">

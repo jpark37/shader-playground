@@ -1,5 +1,9 @@
 # Changelog
 
+## 2020-02-25
+
+* Fixed scrolling (#63)
+
 ## 2020-02-23
 
 * Added GLSL syntax highlighting (#64)

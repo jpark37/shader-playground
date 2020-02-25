@@ -15,10 +15,6 @@ body {
     background-color: #005b96 !important;
 }
 
-#options-panel {
-    
-}
-
 @media (min-width: 992px) {
     #options-panel .form-control {
         background-color: transparent;
@@ -27,6 +23,10 @@ body {
 
     .compiler-container {
         width: 250px;
+    }
+
+    #body-container, home-container, #input-panel, #output-panel, #options-panel {
+        height: 100% !important;
     }
 }
 
