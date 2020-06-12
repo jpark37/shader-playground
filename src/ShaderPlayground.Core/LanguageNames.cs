@@ -20,5 +20,6 @@
         public const string Zlib = "zlib";
         public const string Zstd = "zst";
         public const string Cuda = "CUDA";
+        public const string Ptx = "PTX";
     }
 }

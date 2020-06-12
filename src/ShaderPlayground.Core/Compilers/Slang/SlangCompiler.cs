@@ -9,14 +9,14 @@ namespace ShaderPlayground.Core.Compilers.Slang
         public string Url { get; } = "https://github.com/shader-slang/slang";
         public string Description { get; } = "Slang is a shading language that extends HLSL with new capabilities for building modular, extensible, and high-performance real-time shading systems";
 
-        public string[] InputLanguages { get; } = { LanguageNames.Slang, LanguageNames.Hlsl, LanguageNames.Cpp, LanguageNames.Cuda };
+        public string[] InputLanguages { get; } = { LanguageNames.Slang, LanguageNames.Hlsl };
 
         public ShaderCompilerParameter[] Parameters { get; } =
         {
             CommonParameters.CreateVersionParameter("slang"),
             CommonParameters.HlslEntryPoint,
             new ShaderCompilerParameter("Profile", "Profile", ShaderCompilerParameterType.ComboBox, ProfileOptions, "cs_5_0"),
-            CommonParameters.CreateOutputParameter(new[] { LanguageNames.Hlsl, LanguageNames.Glsl })
+            CommonParameters.CreateOutputParameter(new[] { LanguageNames.Hlsl, LanguageNames.Glsl, LanguageNames.Cpp, LanguageNames.Cuda, LanguageNames.Ptx })
         };
 
         private static readonly string[] ProfileOptions =
@@ -65,6 +65,10 @@ namespace ShaderPlayground.Core.Compilers.Slang
                     
                 case LanguageNames.Cpp:
                     args += " -target cpp";
+                    break;
+                
+                case LanguageNames.Ptx:
+                    args += " -target ptx";
                     break;
             }
 
