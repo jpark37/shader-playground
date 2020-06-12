@@ -19,5 +19,6 @@
         public const string Yariv = "YARI-V";
         public const string Zlib = "zlib";
         public const string Zstd = "zst";
+        public const string Cuda = "CUDA";
     }
 }
