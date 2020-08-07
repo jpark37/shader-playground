@@ -8,11 +8,13 @@
 
         public string FileExtension { get; } = "glsl";
 
-        private static readonly string DefaultGlslCode = @"#version 330
+        private static readonly string DefaultGlslCode = @"#version 460
+
+layout (location = 0) out vec4 fragColor;
 
 void main()
 {
-	gl_FragColor = vec4(0.4, 0.4, 0.8, 1.0);
+	fragColor = vec4(0.4, 0.4, 0.8, 1.0);
 }";
     }
 }
