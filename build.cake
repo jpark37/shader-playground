@@ -114,6 +114,7 @@ Task("Download-SPIRV-Cross")
         ZipFormat.GZip);
     }
     
+    DownloadSpirvCross("2020-09-17", "8891bd3512");
     DownloadSpirvCross("2019-06-21", "b4e0163749");
     DownloadSpirvCross("2020-01-16", "f9818f0804");
 
@@ -134,7 +135,7 @@ Task("Download-SPIRV-Cross")
 
     MSBuild(srcDirectory + "/SPIRV-Cross.vcxproj", new MSBuildSettings()
       .SetConfiguration(configuration)
-      .WithProperty("WindowsTargetPlatformVersion", "10.0.17134.0")
+      .WithProperty("WindowsTargetPlatformVersion", "10.0.18362.0")
       .WithProperty("PlatformToolset", "v141"));
 
     var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/spirv-cross/trunk";
