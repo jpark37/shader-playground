@@ -114,9 +114,9 @@ Task("Download-SPIRV-Cross")
         ZipFormat.GZip);
     }
     
-    DownloadSpirvCross("2020-09-17", "8891bd3512");
     DownloadSpirvCross("2019-06-21", "b4e0163749");
     DownloadSpirvCross("2020-01-16", "f9818f0804");
+    DownloadSpirvCross("2020-09-17", "8891bd3512");
 
     var unzippedFolder = DownloadAndUnzipCompiler(
       "https://github.com/KhronosGroup/SPIRV-Cross/archive/master.zip",
@@ -298,7 +298,7 @@ Task("Download-RGA")
     void DownloadRga(string version, string filesToCopy)
     {
       var binariesFolder = DownloadAndUnzipCompiler(
-        $"https://github.com/GPUOpen-Tools/RGA/releases/download/{version}/rga-windows-x64-{version}.zip",
+        $"https://github.com/GPUOpen-Tools/radeon_gpu_analyzer/releases/download/{version}/rga-windows-x64-{version}.zip",
         "rga",
         version,
         true,
@@ -311,6 +311,7 @@ Task("Download-RGA")
     DownloadRga("2.1", "**/*.*");
     DownloadRga("2.2", "**/*.*");
     DownloadRga("2.3", "**/*.*");
+    DownloadRga("2.3.1", "**/*.*");
   });
 
 Task("Download-IntelShaderAnalyzer")
