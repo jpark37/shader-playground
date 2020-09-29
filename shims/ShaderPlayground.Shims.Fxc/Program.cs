@@ -14,29 +14,16 @@ namespace ShaderPlayground.Shims.Fxc
             NativeMethods.LoadDll("d3dcompiler_47.dll");
         }
 
-        public static void Main(string[] args)
+        /// <param name="targetProfile">Target profile</param>
+        /// <param name="entryPoint">Entry point</param>
+        /// <param name="disableOptimizations">Disable optimizations</param>
+        /// <param name="optimizationLevel">Optimization level</param>
+        /// <param name="objectFile">Output object file</param>
+        /// <param name="assemblyFile">Output assembly file</param>
+        /// <param name="errorsFile">Output errors and warnings file</param>
+        /// <param name="file">File to compile</param>
+        public static void Main(string targetProfile, string entryPoint, bool disableOptimizations, int optimizationLevel, string objectFile, string assemblyFile, string errorsFile, string file)
         {
-            string targetProfile = null;
-            string entryPoint = null;
-            bool disableOptimizations = false;
-            int optimizationLevel = 1;
-            string objectFile = null;
-            string assemblyFile = null;
-            string errorsFile = null;
-            string file = null;
-
-            ArgumentSyntax.Parse(args, syntax =>
-            {
-                syntax.DefineOption("target", ref targetProfile, true, "Target profile");
-                syntax.DefineOption("entrypoint", ref entryPoint, true, "Entry point");
-                syntax.DefineOption("disableoptimizations", ref disableOptimizations, "Disable optimizations");
-                syntax.DefineOption("optimizationlevel", ref optimizationLevel, "Optimization level");
-                syntax.DefineOption("objectfile", ref objectFile, true, "Output object file");
-                syntax.DefineOption("assemblyfile", ref assemblyFile, true, "Output assembly file");
-                syntax.DefineOption("errorsfile", ref errorsFile, true, "Output errors and warnings file");
-                syntax.DefineParameter("file", ref file, "File to compile");
-            });
-
             var shaderFlags = ShaderFlags.None;
 
             if (disableOptimizations)
