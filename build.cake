@@ -74,7 +74,7 @@ string DownloadAndUnzipCompiler(string url, string binariesFolderName, string ve
 Task("Download-Dxc")
   .Does(() => {
     DownloadAndUnzipCompiler(
-      "https://ci.appveyor.com/api/projects/antiagainst/directxshadercompiler/artifacts/build%2FRelease%2Fdxc-artifacts.zip?branch=master&pr=false",
+      "https://ci.appveyor.com/api/projects/antiagainst/directxshadercompiler/artifacts/build%2FRelease%2Fdxc-artifacts.zip?branch=master&pr=false&job=Image%3A%20Visual%20Studio%202017",
       "dxc",
       "trunk",
       false,
