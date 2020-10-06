@@ -15,4 +15,4 @@ call git checkout master
 
 call gn gen out/Release
 
-call ninja -C out/Release shader_translator
+call ninja -C out/Release angle_shader_translator

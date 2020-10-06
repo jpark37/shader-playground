@@ -351,7 +351,7 @@ Task("Build-ANGLE")
     CleanDirectory(binariesFolder);
 
     CopyFiles(
-      "./external/angle/source/out/Release/shader_translator.exe",
+      "./external/angle/source/out/Release/angle_shader_translator.exe",
       binariesFolder,
       true);
   });

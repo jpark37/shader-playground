@@ -45,7 +45,7 @@ namespace ShaderPlayground.Core.Compilers.Angle
                 string RunCompiler(string arg)
                 {
                     ProcessHelper.Run(
-                        CommonParameters.GetBinaryPath("angle", arguments, "shader_translator.exe"),
+                        CommonParameters.GetBinaryPath("angle", arguments, "angle_shader_translator.exe"),
                         $"{arg} -b={outputArg} \"{tempFile.FilePath}\"",
                         out var result,
                         out var _);
