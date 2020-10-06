@@ -625,6 +625,8 @@ Task("Test")
 
 Task("Default")
   .IsDependentOn("Prepare-Build-Directory")
+  .IsDependentOn("Build-ANGLE")
+  .IsDependentOn("Build-Clspv")
   .IsDependentOn("Download-Dxc")
   .IsDependentOn("Download-Glslang")
   .IsDependentOn("Download-Mali-Offline-Compiler")
@@ -639,8 +641,6 @@ Task("Default")
   .IsDependentOn("Download-RGA")
   .IsDependentOn("Download-IntelShaderAnalyzer")
   .IsDependentOn("Copy-PowerVR")
-  .IsDependentOn("Build-ANGLE")
-  .IsDependentOn("Build-Clspv")
   .IsDependentOn("Build")
   .IsDependentOn("Test");
 
