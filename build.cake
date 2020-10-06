@@ -211,6 +211,7 @@ Task("Download-SPIRV-Cross")
         });
 
     MSBuild(srcDirectory + "/SPIRV-Cross.vcxproj", new MSBuildSettings()
+      .UseToolVersion(MSBuildToolVersion.VS2019)
       .SetConfiguration(configuration)
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion)
       .WithProperty("PlatformToolset", "v141"));
@@ -234,6 +235,7 @@ Task("Download-SPIRV-Cross-ISPC")
       false);
 
     MSBuild(unzippedFolder + "/SPIRV-Cross-master-ispc/msvc/SPIRV-Cross.vcxproj", new MSBuildSettings()
+      .UseToolVersion(MSBuildToolVersion.VS2019)
       .SetConfiguration(configuration)
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion));
 
@@ -278,7 +280,7 @@ Task("Download-Slang")
         true,
         "bin/windows-x64/release/*.*");
     }
-    
+
     DownloadSlang("0.10.24");
     DownloadSlang("0.10.25");
     DownloadSlang("0.10.26");
@@ -295,6 +297,7 @@ Task("Download-HLSLParser")
       false);
 
     MSBuild(unzippedFolder + "/hlslparser-master/hlslparser.vcxproj", new MSBuildSettings()
+      .UseToolVersion(MSBuildToolVersion.VS2019)
       .SetConfiguration(configuration)
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion)
       .WithProperty("PlatformToolset", "v141"));
@@ -320,7 +323,7 @@ Task("Download-zstd")
         true,
         "zstd.exe");
     }
-    
+
     DownloadZstd("1.3.4");
   });
 
@@ -379,7 +382,7 @@ Task("Download-RGA")
 
       CopyFiles(driverDllPaths, binariesFolder);
     }
-    
+
     DownloadRga("2.0.1", "bin/**/*.*");
     DownloadRga("2.1", "**/*.*");
     DownloadRga("2.2", "**/*.*");
@@ -465,6 +468,7 @@ Task("Build-Fxc-Shim")
 Task("Build-HLSLcc-Shim")
   .Does(() => {
     MSBuild("./shims/ShaderPlayground.Shims.HLSLcc/ShaderPlayground.Shims.HLSLcc.vcxproj", new MSBuildSettings()
+      .UseToolVersion(MSBuildToolVersion.VS2019)
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion)
       .SetConfiguration(configuration));
 
@@ -482,12 +486,14 @@ Task("Build-HLSLcc-Shim")
 Task("Build-GLSL-Optimizer-Shim")
   .Does(() => {
     MSBuild("./shims/ShaderPlayground.Shims.GlslOptimizer/Source/projects/vs2010/glsl_optimizer_lib.vcxproj", new MSBuildSettings()
+      .UseToolVersion(MSBuildToolVersion.VS2019)
       .WithProperty("PlatformToolset", "v141")
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion)
       .SetConfiguration(configuration)
       .SetPlatformTarget(PlatformTarget.Win32));
 
     MSBuild("./shims/ShaderPlayground.Shims.GlslOptimizer/ShaderPlayground.Shims.GlslOptimizer.vcxproj", new MSBuildSettings()
+      .UseToolVersion(MSBuildToolVersion.VS2019)
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion)
       .SetConfiguration(configuration));
 
@@ -505,6 +511,7 @@ Task("Build-GLSL-Optimizer-Shim")
 Task("Build-HLSL2GLSL-Shim")
   .Does(() => {
     MSBuild("./shims/ShaderPlayground.Shims.Hlsl2Glsl/Source/hlslang.vcxproj", new MSBuildSettings()
+      .UseToolVersion(MSBuildToolVersion.VS2019)
       .WithProperty("PlatformToolset", "v141")
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion)
       .WithProperty("ForcedIncludeFiles", "<algorithm>")
@@ -512,6 +519,7 @@ Task("Build-HLSL2GLSL-Shim")
       .SetPlatformTarget(PlatformTarget.Win32));
 
     MSBuild("./shims/ShaderPlayground.Shims.Hlsl2Glsl/ShaderPlayground.Shims.Hlsl2Glsl.vcxproj", new MSBuildSettings()
+      .UseToolVersion(MSBuildToolVersion.VS2019)
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion)
       .SetConfiguration(configuration));
 
@@ -529,6 +537,7 @@ Task("Build-HLSL2GLSL-Shim")
 Task("Build-SMOL-V-Shim")
   .Does(() => {
     MSBuild("./shims/ShaderPlayground.Shims.Smolv/ShaderPlayground.Shims.Smolv.vcxproj", new MSBuildSettings()
+      .UseToolVersion(MSBuildToolVersion.VS2019)
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion)
       .SetConfiguration(configuration));
 
@@ -546,6 +555,7 @@ Task("Build-SMOL-V-Shim")
 Task("Build-Miniz-Shim")
   .Does(() => {
     MSBuild("./shims/ShaderPlayground.Shims.Miniz/ShaderPlayground.Shims.Miniz.vcxproj", new MSBuildSettings()
+      .UseToolVersion(MSBuildToolVersion.VS2019)
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion)
       .SetConfiguration(configuration));
 
@@ -563,6 +573,7 @@ Task("Build-Miniz-Shim")
 Task("Build-YARI-V-Shim")
   .Does(() => {
     MSBuild("./shims/ShaderPlayground.Shims.Yariv/ShaderPlayground.Shims.Yariv.vcxproj", new MSBuildSettings()
+      .UseToolVersion(MSBuildToolVersion.VS2019)
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion)
       .SetConfiguration(configuration));
 
