@@ -557,6 +557,7 @@ Task("Default")
   .IsDependentOn("Download-IntelShaderAnalyzer")
   .IsDependentOn("Copy-PowerVR")
   .IsDependentOn("Build-ANGLE")
+  .IsDependentOn("Build-Clspv")
   .IsDependentOn("Build")
   .IsDependentOn("Test");
 
