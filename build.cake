@@ -2,6 +2,7 @@
 #addin nuget:?package=Cake.Compression&version=0.2.1
 #addin nuget:?package=Cake.Git&version=0.18.0
 
+var alwaysCache = Argument<bool>("always-cache", false);
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
@@ -20,7 +21,7 @@ string DownloadCompiler(string url, string binariesFolderName, string version, b
 {
   var tempFileName = $"./build/{binariesFolderName}-{version}.zip";
 
-  if (!cache || !FileExists(tempFileName)) {
+  if (!(cache || alwaysCache) || !FileExists(tempFileName)) {
     DownloadFile(url, tempFileName);
   }
 
