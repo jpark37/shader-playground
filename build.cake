@@ -346,31 +346,31 @@ Task("Download-LZMA")
 
 Task("Download-RGA")
   .Does(() => {
-    var amdDriverExePath = DownloadCompiler(
-      "https://drivers.amd.com/drivers/win10-64bit-radeon-software-adrenalin-2019-edition-19.9.2-sep23.exe",
-      "amd-driver", 
-      "19.9.2", 
-      true);
-
-    var amdDriverFolder = "./build/amd-driver/19.9.2";
-    EnsureDirectoryExists(amdDriverFolder);
-    CleanDirectory(amdDriverFolder);
-
-    void ExtractFile(string fileName)
-    {
-      StartProcess(
-        @"C:\Program Files\7-Zip\7z.exe",
-        $@"e -o""{amdDriverFolder}"" ""{amdDriverExePath}"" Packages\Drivers\Display\WT6A_INF\B346681\{fileName}");
-    }
-
-    ExtractFile("atidxx64.dll");
-    ExtractFile("amdvlk64.dll");
-
-    var driverDllPaths = new[]
-    {
-      amdDriverFolder + "/atidxx64.dll",
-      amdDriverFolder + "/amdvlk64.dll"
-    };
+//    var amdDriverExePath = DownloadCompiler(
+//      "https://drivers.amd.com/drivers/beta/win10-radeon-software-adrenalin-2020-edition-20.8.3-sep8.exe",
+//      "amd-driver",
+//      "19.9.2",
+//      true);
+//
+//    var amdDriverFolder = "./build/amd-driver/19.9.2";
+//    EnsureDirectoryExists(amdDriverFolder);
+//    CleanDirectory(amdDriverFolder);
+//
+//    void ExtractFile(string fileName)
+//    {
+//      RunAndCheckResult(
+//        @"C:\Program Files\7-Zip\7z.exe",
+//        $@"e -o""{amdDriverFolder}"" ""{amdDriverExePath}"" Packages\Drivers\Display\WT6A_INF\B346681\{fileName}");
+//    }
+//
+//    ExtractFile("atidxx64.dll");
+//    ExtractFile("amdvlk64.dll");
+//
+//    var driverDllPaths = new[]
+//    {
+//      amdDriverFolder + "/atidxx64.dll",
+//      amdDriverFolder + "/amdvlk64.dll"
+//    };
 
     void DownloadRga(string version, string filesToCopy)
     {
@@ -381,7 +381,7 @@ Task("Download-RGA")
         true,
         filesToCopy);
 
-      CopyFiles(driverDllPaths, binariesFolder);
+//      CopyFiles(driverDllPaths, binariesFolder);
     }
 
     DownloadRga("2.0.1", "bin/**/*.*");
