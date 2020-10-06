@@ -367,7 +367,7 @@ Task("Build-Clspv")
     CleanDirectory(binariesFolder);
 
     CopyFiles(
-      "./external/clspv/build/bin/clspv.exe",
+      "./external/clspv/source/build/bin/Release/clspv.exe",
       binariesFolder,
       true);
   });
