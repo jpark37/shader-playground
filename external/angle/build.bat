@@ -4,7 +4,12 @@ if NOT EXIST "./scripts/bootstrap.py" (
     call git submodule update --init .
 )
 
-call python scripts/bootstrap.py
+if EXIST "%PYTHON2%" (
+    call %PYTHON2% scripts/bootstrap.py
+) ELSE (
+    call python scripts/bootstrap.py
+)
+
 call gclient sync
 call git checkout master
 
