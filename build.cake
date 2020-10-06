@@ -7,13 +7,14 @@ var configuration = Argument("configuration", "Release");
 
 var windowsSdkVersion = "10.0.18362.0";
 
-Task("Prepare-Build-Directory")
-  .Does(() => {
-    EnsureDirectoryExists("./build");
-
-    EnsureDirectoryExists("./src/ShaderPlayground.Core/Binaries");
-    CleanDirectory("./src/ShaderPlayground.Core/Binaries");
-  });
+void RunAndCheckResult(FilePath exe, ProcessSettings settings)
+{
+    var res = StartProcess(exe, settings);
+    if (res != 0)
+    {
+      throw new Exception($"'{exe}' failed with error code {res}");
+    }
+}
 
 string DownloadCompiler(string url, string binariesFolderName, string version, bool cache)
 {
@@ -29,7 +30,94 @@ string DownloadCompiler(string url, string binariesFolderName, string version, b
 enum ZipFormat
 {
   Zip,
-  GZip
+  GZip,
+  SevenZip
+}
+
+string GetFullPath(string fileName)
+{
+    if (FileExists(fileName))
+    {
+        return fileName;
+    }
+
+    var values = Environment.GetEnvironmentVariable("PATH");
+    foreach (var path in values.Split(System.IO.Path.PathSeparator))
+    {
+        var dir = DirectoryPath.FromString(path);
+        var fullPath = dir.GetFilePath(fileName).ToString();
+        if (FileExists(fullPath))
+        {
+            return fullPath;
+        }
+    }
+    return null;
+}
+
+void Unzip(string zip, string dstFolder, string filesToCopy, ZipFormat format)
+{
+  switch (format)
+  {
+    case ZipFormat.Zip:
+    case ZipFormat.GZip:
+    {
+      if (filesToCopy == null)
+      {
+        EnsureDirectoryExists(dstFolder);
+        CleanDirectory(dstFolder);
+        if (format == ZipFormat.Zip)
+        {
+          ZipUncompress(zip, dstFolder);
+        }
+        else
+        {
+          GZipUncompress(zip, dstFolder);
+        }
+      } else
+      {
+        string unzippedFolder = $"{zip}.unzipped";
+        EnsureDirectoryExists(unzippedFolder);
+        CleanDirectory(unzippedFolder);
+        if (format == ZipFormat.Zip)
+        {
+          ZipUncompress(zip, unzippedFolder);
+        }
+        else
+        {
+          GZipUncompress(zip, unzippedFolder);
+        }
+        EnsureDirectoryExists(dstFolder);
+        CleanDirectory(dstFolder);
+        CopyFiles($"{unzippedFolder}/{filesToCopy}", dstFolder, true);
+        DeleteDirectory(unzippedFolder, new DeleteDirectorySettings {
+          Recursive = true,
+          Force = true
+        });
+      }
+      break;
+    }
+    case ZipFormat.SevenZip:
+    {
+      string exe = @"C:\Program Files\7-Zip\7z.exe";
+      if (!FileExists(exe))
+      {
+        exe = GetFullPath("7z.exe");
+      }
+      if (!FileExists(exe))
+      {
+        throw new InvalidOperationException("Unable to find 7z.exe in Program Files or PATH");
+      }
+      RunAndCheckResult(exe,
+        new ProcessSettings
+        {
+          Arguments = $@"e -o""{dstFolder}"" ""{zip}"" {filesToCopy}"
+        }
+      );
+      break;
+    }
+    default:
+      throw new InvalidOperationException();
+  }
 }
 
 string DownloadAndUnzipCompiler(string url, string binariesFolderName, string version, bool cache, ZipFormat format = ZipFormat.Zip)
@@ -37,41 +125,28 @@ string DownloadAndUnzipCompiler(string url, string binariesFolderName, string ve
   var tempFileName = DownloadCompiler(url, binariesFolderName, version, cache);
   var unzippedFolder = $"./build/{binariesFolderName}/{version}";
 
-  EnsureDirectoryExists(unzippedFolder);
-  CleanDirectory(unzippedFolder);
-
-  switch (format)
-  {
-    case ZipFormat.Zip:
-      ZipUncompress(tempFileName, unzippedFolder);
-      break;
-
-    case ZipFormat.GZip:
-      GZipUncompress(tempFileName, unzippedFolder);
-      break;
-
-    default:
-      throw new InvalidOperationException();
-  }
+  Unzip(tempFileName, unzippedFolder, null, format);
 
   return unzippedFolder;
 }
 
 string DownloadAndUnzipCompiler(string url, string binariesFolderName, string version, bool cache, string filesToCopy, ZipFormat format = ZipFormat.Zip)
 {
-  var unzippedFolder = DownloadAndUnzipCompiler(url, binariesFolderName, version, cache, format);
-
+  var tempFileName = DownloadCompiler(url, binariesFolderName, version, cache);
   var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/{binariesFolderName}/{version}";
-  EnsureDirectoryExists(binariesFolder);
-  CleanDirectory(binariesFolder);
 
-  CopyFiles(
-    $"{unzippedFolder}/{filesToCopy}",
-    binariesFolder,
-    true);
+  Unzip(tempFileName, binariesFolder, filesToCopy, format);
 
   return binariesFolder;
 }
+
+Task("Prepare-Build-Directory")
+  .Does(() => {
+    EnsureDirectoryExists("./build");
+
+    EnsureDirectoryExists("./src/ShaderPlayground.Core/Binaries");
+    CleanDirectory("./src/ShaderPlayground.Core/Binaries");
+  });
 
 Task("Download-Dxc")
   .Does(() => {
@@ -115,7 +190,7 @@ Task("Download-SPIRV-Cross")
         "bin/spirv-cross.exe",
         ZipFormat.GZip);
     }
-    
+
     DownloadSpirvCross("2019-06-21", "b4e0163749");
     DownloadSpirvCross("2020-01-16", "f9818f0804");
     DownloadSpirvCross("2020-09-17", "8891bd3512");
@@ -127,7 +202,7 @@ Task("Download-SPIRV-Cross")
       false);
 
     var srcDirectory = $"{unzippedFolder}/SPIRV-Cross-master";
-    StartProcess(
+    RunAndCheckResult(
         @"cmake.exe",
         new ProcessSettings
         {
@@ -253,19 +328,15 @@ Task("Download-LZMA")
   .Does(() => {
     void DownloadLzma(string version, string displayVersion)
     {
-      var tempFileName = DownloadCompiler(
+      DownloadAndUnzipCompiler(
         $"https://www.7-zip.org/a/lzma{version}.7z",
         "lzma",
         displayVersion,
-        true);
-
-      var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/lzma/{displayVersion}";
-
-      StartProcess(
-        @"C:\Program Files\7-Zip\7z.exe",
-        $@"e -o""{binariesFolder}"" ""{tempFileName}"" bin\lzma.exe");
+        true,
+        @"bin\lzma.exe",
+        ZipFormat.SevenZip);
     }
-    
+
     DownloadLzma("1805", "18.05");
   });
 
@@ -342,10 +413,10 @@ Task("Download-IntelShaderAnalyzer")
 
 Task("Build-ANGLE")
   .Does(() => {
-    StartProcess(MakeAbsolute(File("./external/angle/build.bat")), new ProcessSettings {
+    RunAndCheckResult(MakeAbsolute(File("./external/angle/build.bat")), new ProcessSettings {
       WorkingDirectory = MakeAbsolute(Directory("./external/angle"))
     });
-    
+
     var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/angle/trunk";
     EnsureDirectoryExists(binariesFolder);
     CleanDirectory(binariesFolder);
@@ -358,10 +429,10 @@ Task("Build-ANGLE")
 
 Task("Build-Clspv")
   .Does(() => {
-    StartProcess(MakeAbsolute(File("./external/clspv/build.bat")), new ProcessSettings {
+    RunAndCheckResult(MakeAbsolute(File("./external/clspv/build.bat")), new ProcessSettings {
       WorkingDirectory = MakeAbsolute(Directory("./external/clspv"))
     });
-    
+
     var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/clspv/trunk";
     EnsureDirectoryExists(binariesFolder);
     CleanDirectory(binariesFolder);
