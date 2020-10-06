@@ -42,6 +42,10 @@ Shader Playground is a website for exploring shader compilers.
 * [miniz](https://github.com/richgel999/miniz)
 * [ZStandard](http://zstd.net)
 
+## Building
+
+See [BUILDING.md](BUILDING.md)
+
 ## Contributions
 
 Contributions are gratefully accepted. If you want to add a new compiler, or improve integration with an existing compiler, or any other type of bug fix or improvement to the website, please open an [issue](https://github.com/tgjones/shader-playground/issues).
