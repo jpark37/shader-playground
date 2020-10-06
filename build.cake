@@ -386,7 +386,7 @@ Task("Build-Fxc-Shim")
     CleanDirectory(binariesFolder);
 
     CopyFiles(
-      $"./shims/ShaderPlayground.Shims.Fxc/bin/{configuration}/netcoreapp2.0/publish/**/*.*",
+      $"./shims/ShaderPlayground.Shims.Fxc/bin/{configuration}/netcoreapp3.1/publish/**/*.*",
       binariesFolder,
       true);
   });
