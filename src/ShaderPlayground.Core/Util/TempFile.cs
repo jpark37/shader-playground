@@ -22,7 +22,7 @@ namespace ShaderPlayground.Core.Util
                 default:
                     throw new InvalidOperationException();
             }
-            
+
             return result;
         }
 
@@ -30,11 +30,23 @@ namespace ShaderPlayground.Core.Util
         {
             switch (language)
             {
+                case LanguageNames.Hlsl:
+                    return ".hlsl";
+
+                case LanguageNames.Metal:
+                    return ".metal";
+
+                case LanguageNames.SpirV:
+                    return ".spv";
+
+                case LanguageNames.SpirvAssembly:
+                    return ".spvasm";
+
                 case LanguageNames.Slang:
                     return ".slang";
 
-                case LanguageNames.Hlsl:
-                    return ".hlsl";
+                case LanguageNames.Wgsl:
+                    return ".wgsl";
 
                 default:
                     return ".tmp";

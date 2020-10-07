@@ -15,6 +15,14 @@ float4 PSMain(PSInput input) : SV_TARGET
 	return input.color;
 }";
 
+        private const string WglsCode = @"[[location(0)]] var<out> gl_FragColor : vec4<f32>;
+[[stage(fragment)]]
+fn main() -> void {
+    var color : vec4<f32> = vec4<f32>(0.1, 0.2, 0.3, 1.0);
+    gl_FragColor = color;
+    return;
+}";
+
         [Fact]
         public void CanCompileHlslToDxbcUsingFxc()
         {
@@ -127,6 +135,23 @@ float4 PSMain(PSInput input) : SV_TARGET
 
             Assert.Null(result.Outputs[0].Language);
             Assert.Equal(663, result.Outputs[0].Value.Length);
+        }
+
+        [Fact]
+        public void CanCompileWsglToSpirv()
+        {
+            var result = Compiler.Compile(
+                new ShaderCode(LanguageNames.Wgsl, WglsCode),
+                new CompilationStep(
+                    CompilerNames.Tint,
+                    new Dictionary<string, string>
+                    {
+                        { "ShaderStage", "fragment" },
+                        { "OutputLanguage", LanguageNames.SpirV },
+                        { "Version", "trunk" },
+                    }))[0];
+
+            Assert.True(result.Success);
         }
     }
 }

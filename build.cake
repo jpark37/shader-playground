@@ -447,6 +447,22 @@ Task("Build-Clspv")
       true);
   });
 
+Task("Build-Tint")
+  .Does(() => {
+    RunAndCheckResult(MakeAbsolute(File("./external/tint/build.bat")), new ProcessSettings {
+      WorkingDirectory = MakeAbsolute(Directory("./external/tint"))
+    });
+
+    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/tint/trunk";
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    CopyFiles(
+      "./external/tint/source/build/bin/Release/tint.exe",
+      binariesFolder,
+      true);
+  });
+
 Task("Build-Fxc-Shim")
   .Does(() => {
     DotNetCorePublish("./shims/ShaderPlayground.Shims.Fxc/ShaderPlayground.Shims.Fxc.csproj", new DotNetCorePublishSettings

@@ -16,6 +16,7 @@
         public const string Smolv = "SMOL-V";
         public const string SpirV = "SPIR-V";
         public const string SpirvAssembly = "SPIR-V ASM";
+        public const string Wgsl = "WGSL";
         public const string Yariv = "YARI-V";
         public const string Zlib = "zlib";
         public const string Zstd = "zst";
