@@ -80,40 +80,48 @@ namespace ShaderPlayground.Core.Compilers.Fxc
                 var fePath = $"{tempFile.FilePath}.fe";
                 var foPath = $"{tempFile.FilePath}.fo";
 
-                var args = $"--target {targetProfile} --entrypoint {entryPoint} --optimizationlevel {optimizationLevel}";
-                args += $" --assemblyfile \"{fcPath}\" --errorsfile \"{fePath}\" --objectfile \"{foPath}\"";
+                var args = $"--target-profile {targetProfile} --entry-point {entryPoint} --optimization-level {optimizationLevel}";
+                args += $" --assembly-file \"{fcPath}\" --errors-file \"{fePath}\" --object-file \"{foPath}\"";
+                args += $" --file \"{tempFile.FilePath}\"";
 
                 if (disableOptimizations)
                 {
-                    args += " --disableoptimizations";
+                    args += " --disable-optimizations";
                 }
 
                 var fxcShimPath = CommonParameters.GetBinaryPath("fxc", arguments, "ShaderPlayground.Shims.Fxc.dll");
 
                 ProcessHelper.Run(
                     "dotnet.exe",
-                    $"\"{fxcShimPath}\" {args} \"{tempFile.FilePath}\"",
+                    $"\"{fxcShimPath}\" {args}",
                     out var _,
-                    out var _);
+                    out var stderr);
 
                 int? selectedOutputIndex = null;
+
+                bool success = true;
 
                 var disassembly = FileHelper.ReadAllTextIfExists(fcPath);
                 if (string.IsNullOrWhiteSpace(disassembly))
                 {
                     disassembly = "<Compilation error occurred>";
                     selectedOutputIndex = 1;
+                    success = false;
                 }
 
                 var binaryOutput = FileHelper.ReadAllBytesIfExists(foPath);
                 var buildOutput = FileHelper.ReadAllTextIfExists(fePath);
+                if (string.IsNullOrWhiteSpace(buildOutput))
+                {
+                    buildOutput = stderr;
+                }
 
                 FileHelper.DeleteIfExists(fcPath);
                 FileHelper.DeleteIfExists(fePath);
                 FileHelper.DeleteIfExists(foPath);
 
                 return new ShaderCompilerResult(
-                    selectedOutputIndex == null,
+                    success,
                     new ShaderCode(LanguageNames.Dxbc, binaryOutput),
                     selectedOutputIndex,
                     new ShaderCompilerOutput("Disassembly", LanguageNames.Dxbc, disassembly),
