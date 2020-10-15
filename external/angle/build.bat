@@ -11,8 +11,5 @@ if EXIST "%PYTHON2%" (
 )
 
 call gclient sync --no-history
-call git checkout master
-
 call gn gen out/Release
-
 call ninja -C out/Release angle_shader_translator
