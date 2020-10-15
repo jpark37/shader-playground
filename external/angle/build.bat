@@ -10,7 +10,7 @@ if EXIST "%PYTHON2%" (
     call python scripts/bootstrap.py
 )
 
-call gclient sync
+call gclient sync --no-history
 call git checkout master
 
 call gn gen out/Release
