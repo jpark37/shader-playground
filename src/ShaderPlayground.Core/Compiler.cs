@@ -21,6 +21,7 @@ using ShaderPlayground.Core.Compilers.Smolv;
 using ShaderPlayground.Core.Compilers.SpirVCross;
 using ShaderPlayground.Core.Compilers.SpirVCrossIspc;
 using ShaderPlayground.Core.Compilers.SpirvTools;
+using ShaderPlayground.Core.Compilers.Tint;
 using ShaderPlayground.Core.Compilers.XShaderCompiler;
 using ShaderPlayground.Core.Compilers.Yariv;
 using ShaderPlayground.Core.Compilers.Zstd;
@@ -37,6 +38,7 @@ namespace ShaderPlayground.Core
             new OpenCLCLanguage(),
             new SlangLanguage(),
             new SpirvLanguage(),
+            new WgslLanguage(),
         };
 
         public static readonly IShaderCompiler[] AllCompilers =
@@ -68,6 +70,7 @@ namespace ShaderPlayground.Core
             new SpirvStatsCompiler(),
             new SpirvToSmolvCompiler(),
             new SpirvToYarivCompiler(),
+            new TintCompiler(),
             new YarivToSpirvCompiler(),
             new XscCompiler(),
             new ZstdCompiler(),

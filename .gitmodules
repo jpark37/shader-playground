@@ -16,3 +16,6 @@
 [submodule "external/clspv/source"]
 	path = external/clspv/source
 	url = https://github.com/google/clspv.git
+[submodule "external/tint/source"]
+	path = external/tint/source
+	url = https://dawn.googlesource.com/tint

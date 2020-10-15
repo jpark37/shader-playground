@@ -20,6 +20,7 @@
         public const string SpirvOpt = "spirv-opt";
         public const string SpirvRemap = "spirv-remap";
         public const string SpirvStats = "spirv-stats";
+        public const string Tint = "tint";
         public const string XShaderCompiler = "xsc";
         public const string HlslCc = "hlslcc";
         public const string Slang = "slang";
