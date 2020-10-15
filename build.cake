@@ -458,7 +458,7 @@ Task("Build-Tint")
     CleanDirectory(binariesFolder);
 
     CopyFiles(
-      "./external/tint/source/build/bin/Release/tint.exe",
+      "./external/tint/source/build/Release/tint.exe",
       binariesFolder,
       true);
   });
