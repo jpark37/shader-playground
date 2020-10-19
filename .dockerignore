@@ -1,0 +1,11 @@
+## Docker copy-ignore list.
+
+build/**
+**/bin/**
+**/obj/**
+**/Binaries/**
+**/.vs/**
+
+external/angle/source/**
+external/clspv/source/**
+external/tint/source/**

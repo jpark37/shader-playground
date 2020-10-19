@@ -31,6 +31,8 @@ Uses the nightly builds of the Roslyn script engine.
 Uses the Mono Compiler rather than the Roslyn script engine.
 .PARAMETER SkipToolPackageRestore
 Skips restoring of packages.
+.PARAMETER JustInstall
+Just install cake and dependencies - do not build.
 .PARAMETER ScriptArgs
 Remaining arguments are added here.
 
@@ -52,6 +54,7 @@ Param(
     [switch]$Experimental,
     [switch]$Mono,
     [switch]$SkipToolPackageRestore,
+    [switch]$JustInstall,
     [Parameter(Position=0,Mandatory=$false,ValueFromRemainingArguments=$true)]
     [string[]]$ScriptArgs
 )
@@ -85,7 +88,7 @@ function GetProxyEnabledWebClient
 {
     $wc = New-Object System.Net.WebClient
     $proxy = [System.Net.WebRequest]::GetSystemWebProxy()
-    $proxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials        
+    $proxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
     $wc.Proxy = $proxy
     return $wc
 }
@@ -115,8 +118,8 @@ if ((Test-Path $PSScriptRoot) -and !(Test-Path $TOOLS_DIR)) {
 
 # Make sure that packages.config exist.
 if (!(Test-Path $PACKAGES_CONFIG)) {
-    Write-Verbose -Message "Downloading packages.config..."    
-    try {        
+    Write-Verbose -Message "Downloading packages.config..."
+    try {
         $wc = GetProxyEnabledWebClient
         $wc.DownloadFile("https://cakebuild.net/download/bootstrapper/packages", $PACKAGES_CONFIG) } catch {
         Throw "Could not download packages.config."
@@ -216,20 +219,20 @@ if (!(Test-Path $CAKE_EXE)) {
     Throw "Could not find Cake.exe at $CAKE_EXE"
 }
 
+if (!$JustInstall) {
+    # Build Cake arguments
+    $cakeArguments = @("$Script");
+    if ($Target) { $cakeArguments += "-target=$Target" }
+    if ($Configuration) { $cakeArguments += "-configuration=$Configuration" }
+    if ($Verbosity) { $cakeArguments += "-verbosity=$Verbosity" }
+    if ($ShowDescription) { $cakeArguments += "-showdescription" }
+    if ($DryRun) { $cakeArguments += "-dryrun" }
+    if ($Experimental) { $cakeArguments += "-experimental" }
+    if ($Mono) { $cakeArguments += "-mono" }
+    $cakeArguments += $ScriptArgs
 
-
-# Build Cake arguments
-$cakeArguments = @("$Script");
-if ($Target) { $cakeArguments += "-target=$Target" }
-if ($Configuration) { $cakeArguments += "-configuration=$Configuration" }
-if ($Verbosity) { $cakeArguments += "-verbosity=$Verbosity" }
-if ($ShowDescription) { $cakeArguments += "-showdescription" }
-if ($DryRun) { $cakeArguments += "-dryrun" }
-if ($Experimental) { $cakeArguments += "-experimental" }
-if ($Mono) { $cakeArguments += "-mono" }
-$cakeArguments += $ScriptArgs
-
-# Start Cake
-Write-Host "Running build script..."
-&$CAKE_EXE $cakeArguments
-exit $LASTEXITCODE
+    # Start Cake
+    Write-Host "Running build script..."
+    &$CAKE_EXE $cakeArguments
+    exit $LASTEXITCODE
+}
