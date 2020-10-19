@@ -10,9 +10,6 @@ if EXIST "%PYTHON2%" (
     call python scripts/bootstrap.py
 )
 
-call gclient sync
-call git checkout master
-
+call gclient sync --no-history
 call gn gen out/Release
-
 call ninja -C out/Release angle_shader_translator

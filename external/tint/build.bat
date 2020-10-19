@@ -6,7 +6,7 @@ if NOT EXIST "./scripts/bootstrap.py" (
 
 if NOT EXIST ".gclient" (
     copy standalone.gclient .gclient
-    call gclient sync
+    call gclient sync --no-history
 )
 
 mkdir build
