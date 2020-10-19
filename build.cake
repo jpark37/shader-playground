@@ -458,7 +458,7 @@ Task("Build-Tint")
     CleanDirectory(binariesFolder);
 
     CopyFiles(
-      "./external/tint/source/build/bin/Release/tint.exe",
+      "./external/tint/source/build/Release/tint.exe",
       binariesFolder,
       true);
   });
@@ -643,6 +643,7 @@ Task("Default")
   .IsDependentOn("Prepare-Build-Directory")
   .IsDependentOn("Build-ANGLE")
   .IsDependentOn("Build-Clspv")
+  .IsDependentOn("Build-Tint")
   .IsDependentOn("Download-Dxc")
   .IsDependentOn("Download-Glslang")
   .IsDependentOn("Download-Mali-Offline-Compiler")
