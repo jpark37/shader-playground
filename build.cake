@@ -531,7 +531,6 @@ Task("Build-HLSL2GLSL-Shim")
       .UseToolVersion(MSBuildToolVersion.VS2019)
       .WithProperty("PlatformToolset", "v141")
       .WithProperty("WindowsTargetPlatformVersion", windowsSdkVersion)
-      .WithProperty("ForcedIncludeFiles", "<algorithm>")
       .SetConfiguration(configuration)
       .SetPlatformTarget(PlatformTarget.Win32));
 
