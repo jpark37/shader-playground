@@ -41,8 +41,8 @@ namespace ShaderPlayground.Core.Compilers.Rga
             new ShaderCompilerParameter("Asic", "ASIC", ShaderCompilerParameterType.ComboBox, AsicOptions, "gfx900"),
 
             // HLSL
-            CommonParameters.HlslEntryPoint.WithFilter(CommonParameters.InputLanguageParameterName, LanguageNames.Hlsl),
             new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "ps_5_0", filter: new ParameterFilter(CommonParameters.InputLanguageParameterName, LanguageNames.Hlsl)),
+            CommonParameters.HlslEntryPoint.WithFilter(CommonParameters.InputLanguageParameterName, LanguageNames.Hlsl),
 
             // GLSL
             new ShaderCompilerParameter("GlslTarget", "Target", ShaderCompilerParameterType.ComboBox, TargetOptions, TargetVulkan, filter: new ParameterFilter(CommonParameters.InputLanguageParameterName, LanguageNames.Glsl)),

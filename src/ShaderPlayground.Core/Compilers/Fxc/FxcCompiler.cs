@@ -15,8 +15,8 @@ namespace ShaderPlayground.Core.Compilers.Fxc
         public ShaderCompilerParameter[] Parameters { get; } = new[]
         {
             CommonParameters.CreateVersionParameter("fxc"),
-            CommonParameters.HlslEntryPoint,
             new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "ps_5_0"),
+            CommonParameters.HlslEntryPoint,
             new ShaderCompilerParameter("DisableOptimizations", "Disable optimizations", ShaderCompilerParameterType.CheckBox),
             new ShaderCompilerParameter("OptimizationLevel", "Optimization level", ShaderCompilerParameterType.ComboBox, OptimizationLevelOptions, "1"),
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.Dxbc })
