@@ -1,6 +1,4 @@
-﻿using System;
-using System.CommandLine;
-using System.IO;
+﻿using System.IO;
 using SharpDX.D3DCompiler;
 
 namespace ShaderPlayground.Shims.Fxc

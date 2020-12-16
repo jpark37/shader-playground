@@ -15,7 +15,7 @@
     <ProjectGuid>{D3FAEAD0-9491-42AC-859C-0F3ECF3004F1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ShaderPlaygroundShimsSmolv</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
