@@ -43,6 +43,8 @@ namespace ShaderPlayground.Core.Compilers.Fxc
             "ps_3_0",
             "ps_3_sw",
             "ps_4_0",
+            "ps_4_0_level_9_1",
+            "ps_4_0_level_9_3",
             "ps_4_1",
             "ps_5_0",
             "ps_5_1",
@@ -54,6 +56,8 @@ namespace ShaderPlayground.Core.Compilers.Fxc
             "vs_3_0",
             "vs_3_sw",
             "vs_4_0",
+            "vs_4_0_level_9_1",
+            "vs_4_0_level_9_3",
             "vs_4_1",
             "vs_5_0",
             "vs_5_1"
