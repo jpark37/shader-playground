@@ -28,6 +28,8 @@ namespace ShaderPlayground.Core.Compilers.Dxc
 
         private static readonly string[] EntryPointFilter =
         {
+            "as_6_5",
+            "as_6_6",
             "cs_6_0",
             "cs_6_1",
             "cs_6_2",
@@ -56,6 +58,8 @@ namespace ShaderPlayground.Core.Compilers.Dxc
             "hs_6_4",
             "hs_6_5",
             "hs_6_6",
+            "ms_6_5",
+            "ms_6_6",
             "ps_6_0",
             "ps_6_1",
             "ps_6_2",
