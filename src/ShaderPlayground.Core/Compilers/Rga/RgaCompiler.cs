@@ -41,6 +41,7 @@ namespace ShaderPlayground.Core.Compilers.Rga
             new ShaderCompilerParameter("Asic", "ASIC", ShaderCompilerParameterType.ComboBox, AsicOptions, "gfx900"),
 
             // HLSL
+            new ShaderCompilerParameter("DirectXMode", "DirectX mode", ShaderCompilerParameterType.ComboBox, DirectXModeOptions, "dx11", filter: new ParameterFilter(CommonParameters.InputLanguageParameterName, LanguageNames.Hlsl)),
             new ShaderCompilerParameter("TargetProfile", "Target profile", ShaderCompilerParameterType.ComboBox, TargetProfileOptions, "ps_5_0", filter: new ParameterFilter(CommonParameters.InputLanguageParameterName, LanguageNames.Hlsl)),
             CommonParameters.HlslEntryPoint.WithFilter(CommonParameters.InputLanguageParameterName, LanguageNames.Hlsl),
 
@@ -56,6 +57,12 @@ namespace ShaderPlayground.Core.Compilers.Rga
             "cs_4_0",
             "cs_4_1",
             "cs_5_0",
+            "cs_6_0",
+            "cs_6_1",
+            "cs_6_2",
+            "cs_6_3",
+            "cs_6_4",
+            "cs_6_5",
             "ds_5_0",
             "gs_4_0",
             "gs_4_1",
@@ -67,6 +74,12 @@ namespace ShaderPlayground.Core.Compilers.Rga
             "vs_4_0",
             "vs_4_1",
             "vs_5_0",
+        };
+
+        private static readonly string[] DirectXModeOptions =
+        {
+            "dx11",
+            "dx12",
         };
 
         private const string TargetOpenGL = "OpenGL";
@@ -86,6 +99,7 @@ namespace ShaderPlayground.Core.Compilers.Rga
             var isVersion22OrLater = version >= new Version(2, 2);
 
             var asic = arguments.GetString("Asic");
+            var directXMode = arguments.GetString("DirectXMode");
             var entryPoint = arguments.GetString("EntryPoint");
             var targetProfile = arguments.GetString("TargetProfile");
             var shaderStage = arguments.GetString(CommonParameters.GlslShaderStage.Name);
@@ -103,9 +117,26 @@ namespace ShaderPlayground.Core.Compilers.Rga
                 switch (shaderCode.Language)
                 {
                     case LanguageNames.Hlsl:
-                        args += isVersion22OrLater ? $" -s dx11" : " -s hlsl";
-                        args += $" --profile {targetProfile} --function {entryPoint}";
-                        args += $" \"{tempFile.FilePath}\"";
+                        switch (directXMode)
+                        {
+                            case "dx11":
+                                args += isVersion22OrLater ? $" -s dx11" : " -s hlsl";
+                                args += $" --profile {targetProfile} --function {entryPoint}";
+                                args += $" \"{tempFile.FilePath}\"";
+                                break;
+
+                            case "dx12":
+                                if (!isVersion22OrLater)
+                                {
+                                    throw new InvalidOperationException("DX12 mode is only supported on RGA 2.2 and above");
+                                }
+                                args += " -s dx12";
+                                var stage = targetProfile.Substring(0, 2);
+                                args += $" --{stage}-model {targetProfile} --{stage}-entry {entryPoint}";
+                                args += $" --all-hlsl \"{tempFile.FilePath}\"";
+                                break;
+                        }
+                        
                         break;
 
                     case LanguageNames.Glsl:
@@ -133,7 +164,7 @@ namespace ShaderPlayground.Core.Compilers.Rga
                     rgaPath,
                     args,
                     out var stdOutput,
-                    out _);
+                    out var stdError);
 
                 var actualOutputPathPrefix = Path.GetDirectoryName(tempFile.FilePath);
 
@@ -149,6 +180,25 @@ namespace ShaderPlayground.Core.Compilers.Rga
                     switch (shaderCode.Language)
                     {
                         case LanguageNames.Hlsl:
+                            if (directXMode == "dx12")
+                            {
+                                switch (targetProfile.Substring(0, 2))
+                                {
+                                    case "cs":
+                                        switch (extension)
+                                        {
+                                            case "isa":
+                                                shaderStage = "comp";
+                                                break;
+
+                                            default:
+                                                shaderStage = "compute";
+                                                break;
+                                        }
+                                        break;
+                                }
+                                goto default;
+                            }
                             return Path.Combine(
                                 actualOutputPathPrefix,
                                 $"{asic}_{entryPoint}_{Path.GetFileName(tempFile.FilePath)}.{extension}");
