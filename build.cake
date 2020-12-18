@@ -428,6 +428,11 @@ Task("Build-ANGLE")
       "./external/angle/source/out/Release/angle_shader_translator.exe",
       binariesFolder,
       true);
+
+    CopyFiles(
+      "./external/angle/source/out/Release/libc++.dll",
+      binariesFolder,
+      true);
   });
 
 Task("Build-Clspv")
