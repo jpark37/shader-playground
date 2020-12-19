@@ -13,7 +13,7 @@ namespace ShaderPlayground.Core.Compilers.SpirvTools
 
         public ShaderCompilerParameter[] Parameters { get; } =
         {
-            CommonParameters.CreateVersionParameter("spirv-tools")
+            CommonParameters.CreateVersionParameter("spirv-tools-legacy")
         };
 
         public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
@@ -21,7 +21,7 @@ namespace ShaderPlayground.Core.Compilers.SpirvTools
             using (var tempFile = TempFile.FromShaderCode(shaderCode))
             {
                 ProcessHelper.Run(
-                    CommonParameters.GetBinaryPath("spirv-tools", arguments, "spirv-stats.exe"),
+                    CommonParameters.GetBinaryPath("spirv-tools-legacy", arguments, "spirv-stats.exe"),
                     $"\"{tempFile.FilePath}\"",
                     out var stdOutput,
                     out var _);

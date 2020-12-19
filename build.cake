@@ -254,11 +254,30 @@ Task("Download-SPIRV-Cross-ISPC")
 
 Task("Download-SPIRV-Tools")
   .Does(() => {
+    // Hack to get the actual zip URL from the intermediate download page, which contains this HTML:
+    // <meta http-equiv="refresh" content="0; url=https://storage.googleapis.com/spirv-tools/artifacts/prod/graphics_shader_compiler/spirv-tools/windows-msvc-2017-release/continuous/1336/20201217-105132/install.zip" />
+    var downloadPageFileName = $"./build/spirv-tools-trunk.html";
+    DownloadFile(
+      "https://storage.googleapis.com/spirv-tools/badges/build_link_windows_vs2017_release.html",
+      downloadPageFileName);
+    var downloadPageHtml = System.IO.File.ReadAllText(downloadPageFileName);
+    var downloadPageUrl = System.Text.RegularExpressions.Regex.Match(downloadPageHtml, "url=([\\s\\S]+)\"").Groups[1].Value;
+
     DownloadAndUnzipCompiler(
-      "https://github.com/KhronosGroup/SPIRV-Tools/releases/download/master-tot/SPIRV-Tools-master-windows-x64-Release.zip",
+      downloadPageUrl,
       "spirv-tools",
       "trunk",
       false,
+      "install/bin/*.*");
+  });
+
+Task("Download-SPIRV-Tools-Legacy")
+  .Does(() => {
+    DownloadAndUnzipCompiler(
+      "https://github.com/KhronosGroup/SPIRV-Tools/releases/download/master-tot/SPIRV-Tools-master-windows-x64-Release.zip",
+      "spirv-tools-legacy",
+      "trunk",
+      true,
       "bin/*.*");
   });
 
@@ -626,6 +645,7 @@ Task("Default")
   .IsDependentOn("Download-Mali-Offline-Compiler")
   .IsDependentOn("Download-SPIRV-Cross")
   .IsDependentOn("Download-SPIRV-Tools")
+  .IsDependentOn("Download-SPIRV-Tools-Legacy")
   .IsDependentOn("Download-XShaderCompiler")
   .IsDependentOn("Download-SPIRV-Cross-ISPC")
   .IsDependentOn("Download-Slang")

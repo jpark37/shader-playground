@@ -13,7 +13,7 @@ namespace ShaderPlayground.Core.Compilers.SpirvTools
 
         public ShaderCompilerParameter[] Parameters { get; } =
         {
-            CommonParameters.CreateVersionParameter("spirv-tools"),
+            CommonParameters.CreateVersionParameter("spirv-tools-legacy"),
             new ShaderCompilerParameter("Model", "Model", ShaderCompilerParameterType.ComboBox, ModelOptions, defaultValue: "shader_lite"),
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.SpirV })
         };
@@ -34,7 +34,7 @@ namespace ShaderPlayground.Core.Compilers.SpirvTools
                 var outputPath = $"{tempFile.FilePath}.out";
 
                 ProcessHelper.Run(
-                    CommonParameters.GetBinaryPath("spirv-tools", arguments, "spirv-markv.exe"),
+                    CommonParameters.GetBinaryPath("spirv-tools-legacy", arguments, "spirv-markv.exe"),
                     $"d --comments --model={arguments.GetString("Model")} -o \"{outputPath}\" \"{tempFile.FilePath}\"",
                     out var stdOutput,
                     out var stdError);
