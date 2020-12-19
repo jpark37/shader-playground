@@ -16,6 +16,7 @@ using ShaderPlayground.Core.Compilers.Mali;
 using ShaderPlayground.Core.Compilers.Miniz;
 using ShaderPlayground.Core.Compilers.PowerVR;
 using ShaderPlayground.Core.Compilers.Rga;
+using ShaderPlayground.Core.Compilers.RustGpu;
 using ShaderPlayground.Core.Compilers.Slang;
 using ShaderPlayground.Core.Compilers.Smolv;
 using ShaderPlayground.Core.Compilers.SpirVCross;
@@ -36,6 +37,7 @@ namespace ShaderPlayground.Core
             new HlslLanguage(),
             new GlslLanguage(),
             new OpenCLCLanguage(),
+            new RustLanguage(),
             new SlangLanguage(),
             new SpirvLanguage(),
             new WgslLanguage(),
@@ -57,6 +59,7 @@ namespace ShaderPlayground.Core
             new MinizCompiler(),
             new PowerVRCompiler(),
             new RgaCompiler(),
+            new RustGpuCompiler(),
             new SlangCompiler(),
             new SmolvToSpirvCompiler(),
             new SpirvAssemblerCompiler(),

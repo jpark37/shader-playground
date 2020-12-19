@@ -486,6 +486,20 @@ Task("Build-Tint")
       true);
   });
 
+Task("Build-Rust-GPU")
+  .Does(() => {
+    // TODO: Actually build from source.
+
+    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/rust-gpu/trunk";
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    CopyFiles(
+      "./build/rust-gpu/trunk/**/*.*",
+      binariesFolder,
+      true);
+  });
+
 Task("Build-Fxc-Shim")
   .Does(() => {
     DotNetCorePublish("./shims/ShaderPlayground.Shims.Fxc/ShaderPlayground.Shims.Fxc.csproj", new DotNetCorePublishSettings
@@ -640,6 +654,7 @@ Task("Default")
   .IsDependentOn("Build-ANGLE")
   .IsDependentOn("Build-Clspv")
   .IsDependentOn("Build-Tint")
+  .IsDependentOn("Build-Rust-GPU")
   .IsDependentOn("Download-Dxc")
   .IsDependentOn("Download-Glslang")
   .IsDependentOn("Download-Mali-Offline-Compiler")

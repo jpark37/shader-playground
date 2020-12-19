@@ -221,6 +221,9 @@
             case "SPIR-V ASM":
                 return "text/x-spirv";
 
+            case "Rust":
+                return "text/rust";
+
             default:
                 return "text/plain";
         }

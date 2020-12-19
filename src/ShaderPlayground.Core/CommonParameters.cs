@@ -88,13 +88,19 @@ namespace ShaderPlayground.Core
                 trunkDescription);
         }
 
+        public static string GetBinaryPath(string binaryFolderName, ShaderCompilerArguments arguments)
+        {
+            return Path.Combine(
+                AppContext.BaseDirectory,
+                "Binaries",
+                binaryFolderName,
+                arguments.GetString(VersionParameterName));
+        }
+
         public static string GetBinaryPath(string binaryFolderName, ShaderCompilerArguments arguments, string executableFileName)
         {
             return Path.Combine(
-                AppContext.BaseDirectory, 
-                "Binaries", 
-                binaryFolderName,
-                arguments.GetString(VersionParameterName), 
+                GetBinaryPath(binaryFolderName, arguments),
                 executableFileName);
         }
     }

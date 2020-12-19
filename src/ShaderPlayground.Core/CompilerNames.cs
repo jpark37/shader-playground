@@ -11,6 +11,7 @@
         public const string IntelShaderAnalyzer = "intelshaderanalyzer";
         public const string PowerVR = "powervr";
         public const string Rga = "rga";
+        public const string RustGpu = "rust-gpu";
         public const string SpirvAssembler = "spirv-as";
         public const string SpirVCross = "spirv-cross";
         public const string SpirVCrossIspc = "spirv-cross-ispc";
