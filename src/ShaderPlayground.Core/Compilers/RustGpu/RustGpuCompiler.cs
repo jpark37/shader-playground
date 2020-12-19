@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using ShaderPlayground.Core.Util;
 
@@ -21,6 +22,17 @@ namespace ShaderPlayground.Core.Compilers.RustGpu
 
         public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
         {
+            // Do some basic validation for "securiy".
+            var shaderText = shaderCode.Text;
+            if (shaderText.Contains("include!") ||
+                shaderText.Contains("include_bytes!") || 
+                shaderText.Contains("include_str!") ||
+                shaderText.Contains("env!") ||
+                shaderText.Contains("option_env!"))
+            {
+                throw new InvalidOperationException("Cannot use macros that access the file system or environment");
+            }
+            
             using (var tempDirectory = new TempDirectory())
             {
                 var binaryPath = CommonParameters.GetBinaryPath("rust-gpu", arguments);
