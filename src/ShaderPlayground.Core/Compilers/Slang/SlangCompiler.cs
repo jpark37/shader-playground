@@ -16,7 +16,7 @@ namespace ShaderPlayground.Core.Compilers.Slang
             CommonParameters.CreateVersionParameter("slang"),
             CommonParameters.HlslEntryPoint,
             new ShaderCompilerParameter("Profile", "Profile", ShaderCompilerParameterType.ComboBox, ProfileOptions, "cs_5_0"),
-            CommonParameters.CreateOutputParameter(new[] { LanguageNames.Hlsl, LanguageNames.Glsl })
+            CommonParameters.CreateOutputParameter(new[] { LanguageNames.Hlsl, LanguageNames.Glsl, LanguageNames.Cpp, LanguageNames.Cuda, LanguageNames.Ptx })
         };
 
         private static readonly string[] ProfileOptions =
@@ -57,6 +57,18 @@ namespace ShaderPlayground.Core.Compilers.Slang
 
                 case LanguageNames.Hlsl:
                     args += " -target hlsl";
+                    break;
+                    
+                case LanguageNames.Cuda:
+                    args += " -target cuda";
+                    break;
+                    
+                case LanguageNames.Cpp:
+                    args += " -target cpp";
+                    break;
+                
+                case LanguageNames.Ptx:
+                    args += " -target ptx";
                     break;
             }
 
