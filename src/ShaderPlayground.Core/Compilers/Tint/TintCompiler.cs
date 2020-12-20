@@ -8,7 +8,7 @@ namespace ShaderPlayground.Core.Compilers.Tint
     internal sealed class TintCompiler : IShaderCompiler
     {
         public string Name { get; } = CompilerNames.Tint;
-        public string DisplayName { get; } = "tint";
+        public string DisplayName { get; } = "Tint";
         public string Url { get; } = "https://dawn.googlesource.com/tint/";
         public string Description { get; } = "WebGPU Shader Language (WGSL) Compiler";
 

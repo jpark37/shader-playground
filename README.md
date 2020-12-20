@@ -11,6 +11,7 @@ Shader Playground is a website for exploring shader compilers.
 ### Compilers
 
 * [ANGLE](https://github.com/google/angle)
+* [Clspv](https://github.com/google/clspv)
 * [DXC](https://github.com/Microsoft/DirectXShaderCompiler)
 * [FXC](https://msdn.microsoft.com/en-us/library/windows/desktop/bb232919(v=vs.85).aspx)
 * [Glslang](https://github.com/KhronosGroup/glslang)
@@ -18,16 +19,21 @@ Shader Playground is a website for exploring shader compilers.
 * [HLSLcc](https://github.com/Unity-Technologies/HLSLcc)
 * [HLSLParser](https://github.com/Thekla/hlslparser)
 * [Mali offline compiler](https://developer.arm.com/products/software-development-tools/graphics-development-tools/mali-offline-compiler)
+* [PowerVR compiler](https://community.imgtec.com/developers/powervr/tools/pvrshadereditor/)
+* [Radon GPU Analyzer (RGA)](https://github.com/GPUOpen-Tools/RGA)
+* [Rust GPU](https://github.com/EmbarkStudios/rust-gpu)
 * [Slang](https://github.com/shader-slang/slang)
 * [SPIRV-Cross](https://github.com/KhronosGroup/SPIRV-Cross)
 * [SPIRV-Cross - Intel fork with ISPC backend](https://github.com/GameTechDev/SPIRV-Cross)
 * [SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools)
   * spirv-as
+* [Tint](https://dawn.googlesource.com/tint/)
 * [XShaderCompiler](https://github.com/LukasBanana/XShaderCompiler)
 
 ### Analyzers and optimizers
 
 * [GLSL optimizer](https://github.com/aras-p/glsl-optimizer)
+* [Intel Shader Analyzer](https://github.com/GameTechDev/IntelShaderAnalyzer)
 * [SMOL-V](https://github.com/aras-p/smol-v)
 * [spirv-remap](https://github.com/KhronosGroup/glslang/blob/master/README-spirv-remap.txt)
 * [SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools)
@@ -35,6 +41,7 @@ Shader Playground is a website for exploring shader compilers.
   * spirv-markv
   * spirv-opt
   * spirv-stats
+* [YARI-V](https://github.com/sheredom/yari-v)
 
 ### Compressors
 
