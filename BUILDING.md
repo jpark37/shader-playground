@@ -10,7 +10,7 @@ be manually installed, or you can use a Docker image and container.
 
 The following must be installed:
 
-* [Docker Desktop for Windows])(https://docs.docker.com/docker-for-windows/install/)
+* [Docker Desktop for Windows](https://docs.docker.com/docker-for-windows/install/)
 * [Git](https://git-scm.com/download/win)
 
 #### Building
@@ -59,13 +59,13 @@ The following must be installed:
 * [Windows SDK 17134](https://download.microsoft.com/download/5/A/0/5A08CEF4-3EC9-494A-9578-AB687E716C12/windowssdk/winsdksetup.exe)
 * [CMake](https://cmake.org/download/)
 * [7-Zip](https://www.7-zip.org/)
- * `7zip.exe` also be added to `PATH`
+  * `7zip.exe` also be added to `PATH`
 * [python2](https://www.python.org/download/releases/2.0/)
- * `PYTHON2` enviroment variable must point to `python.exe`. `python.exe` must not be on `PATH`
+  * `PYTHON2` enviroment variable must point to `python.exe`. `python.exe` must not be on `PATH`
 * [python3](https://www.python.org/downloads/)
- * `PYTHON3` must be on `PATH`
+  * `PYTHON3` must be on `PATH`
 * [depot_tools](https://storage.googleapis.com/chrome-infra/depot_tools.zip)
- * This directory must be on `PATH`
+  * This directory must be on `PATH`
 
  #### Building
 
