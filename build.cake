@@ -293,14 +293,49 @@ Task("Download-XShaderCompiler")
 
 Task("Download-Slang")
   .Does(() => {
+    var cudaExePath = DownloadCompiler(
+      "http://developer.download.nvidia.com/compute/cuda/11.0.2/local_installers/cuda_11.0.2_451.48_win10.exe",
+      "cuda",
+      "11.0.2",
+      true);
+
+    var cudaFolder = "./build/cuda/11.0.2";
+    EnsureDirectoryExists(cudaFolder);
+    CleanDirectory(cudaFolder);
+
+    void ExtractFile(string fileName)
+    {
+      RunAndCheckResult(
+        @"C:\Program Files\7-Zip\7z.exe",
+        new ProcessSettings
+        {
+          Arguments = $@"e -o""{cudaFolder}"" ""{cudaExePath}"" cuda_nvrtc\nvrtc\bin\{fileName}"
+        });
+    }
+
+    var nvrtcFiles = new[]
+    {
+      "nvrtc64_110_0.dll",
+      "nvrtc-builtins64_110.dll"
+    };
+
+    foreach (var nvrtcFile in nvrtcFiles)
+    {
+      ExtractFile(nvrtcFile);
+    }
+
+    var nvrtcPaths = nvrtcFiles.Select(x => cudaFolder + "/" + x);
+
     void DownloadSlang(string version)
     {
-      DownloadAndUnzipCompiler(
+      var binariesFolder = DownloadAndUnzipCompiler(
         $"https://github.com/shader-slang/slang/releases/download/v{version}/slang-{version}-win64.zip",
         "slang",
         $"v{version}",
         true,
         "bin/windows-x64/release/*.*");
+
+      CopyFiles(nvrtcPaths, binariesFolder);
     }
 
     DownloadSlang("0.10.24");
