@@ -16,7 +16,8 @@ namespace ShaderPlayground.Core.Compilers.Slang
             CommonParameters.CreateVersionParameter("slang"),
             // The default HLSL entry point (CommonParameters.HlslEntryPoint) uses PSMain, but the Slang sample is a compute shader with "computeMain"
             new ShaderCompilerParameter("EntryPoint", "Entry point", ShaderCompilerParameterType.TextBox, defaultValue: "computeMain"),
-            new ShaderCompilerParameter("Profile", "Profile", ShaderCompilerParameterType.ComboBox, ProfileOptions, "cs_5_0"),
+            // Default to cs_6_0 as assuming DXIL will be the default target 
+            new ShaderCompilerParameter("Profile", "Profile", ShaderCompilerParameterType.ComboBox, ProfileOptions, "cs_6_0"),
             new ShaderCompilerParameter("OptimizationLevel", "Optimization level", ShaderCompilerParameterType.ComboBox, OptimizationLevelOptions, "Default"),
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.Dxil, LanguageNames.SpirV, LanguageNames.Dxbc, LanguageNames.Hlsl, LanguageNames.Glsl, LanguageNames.Cpp, LanguageNames.Cuda, LanguageNames.Ptx })
         };
@@ -31,20 +32,86 @@ namespace ShaderPlayground.Core.Compilers.Slang
 
         private static readonly string[] ProfileOptions =
         {
+            // DXBC
             "cs_4_0",
             "cs_4_1",
             "cs_5_0",
+            "cs_5_1",
+            // DXIL
+            "cs_6_0",
+            "cs_6_1",
+            "cs_6_2",
+            "cs_6_3",
+            "cs_6_4",
+            "cs_6_5",
+            "cs_6_6",
+
+            // DXBC
             "ds_5_0",
+            "ds_5_1",
+            // DXIL
+            "ds_6_0",
+            "ds_6_1",
+            "ds_6_2",
+            "ds_6_3",
+            "ds_6_4",
+            "ds_6_5",
+            "ds_6_6",
+
+            // DXBC
             "gs_4_0",
             "gs_4_1",
             "gs_5_0",
+            "gs_5_1",
+            // DXIL
+            "gs_6_0",
+            "gs_6_1",
+            "gs_6_2",
+            "gs_6_3",
+            "gs_6_4",
+            "gs_6_5",
+            "gs_6_6",
+
+            // DXBC
             "hs_5_0",
+            "hs_5_1",
+            // DXIL
+            "hs_6_0",
+            "hs_6_1",
+            "hs_6_2",
+            "hs_6_3",
+            "hs_6_4",
+            "hs_6_5",
+            "hs_6_6",
+
+            // DXBC
             "ps_4_0",
             "ps_4_1",
             "ps_5_0",
+            "ps_5_1",
+            // DXIL
+            "ps_6_0",
+            "ps_6_1",
+            "ps_6_2",
+            "ps_6_3",
+            "ps_6_4",
+            "ps_6_5",
+            "ps_6_6",
+
+            // DXBC
             "vs_4_0",
             "vs_4_1",
             "vs_5_0",
+            "vs_5_1",
+            // DXIL
+            "vs_6_0",
+            "vs_6_1",
+            "vs_6_2",
+            "vs_6_3",
+            "vs_6_4",
+            "vs_6_5",
+            "vs_6_6",
+
             "glsl_vertex",
             "glsl_tess_control",
             "glsl_tess_eval",
