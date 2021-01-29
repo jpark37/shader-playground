@@ -57,6 +57,22 @@ See [BUILDING.md](BUILDING.md)
 
 Contributions are gratefully accepted. If you want to add a new compiler, or improve integration with an existing compiler, or any other type of bug fix or improvement to the website, please open an [issue](https://github.com/tgjones/shader-playground/issues).
 
+## Supporters
+
+Shader Playground is supported by these amazing people. Their sponsorship allows Shader Playground to exist as a free resource for everyone. If you'd like to help, please consider [becoming a sponsor on GitHub](https://github.com/sponsors/tgjones).
+
+* [Aras Pranckevičius](https://aras-p.info/)
+<!-- -->
+* [Rys Sommefeldt](https://rys.sommefeldt.com/)
+* [Neil Henning](http://www.duskborn.com)
+<!-- -->
+* [Dimitri Diakopoulos](http://www.dimitridiakopoulos.com/)
+* [Laura Reznikov](https://twitter.com/theanimator)
+* [Nathan Reed](http://reedbeta.com/)
+* [Aisha Brown](https://twitter.com/aishization)
+* [Sean Cooper](https://kornnerstudios.blogspot.com/)
+* [Ken Hu](https://silvesthu.github.io/)
+
 ## Author
 
 [Tim Jones](http://timjones.io)
