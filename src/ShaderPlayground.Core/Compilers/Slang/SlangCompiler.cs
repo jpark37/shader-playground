@@ -14,9 +14,19 @@ namespace ShaderPlayground.Core.Compilers.Slang
         public ShaderCompilerParameter[] Parameters { get; } =
         {
             CommonParameters.CreateVersionParameter("slang"),
-            CommonParameters.HlslEntryPoint,
+            // The default HLSL entry point (CommonParameters.HlslEntryPoint) uses PSMain, but the Slang sample is a compute shader with "computeMain"
+            new ShaderCompilerParameter("EntryPoint", "Entry point", ShaderCompilerParameterType.TextBox, defaultValue: "computeMain"),
             new ShaderCompilerParameter("Profile", "Profile", ShaderCompilerParameterType.ComboBox, ProfileOptions, "cs_5_0"),
-            CommonParameters.CreateOutputParameter(new[] { LanguageNames.Hlsl, LanguageNames.Glsl, LanguageNames.Cpp, LanguageNames.Cuda, LanguageNames.Ptx })
+            new ShaderCompilerParameter("OptimizationLevel", "Optimization level", ShaderCompilerParameterType.ComboBox, OptimizationLevelOptions, "Default"),
+            CommonParameters.CreateOutputParameter(new[] { LanguageNames.Dxil, LanguageNames.SpirV, LanguageNames.Dxbc, LanguageNames.Hlsl, LanguageNames.Glsl, LanguageNames.Cpp, LanguageNames.Cuda, LanguageNames.Ptx })
+        };
+
+        private static readonly string[] OptimizationLevelOptions =
+        {
+            "None",
+            "Default",
+            "High",
+            "Maximal",
         };
 
         private static readonly string[] ProfileOptions =
@@ -66,9 +76,40 @@ namespace ShaderPlayground.Core.Compilers.Slang
                 case LanguageNames.Cpp:
                     args += " -target cpp";
                     break;
-                
+
                 case LanguageNames.Ptx:
                     args += " -target ptx";
+                    break;
+
+                case LanguageNames.Dxil:
+                    args += " -target dxil-assembly";
+                    break;
+
+                case LanguageNames.SpirV:
+                    args += " -target spirv-assembly";
+                    break;
+
+                case LanguageNames.Dxbc:
+                    args += " -target dxbc-assembly";
+                    break;
+            }
+
+            var optimizationLevel = arguments.GetString("OptimizationLevel");
+            switch (optimizationLevel)
+            {
+                case "None":
+                    args += " -O0";
+                    break;
+                case "High":
+                    args += " -O2";
+                    break;
+                case "Maximal":
+                    args += " -O3";
+                    break;
+                case "Default":
+                    args += " -O";
+                    break;
+                default:
                     break;
             }
 
