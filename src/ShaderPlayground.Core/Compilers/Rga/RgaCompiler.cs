@@ -13,7 +13,7 @@ namespace ShaderPlayground.Core.Compilers.Rga
         static RgaCompiler()
         {
             ProcessHelper.Run(
-                Path.Combine(AppContext.BaseDirectory, "Binaries", "rga", "2.2", "rga.exe"),
+                Path.Combine(AppContext.BaseDirectory, "Binaries", "rga", "2.4.1", "rga.exe"),
                 "-s dx11 --list-asics",
                 out var stdOutput,
                 out var _);
@@ -78,6 +78,7 @@ namespace ShaderPlayground.Core.Compilers.Rga
 
         private static readonly string[] DirectXModeOptions =
         {
+            "dxr",
             "dx11",
             "dx12",
         };
@@ -97,6 +98,7 @@ namespace ShaderPlayground.Core.Compilers.Rga
 
             var isVersion21OrLater = version >= new Version(2, 1);
             var isVersion22OrLater = version >= new Version(2, 2);
+            var isVersion241OrLater = version >= new Version(2, 4, 1);
 
             var asic = arguments.GetString("Asic");
             var directXMode = arguments.GetString("DirectXMode");
@@ -119,6 +121,16 @@ namespace ShaderPlayground.Core.Compilers.Rga
                     case LanguageNames.Hlsl:
                         switch (directXMode)
                         {
+                            case "dxr":
+                                if (!isVersion241OrLater)
+                                {
+                                    throw new InvalidOperationException("DXR mode is only supported on RGA 2.4.1 and above");
+                                }
+                                args += " -s dxr";
+                                args += $" --export {entryPoint}";
+                                args += $" --hlsl \"{tempFile.FilePath}\"";
+                                break;
+
                             case "dx11":
                                 args += isVersion22OrLater ? $" -s dx11" : " -s hlsl";
                                 args += $" --profile {targetProfile} --function {entryPoint}";
