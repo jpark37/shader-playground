@@ -1,5 +1,27 @@
 # Changelog
 
+## 2021-04-15
+
+* Added Mali offline compiler 7.3.0
+
+## 2020-12-24
+
+* Updated Slang with RTX output
+* Addd Rust GPU compiler
+* Added RGA 2.4
+
+## 2020-10-15
+
+* Added Tint compiler and WGSL language
+
+## 2020-09-29
+
+* Added RGA 2.3.1
+
+## 2020-06-12
+
+* Updated Slang with CUDA/C++ output
+
 ## 2020-02-25
 
 * Fixed scrolling (#63)

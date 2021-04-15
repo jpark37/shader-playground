@@ -29,13 +29,6 @@ namespace ShaderPlayground.Core
             ShaderCompilerParameterType.TextBox,
             defaultValue: "PSMain");
 
-        public static readonly ShaderCompilerParameter SpirVEntryPoint = new ShaderCompilerParameter(
-            "EntryPoint",
-            "Entry point",
-            ShaderCompilerParameterType.TextBox,
-            defaultValue: "main",
-            description: "Ignored when input language is GLSL.");
-
         public static readonly ShaderCompilerParameter ExtraOptionsParameter = new ShaderCompilerParameter(
             "ExtraOptions",
             "Extra options",
