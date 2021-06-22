@@ -3,6 +3,7 @@
 ## 2021-06-22
 
 * Added DXIL, SPIR-V & DXBC targets for Slang (#96)
+* New compiler - [Naga](https://github.com/gfx-rs/naga)
 
 ## 2021-04-15
 
