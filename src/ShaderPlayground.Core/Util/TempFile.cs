@@ -5,9 +5,9 @@ namespace ShaderPlayground.Core.Util
 {
     internal sealed class TempFile : IDisposable
     {
-        public static TempFile FromShaderCode(ShaderCode shaderCode)
+        public static TempFile FromShaderCode(ShaderCode shaderCode, string fileExtension = null)
         {
-            var result = new TempFile(GetFileExtension(shaderCode.Language));
+            var result = new TempFile(fileExtension ?? GetFileExtension(shaderCode.Language));
 
             switch (shaderCode.CodeType)
             {
