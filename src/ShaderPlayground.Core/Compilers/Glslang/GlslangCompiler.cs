@@ -146,7 +146,7 @@ namespace ShaderPlayground.Core.Compilers.Glslang
         {
             ProcessHelper.Run(
                 CommonParameters.GetBinaryPath("glslang", arguments, "glslangValidator.exe"),
-                $"-S {stage} -d {args} {codeFilePath}",
+                $"-S {stage} -d {args} \"{codeFilePath}\"",
                 out var stdOutput,
                 out var stdError);
 

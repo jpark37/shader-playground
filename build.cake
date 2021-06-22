@@ -232,6 +232,7 @@ Task("Download-SPIRV-Cross")
     DownloadSpirvCross("2019-06-21", "b4e0163749");
     DownloadSpirvCross("2020-01-16", "f9818f0804");
     DownloadSpirvCross("2020-09-17", "8891bd3512");
+    DownloadSpirvCross("2021-01-15", "9acb9ec31f");
 
     var unzippedFolder = DownloadAndUnzipCompiler(
       "https://github.com/KhronosGroup/SPIRV-Cross/archive/master.zip",
