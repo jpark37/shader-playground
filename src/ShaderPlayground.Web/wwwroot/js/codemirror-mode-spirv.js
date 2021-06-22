@@ -458,6 +458,10 @@
                     stream.skipToEnd();
                     return "comment";
                 }
+                if (ch == '/' && stream.peek() == '/') {
+                    stream.skipToEnd();
+                    return "comment";
+                }
                 if (ch == '"' || ch == "'") {
                     return tokenString(ch)(stream);
                 }

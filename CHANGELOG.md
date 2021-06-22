@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-06-22
+
+* Added DXIL, SPIR-V & DXBC targets for Slang (#96)
+
 ## 2021-04-15
 
 * Added Mali offline compiler 7.3.0
