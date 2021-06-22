@@ -7,7 +7,7 @@ namespace ShaderPlayground.Core
 {
     public sealed class ShaderCompilerArguments : Dictionary<string, string>
     {
-        private static readonly Regex IdentifierRegex = new Regex("^[_a-zA-Z0-9\\-= ]*$", RegexOptions.Compiled);
+        private static readonly Regex IdentifierRegex = new Regex("^[_a-zA-Z0-9\\-=\\/ ]*$", RegexOptions.Compiled);
 
         private Dictionary<string, ShaderCompilerParameter> _parameters;
 
