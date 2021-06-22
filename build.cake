@@ -1,6 +1,6 @@
 #addin nuget:?package=SharpZipLib&version=1.0.0
 #addin nuget:?package=Cake.Compression&version=0.2.1
-#addin nuget:?package=Cake.Git&version=0.18.0
+#addin nuget:?package=Cake.Git&version=1.0.1
 
 var alwaysCache = Argument<bool>("always-cache", false);
 var target = Argument("target", "Default");
@@ -568,6 +568,40 @@ Task("Build-Rust-GPU")
       true);
   });
 
+Task("Build-Naga")
+  .Does(() => {
+    const string repoPath = "./build/naga";
+    if (DirectoryExists(repoPath))
+    {
+      DeleteDirectory(repoPath, new DeleteDirectorySettings { Recursive = true });
+    }
+    GitClone("https://github.com/gfx-rs/naga.git", repoPath);
+
+    void BuildVersion(string commit, string displayName)
+    {
+      GitCheckout(repoPath, commit);
+
+      RunAndCheckResult(
+        "cargo", 
+        new ProcessSettings
+        {
+          Arguments = "build --release",
+          WorkingDirectory = repoPath,
+        });
+
+      var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/naga/{displayName}";
+      EnsureDirectoryExists(binariesFolder);
+      CleanDirectory(binariesFolder);
+
+      CopyFiles(
+        "./build/naga/target/release/naga.*",
+        binariesFolder,
+        false);
+    }
+
+    BuildVersion("8376bab5622f89ed9689cd0c3aedfd97c333c5bf", "v0.5.0");
+  });
+
 Task("Build-Fxc-Shim")
   .Does(() => {
     DotNetCorePublish("./shims/ShaderPlayground.Shims.Fxc/ShaderPlayground.Shims.Fxc.csproj", new DotNetCorePublishSettings
@@ -723,6 +757,7 @@ Task("Default")
   .IsDependentOn("Build-Clspv")
   .IsDependentOn("Build-Tint")
   .IsDependentOn("Build-Rust-GPU")
+  .IsDependentOn("Build-Naga")
   .IsDependentOn("Download-Dxc")
   .IsDependentOn("Download-Glslang")
   .IsDependentOn("Download-Mali-Offline-Compiler")

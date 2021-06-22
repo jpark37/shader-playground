@@ -14,6 +14,7 @@ using ShaderPlayground.Core.Compilers.IntelShaderAnalyzer;
 using ShaderPlayground.Core.Compilers.Lzma;
 using ShaderPlayground.Core.Compilers.Mali;
 using ShaderPlayground.Core.Compilers.Miniz;
+using ShaderPlayground.Core.Compilers.Naga;
 using ShaderPlayground.Core.Compilers.PowerVR;
 using ShaderPlayground.Core.Compilers.Rga;
 using ShaderPlayground.Core.Compilers.RustGpu;
@@ -57,6 +58,7 @@ namespace ShaderPlayground.Core
             new LzmaCompiler(),
             new MaliCompiler(),
             new MinizCompiler(),
+            new NagaCompiler(),
             new PowerVRCompiler(),
             new RgaCompiler(),
             new RustGpuCompiler(),
