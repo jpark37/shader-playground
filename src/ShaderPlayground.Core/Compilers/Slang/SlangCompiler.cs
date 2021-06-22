@@ -1,4 +1,5 @@
-﻿using ShaderPlayground.Core.Util;
+﻿using System;
+using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Slang
 {
@@ -18,16 +19,16 @@ namespace ShaderPlayground.Core.Compilers.Slang
             new ShaderCompilerParameter("EntryPoint", "Entry point", ShaderCompilerParameterType.TextBox, defaultValue: "computeMain"),
             // Default to cs_6_0 as assuming DXIL will be the default target 
             new ShaderCompilerParameter("Profile", "Profile", ShaderCompilerParameterType.ComboBox, ProfileOptions, "cs_6_0"),
-            new ShaderCompilerParameter("OptimizationLevel", "Optimization level", ShaderCompilerParameterType.ComboBox, OptimizationLevelOptions, "Default"),
+            new ShaderCompilerParameter("OptimizationLevel", "Optimization level", ShaderCompilerParameterType.ComboBox, OptimizationLevelOptions, "-O1"),
             CommonParameters.CreateOutputParameter(new[] { LanguageNames.Dxil, LanguageNames.SpirV, LanguageNames.Dxbc, LanguageNames.Hlsl, LanguageNames.Glsl, LanguageNames.Cpp, LanguageNames.Cuda, LanguageNames.Ptx })
         };
 
         private static readonly string[] OptimizationLevelOptions =
         {
-            "None",
-            "Default",
-            "High",
-            "Maximal",
+            "-O0",
+            "-O1",
+            "-O2",
+            "-O3",
         };
 
         private static readonly string[] ProfileOptions =
@@ -122,87 +123,71 @@ namespace ShaderPlayground.Core.Compilers.Slang
 
         public ShaderCompilerResult Compile(ShaderCode shaderCode, ShaderCompilerArguments arguments)
         {
-            var args = $"-entry {arguments.GetString("EntryPoint")}";
-            args += $" -profile {arguments.GetString("Profile")}";
-
             var outputLanguage = arguments.GetString(CommonParameters.OutputLanguageParameterName);
-            switch (outputLanguage)
+
+            bool DoCompilation(bool binary, out string outputPath, out string stdError)
             {
-                case LanguageNames.Glsl:
-                    args += " -target glsl";
-                    break;
+                var args = $"-entry {arguments.GetString("EntryPoint")}";
+                args += $" -profile {arguments.GetString("Profile")}";
 
-                case LanguageNames.Hlsl:
-                    args += " -target hlsl";
-                    break;
-                    
-                case LanguageNames.Cuda:
-                    args += " -target cuda";
-                    break;
-                    
-                case LanguageNames.Cpp:
-                    args += " -target cpp";
-                    break;
+                var target = outputLanguage switch
+                {
+                    LanguageNames.Glsl => "glsl",
+                    LanguageNames.Hlsl => "hlsl",
+                    LanguageNames.Cuda => "cuda",
+                    LanguageNames.Cpp => "cpp",
+                    LanguageNames.Ptx => "ptx",
+                    LanguageNames.Dxil => binary ? "dxil" : "dxil-assembly",
+                    LanguageNames.SpirV => binary ? "spirv" : "spirv-assembly",
+                    LanguageNames.Dxbc => binary ? "dxbc" : "dxbc-assembly",
+                    _ => throw new InvalidOperationException()
+                };
+                args += $" -target {target}";
 
-                case LanguageNames.Ptx:
-                    args += " -target ptx";
-                    break;
+                var optimizationLevel = arguments.GetString("OptimizationLevel");
+                args += $" {optimizationLevel}";
 
-                case LanguageNames.Dxil:
-                    args += " -target dxil-assembly";
-                    break;
+                using (var tempFile = TempFile.FromShaderCode(shaderCode))
+                {
+                    outputPath = $"{tempFile.FilePath}.out";
 
-                case LanguageNames.SpirV:
-                    args += " -target spirv-assembly";
-                    break;
+                    ProcessHelper.Run(
+                        CommonParameters.GetBinaryPath("slang", arguments, "slangc.exe"),
+                        $"\"{tempFile.FilePath}\" -o \"{outputPath}\" {args}",
+                        out _,
+                        out stdError);
 
-                case LanguageNames.Dxbc:
-                    args += " -target dxbc-assembly";
-                    break;
+                    var hasCompilationErrors = !string.IsNullOrWhiteSpace(stdError);
+
+                    return hasCompilationErrors;
+                }
             }
 
-            var optimizationLevel = arguments.GetString("OptimizationLevel");
-            switch (optimizationLevel)
+            var hasCompilationErrors = DoCompilation(false, out var textOutputPath, out var stdError);
+            var textOutput = FileHelper.ReadAllTextIfExists(textOutputPath);
+            FileHelper.DeleteIfExists(textOutputPath);
+
+            byte[] binaryOutput = null;
+            if (!hasCompilationErrors)
             {
-                case "None":
-                    args += " -O0";
-                    break;
-                case "High":
-                    args += " -O2";
-                    break;
-                case "Maximal":
-                    args += " -O3";
-                    break;
-                case "Default":
-                    args += " -O";
-                    break;
-                default:
-                    break;
+                switch (outputLanguage)
+                {
+                    case LanguageNames.Dxil:
+                    case LanguageNames.SpirV:
+                    case LanguageNames.Dxbc:
+                        hasCompilationErrors = DoCompilation(true, out var binaryOutputPath, out stdError);
+                        binaryOutput = FileHelper.ReadAllBytesIfExists(binaryOutputPath);
+                        FileHelper.DeleteIfExists(binaryOutputPath);
+                        break;
+                }
             }
 
-            using (var tempFile = TempFile.FromShaderCode(shaderCode))
-            {
-                var outputPath = $"{tempFile.FilePath}.out";
-
-                ProcessHelper.Run(
-                    CommonParameters.GetBinaryPath("slang", arguments, "slangc.exe"),
-                    $"\"{tempFile.FilePath}\" -o \"{outputPath}\" {args}",
-                    out var _,
-                    out var stdError);
-
-                var hasCompilationErrors = !string.IsNullOrWhiteSpace(stdError);
-
-                var textOutput = FileHelper.ReadAllTextIfExists(outputPath);
-
-                FileHelper.DeleteIfExists(outputPath);
-
-                return new ShaderCompilerResult(
-                    !hasCompilationErrors,
-                    new ShaderCode(outputLanguage, textOutput),
-                    hasCompilationErrors ? (int?)1 : null,
-                    new ShaderCompilerOutput("Output", outputLanguage, textOutput),
-                    new ShaderCompilerOutput("Errors", null, hasCompilationErrors ? stdError : "<No compilation errors>"));
-            }
+            return new ShaderCompilerResult(
+                !hasCompilationErrors,
+                new ShaderCode(outputLanguage, binaryOutput),
+                hasCompilationErrors ? (int?)1 : null,
+                new ShaderCompilerOutput("Output", outputLanguage, textOutput),
+                new ShaderCompilerOutput("Errors", null, hasCompilationErrors ? stdError : "<No compilation errors>"));
         }
     }
 }
