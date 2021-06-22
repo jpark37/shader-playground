@@ -364,6 +364,8 @@ Task("Download-Slang")
         "bin/windows-x64/release/*.*");
 
       CopyFiles(nvrtcPaths, binariesFolder);
+
+      CopyFiles($"./src/ShaderPlayground.Core/Binaries/dxc/trunk/dxcompiler.dll", binariesFolder);
     }
 
     DownloadSlang("0.10.24");
@@ -371,6 +373,8 @@ Task("Download-Slang")
     DownloadSlang("0.10.26");
     DownloadSlang("0.11.18");
     DownloadSlang("0.13.10");
+    DownloadSlang("0.18.0");
+    DownloadSlang("0.18.25");
   });
 
 Task("Download-HLSLParser")
