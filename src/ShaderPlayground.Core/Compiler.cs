@@ -13,6 +13,7 @@ using ShaderPlayground.Core.Compilers.HlslParser;
 using ShaderPlayground.Core.Compilers.IntelShaderAnalyzer;
 using ShaderPlayground.Core.Compilers.Lzma;
 using ShaderPlayground.Core.Compilers.Mali;
+using ShaderPlayground.Core.Compilers.Metal;
 using ShaderPlayground.Core.Compilers.Miniz;
 using ShaderPlayground.Core.Compilers.Naga;
 using ShaderPlayground.Core.Compilers.PowerVR;
@@ -37,6 +38,7 @@ namespace ShaderPlayground.Core
         {
             new HlslLanguage(),
             new GlslLanguage(),
+            new MetalLanguage(),
             new OpenCLCLanguage(),
             new RustLanguage(),
             new SlangLanguage(),
@@ -57,6 +59,7 @@ namespace ShaderPlayground.Core
             new IntelShaderAnalyzerCompiler(),
             new LzmaCompiler(),
             new MaliCompiler(),
+            new MetalCompiler(),
             new MinizCompiler(),
             new NagaCompiler(),
             new PowerVRCompiler(),

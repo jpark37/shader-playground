@@ -209,6 +209,7 @@
                 return "text/x-dxbc";
 
             case "DXIL":
+            case "Metal IR":
                 return "text/x-llvm-ir";
 
             case "OpenCL C":

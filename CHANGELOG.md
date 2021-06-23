@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-06-23
+
+* Added Metal compiler (using Metal Developer Tools for Windows)
+
 ## 2021-06-22
 
 * Added DXIL, SPIR-V & DXBC targets for Slang (#96)

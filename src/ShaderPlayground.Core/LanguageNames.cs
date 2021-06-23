@@ -12,6 +12,7 @@
         public const string Markv = "MARK-V";
         public const string OpenCLC = "OpenCL C";
         public const string Metal = "Metal";
+        public const string MetalIR = "Metal IR";
         public const string Rust = "Rust";
         public const string Slang = "Slang";
         public const string Smolv = "SMOL-V";

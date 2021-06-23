@@ -216,6 +216,18 @@ Task("Download-Mali-Offline-Compiler")
     });
   });
 
+Task("Download-Metal-Developer-Tools")
+  .Does(() => {
+    // Doesn't actually work because this URL requires login.
+    DownloadAndUnzipCompiler(
+      "https://developer.apple.com/services-account/download?path=/WWDC_2021/Metal_For_Windows_2.0_beta/Metal_Developer_Tools2.0betaWindows.exe",
+      "metal-developer-tools",
+      "2.0-beta",
+      true,
+      "macos/bin/metal.exe",
+      ZipFormat.SevenZip);
+  });
+
 Task("Download-SPIRV-Cross")
   .Does(() => {
     void DownloadSpirvCross(string version, string hash)
@@ -762,6 +774,7 @@ Task("Default")
   .IsDependentOn("Download-Dxc")
   .IsDependentOn("Download-Glslang")
   .IsDependentOn("Download-Mali-Offline-Compiler")
+  .IsDependentOn("Download-Metal-Developer-Tools")
   .IsDependentOn("Download-SPIRV-Cross")
   .IsDependentOn("Download-SPIRV-Tools")
   .IsDependentOn("Download-SPIRV-Tools-Legacy")
