@@ -197,7 +197,7 @@ Task("Download-Mali-Offline-Compiler")
     var mobileStudioFolder = "./build/arm-mobile-studio/2021.0";
     EnsureDirectoryExists(mobileStudioFolder);
     CleanDirectory(mobileStudioFolder);
- 
+
     RunAndCheckResult(
       @"C:\Program Files\7-Zip\7z.exe",
       new ProcessSettings
@@ -595,7 +595,7 @@ Task("Build-Naga")
       GitCheckout(repoPath, commit);
 
       RunAndCheckResult(
-        "cargo", 
+        "cargo",
         new ProcessSettings
         {
           Arguments = "build --release",
@@ -612,7 +612,7 @@ Task("Build-Naga")
         false);
     }
 
-    BuildVersion("8376bab5622f89ed9689cd0c3aedfd97c333c5bf", "v0.5.0");
+    BuildVersion("3a2f7e611e4fe8ec50d9bb365916f22e7c30e46c", "v0.7.0");
   });
 
 Task("Build-Fxc-Shim")
