@@ -1,5 +1,10 @@
 # Changelog
 
+## 2021-09-25
+
+* Added Metal compiler 2.0 beta 5
+* Added binary output for Metal .air file
+
 ## 2021-06-23
 
 * Added Metal compiler (using Metal Developer Tools for Windows)

@@ -60,9 +60,25 @@ namespace ShaderPlayground.Core.Compilers.Metal
 
             var hasCompilationError = textOutput == null;
 
+            byte[] binaryOutput = null;
+            if (!hasCompilationError)
+            {
+                var binaryOutputPath = $"{tempFile.FilePath}.air";
+
+                ProcessHelper.Run(
+                    CommonParameters.GetBinaryPath("metal", arguments, "metal.exe"),
+                    $"-std={arguments.GetString("MetalVersion")} -I \"{includePath}\" -o \"{binaryOutputPath}\" \"{tempFile.FilePath}\"",
+                    out var stdOutput2,
+                    out var stdError2);
+
+                binaryOutput = FileHelper.ReadAllBytesIfExists(binaryOutputPath);
+
+                FileHelper.DeleteIfExists(binaryOutputPath);
+            }
+
             return new ShaderCompilerResult(
                 !hasCompilationError,
-                !hasCompilationError ? new ShaderCode(LanguageNames.MetalIR, textOutput) : null,
+                !hasCompilationError ? new ShaderCode(LanguageNames.MetalIR, binaryOutput) : null,
                 hasCompilationError ? (int?)1 : null,
                 new ShaderCompilerOutput("Assembly", LanguageNames.MetalIR, textOutput),
                 new ShaderCompilerOutput("Output", null, stdError));
