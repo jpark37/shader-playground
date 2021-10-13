@@ -1,19 +1,26 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 
 namespace ShaderPlayground.Core.Util
 {
     internal static class ProcessHelper
     {
-        public static bool Run(string fileName, string arguments, out string stdOutput, out string stdError)
+        public static bool Run(string fileName, string arguments, out string stdOutput, out string stdError, Encoding textEncoding = null)
         {
             var processStartInfo = new ProcessStartInfo
             {
                 FileName = fileName,
                 Arguments = arguments,
                 RedirectStandardOutput = true,
-                RedirectStandardError = true
+                RedirectStandardError = true,
             };
+
+            if (textEncoding != null)
+            {
+                processStartInfo.StandardOutputEncoding = textEncoding;
+                processStartInfo.StandardErrorEncoding = textEncoding;
+            }
 
             using (var process = Process.Start(processStartInfo))
             {

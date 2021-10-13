@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using ShaderPlayground.Core.Util;
 
 namespace ShaderPlayground.Core.Compilers.Naga
@@ -58,7 +59,8 @@ namespace ShaderPlayground.Core.Compilers.Naga
                 CommonParameters.GetBinaryPath("naga", arguments, "naga.exe"),
                 $"\"{tempFile.FilePath}\" \"{outputPath}\"",
                 out var stdOutput,
-                out var stdError);
+                out var stdError,
+                Encoding.UTF8);
 
             ShaderCode pipeableCode;
             bool hasCompilationError;
