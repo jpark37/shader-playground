@@ -551,6 +551,22 @@ Task("Build-Clspv")
       true);
   });
 
+Task("Build-Mesa")
+  .Does(() => {
+    RunAndCheckResult(MakeAbsolute(File("./external/mesa/build.bat")), new ProcessSettings {
+      WorkingDirectory = MakeAbsolute(Directory("./external/mesa"))
+    });
+
+    var binariesFolder = $"./src/ShaderPlayground.Core/Binaries/mesa/trunk";
+    EnsureDirectoryExists(binariesFolder);
+    CleanDirectory(binariesFolder);
+
+    CopyFiles(
+      "./external/mesa/source/build/src/amd/vulkan/vulkan_radeon.dll",
+      binariesFolder,
+      true);
+  });
+
 Task("Build-Tint")
   .Does(() => {
     RunAndCheckResult(MakeAbsolute(File("./external/tint/build.bat")), new ProcessSettings {
@@ -769,6 +785,7 @@ Task("Default")
   .IsDependentOn("Prepare-Build-Directory")
   .IsDependentOn("Build-ANGLE")
   .IsDependentOn("Build-Clspv")
+  .IsDependentOn("Build-Mesa")
   .IsDependentOn("Build-Tint")
   .IsDependentOn("Build-Rust-GPU")
   .IsDependentOn("Build-Naga")

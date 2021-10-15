@@ -19,3 +19,6 @@
 [submodule "external/tint/source"]
 	path = external/tint/source
 	url = https://dawn.googlesource.com/tint
+[submodule "external/mesa/source"]
+	path = external/mesa/source
+	url = https://gitlab.freedesktop.org/mesa/mesa.git

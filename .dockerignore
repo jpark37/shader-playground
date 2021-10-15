@@ -8,4 +8,5 @@ build/**
 
 external/angle/source/**
 external/clspv/source/**
+external/mesa/source/**
 external/tint/source/**
